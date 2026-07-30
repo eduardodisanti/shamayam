@@ -1,0 +1,29 @@
+# ---------------------------------------------------------------------------
+# Layer A1 -- theory verification. Framework-free, no download, bit-exact.
+# Establishes the calibration results, which are operator-independent.
+# ---------------------------------------------------------------------------
+numpy>=1.24
+scipy>=1.10
+scikit-learn>=1.3
+pytest>=7.0
+
+# ---------------------------------------------------------------------------
+# Layer A2 -- geometry demonstration. Uses the Conv1D autoencoder of the
+# technical note rather than a substitute, because translation equivariance
+# matches the phase-shift nuisance the quotient construction removes.
+# Reproducible with tf.config.experimental.enable_op_determinism(), which is
+# activated in mssp_repro/conv_autoencoder.py; determinism holds within a
+# TensorFlow build, not across builds or backends.
+#
+#   pip install tensorflow
+#
+# A2 is optional: `python3 run_all.py --layer a1` skips it, and none of the
+# mathematical claims depend on it.
+# ---------------------------------------------------------------------------
+# tensorflow>=2.15
+
+# ---------------------------------------------------------------------------
+# Layer B -- field reproduction on CWRU and NASA IMS. Needs TensorFlow plus
+# the two archives, which are public but externally maintained and are not
+# redistributed here. See README.md.
+# ---------------------------------------------------------------------------

@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Superseded exploratory scripts and their output; safe to `git rm`.
+calibration_arms.py
+controls.py
+results_synthetic_arms.txt
+results_controls.txt

@@ -1,0 +1,24 @@
+{abstract}
+
+\begin{keywords}
+Anomaly detection \sep Bearing diagnosis \sep Inverse problems \sep
+Quotient spaces \sep Nuisance invariance \sep Predictive maintenance
+\end{keywords}
+
+\maketitle
+
+
+
+% ============================================================================
+\begin{abstract}
+% [NEW] Must state, in MSSP register (Objectives/Methods/Findings implicit
+% but not TRB-labeled headers): (1) the inverse-problem/quotient-space
+% claim as a general diagnostic principle, not a deployment trick;
+% (2) the three formal results: compactness of the nominal orbit
+% (Prop. 1), quotient factorization of diagnostic maps (Prop. 2), and the
+% distribution-free coverage of the local operational radius (Prop. 3);
+% (3) the three-tier empirical validation (synthetic, CWRU, NASA IMS) with
+% headline numbers pulled from TRB Table 4 / Table 6 (99.57% ball DR, 100%
+% inner/outer DR, 2.60% FAR at 54.5 +/- 6.6 commissioning windows; NASA
+% lead times 14.5-74.0h, mean 45.4h). Draft this LAST, after Sections 4-9
+% are frozen.

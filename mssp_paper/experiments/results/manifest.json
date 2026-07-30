@@ -1,0 +1,27 @@
+{
+  "generated_utc": "2026-07-30T18:24:37.193858+00:00",
+  "seed": 20260730,
+  "quick": true,
+  "python": "3.10.12",
+  "platform": "Linux-6.8.0-124-generic-aarch64-with-glibc2.35",
+  "numpy": "2.2.6",
+  "sklearn": "1.7.2",
+  "layer": "all",
+  "a2_epoch_budget": 10,
+  "a2_patience": 4,
+  "a2_lr_patience": 2,
+  "a2_min_lr": 1e-07,
+  "a2_train_windows": 400,
+  "a2_op_determinism": true,
+  "a2_determinism_scope": "bit-identical within one TensorFlow build; not guaranteed across builds or backends",
+  "alpha": 0.020000000000000018,
+  "coverage_floor": 49,
+  "degenerate_range": [
+    49,
+    98
+  ],
+  "stopping_rule_floor": 49,
+  "sha256": {
+    "layer_a_results.txt": "007652545962a75e761672ebabdb4497504a10957e6dd74a6ffa1f7d0c96292f"
+  }
+}
