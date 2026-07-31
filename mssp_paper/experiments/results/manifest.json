@@ -1,17 +1,17 @@
 {
-  "generated_utc": "2026-07-30T18:24:37.193858+00:00",
+  "generated_utc": "2026-07-31T13:28:42.592521+00:00",
   "seed": 20260730,
-  "quick": true,
-  "python": "3.10.12",
-  "platform": "Linux-6.8.0-124-generic-aarch64-with-glibc2.35",
-  "numpy": "2.2.6",
-  "sklearn": "1.7.2",
+  "quick": false,
+  "python": "3.12.13",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "numpy": "2.1.3",
+  "sklearn": "1.9.0",
   "layer": "all",
-  "a2_epoch_budget": 10,
-  "a2_patience": 4,
-  "a2_lr_patience": 2,
+  "a2_epoch_budget": 500,
+  "a2_patience": 40,
+  "a2_lr_patience": 15,
   "a2_min_lr": 1e-07,
-  "a2_train_windows": 400,
+  "a2_train_windows": 4000,
   "a2_op_determinism": true,
   "a2_determinism_scope": "bit-identical within one TensorFlow build; not guaranteed across builds or backends",
   "alpha": 0.020000000000000018,
@@ -22,6 +22,6 @@
   ],
   "stopping_rule_floor": 49,
   "sha256": {
-    "layer_a_results.txt": "007652545962a75e761672ebabdb4497504a10957e6dd74a6ffa1f7d0c96292f"
+    "layer_a_results.txt": "c6e3227eb9bd90b1d5edc0bcc48276cfc471ede01926dea0bf900a180d515a0e"
   }
 }

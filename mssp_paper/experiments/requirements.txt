@@ -8,6 +8,17 @@ scikit-learn>=1.3
 pytest>=7.0
 
 # ---------------------------------------------------------------------------
+# Figure regeneration. Needed by make_figures.py ONLY, and listed here rather
+# than in a separate file because a reader who cannot redraw the figures
+# cannot check them. Nothing else imports it: run_all.py produces
+# results/data.json without it, the tests do not touch it, and make_tables.py
+# and make_macros.py read that JSON and emit LaTeX. So a plotting library
+# missing from the environment must not stop the experiments from running --
+# see the import guard at the top of make_figures.py.
+# ---------------------------------------------------------------------------
+matplotlib>=3.5
+
+# ---------------------------------------------------------------------------
 # Layer A2 -- geometry demonstration. Uses the Conv1D autoencoder of the
 # technical note rather than a substitute, because translation equivariance
 # matches the phase-shift nuisance the quotient construction removes.

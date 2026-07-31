@@ -97,6 +97,14 @@
 \newcommand{\Expect}{\ensuremath{\mathbb{E}}}
 \newcommand{\indicator}{\ensuremath{\mathbf{1}}}
 
+% Measured quantities quoted inline in the prose, generated from
+% experiments/results/data.json by experiments/make_macros.py. They are NOT
+% written by hand: a re-run of the experiments propagates into the sentences
+% as well as into the tables and figures. An undefined macro here is a
+% compile error by design, since a missing number must stop the build rather
+% than leave a stale one in place. See the header of that script.
+\input{tables/values}
+
 
 \begin{document}
 
@@ -2395,31 +2403,7 @@ Table~\ref{tab:arms} reports the four arms across the six residual
 distributions. Two patterns are visible and neither depends on the
 distribution.
 
-\begin{table}[!ht]
-\centering
-\caption{Out-of-sample false-alarm rate (\%) by arm and residual
-distribution, nominal level \(2.0\%\). A1 reproduces the published pipeline;
-A4 is the configuration to which Proposition~\ref{prop:coverage} applies
-without qualification. The last column is the median commissioning length
-selected by the adaptive rule in arm A1.}
-\label{tab:arms}
-\begin{tabular}{lrrrrr}
-\toprule
-Residual distribution & A1 & A2 & A3 & A4 & med.\ \(n\) (A1) \\
-\midrule
-lognormal\((0,0.4)\) & 3.43 & 1.41 & 3.74 & 2.16 & 96 \\
-gamma\((k=3)\)       & 3.09 & 1.62 & 3.55 & 1.81 & 97 \\
-exponential\((1)\)   & 2.83 & 1.26 & 3.72 & 1.74 & 119 \\
-Pareto\((a=3)\)      & 3.61 & 1.28 & 3.87 & 1.77 & 118 \\
-half-normal          & 3.14 & 1.41 & 3.74 & 1.89 & 60 \\
-bimodal mixture      & 3.47 & 1.54 & 3.79 & 1.82 & 66 \\
-\midrule
-pooled coverage      & 0.96737 & 0.98580 & 0.96264 & 0.98136 & \\
-(standard error)     & (0.00119) & (0.00058) & (0.00043) & (0.00063) & \\
-pooled FAR (\%)      & 3.26 & 1.42 & 3.74 & 1.86 & \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{tables/arms}
 
 First, arm A4 attains a pooled coverage of \(0.98136\) against the value
 \(k_\alpha/(n+1)=50/51=0.98039\) predicted exactly by
@@ -2455,29 +2439,7 @@ sample-size effect.
 Table~\ref{tab:variance} gives the standard deviation of the certified radius
 as a function of \(n\).
 
-\begin{table}[!ht]
-\centering
-\caption{Standard deviation of the certified radius against commissioning
-length, on a lognormal residual stream. Inside the degenerate range of
-Corollary~\ref{cor:degenerate_range} the estimator is the sample maximum and
-its dispersion is essentially constant; it contracts only once an interior
-order statistic becomes available at \(n=99\).}
-\label{tab:variance}
-\begin{tabular}{rrlrr}
-\toprule
-\(n\) & \(k_\alpha\) & sample max? & \(\mathrm{sd}(\tau)\) & relative to \(n=98\) \\
-\midrule
-49  & 49  & yes & 0.4999 & 1.00 \\
-60  & 60  & yes & 0.5028 & 1.01 \\
-80  & 80  & yes & 0.5027 & 1.01 \\
-98  & 98  & yes & 0.4987 & 1.00 \\
-99  & 98  & no  & 0.3061 & 0.61 \\
-120 & 119 & no  & 0.3081 & 0.62 \\
-200 & 197 & no  & 0.2012 & 0.40 \\
-400 & 393 & no  & 0.1340 & 0.27 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{tables/variance}
 
 The dispersion is flat to within \(1\%\) across \([49,98]\) and then falls by
 a factor of \(1.6\) at the first interior order statistic and by \(2.5\) by
@@ -2496,112 +2458,192 @@ standard deviations of accumulated trend in five of six cases. The test is
 therefore usable as a probe of Assumption~\ref{ass:exchangeability} rather
 than as a source of spurious alarms.
 
-\begin{table}[!ht]
-\centering
-\caption{Rejection rate of the permutation test at level \(0.05\). The first
-column is the size, measured on exchangeable streams; the remainder is the
-power against an injected monotone drift, expressed in standard deviations of
-accumulated trend.}
-\label{tab:exchangeability}
-\begin{tabular}{lrrrrr}
-\toprule
-Residual distribution & size & drift 0.5 & drift 1.0 & drift 2.0 & drift 3.0 \\
-\midrule
-lognormal\((0,0.4)\) & 0.042 & 0.133 & 0.692 & 1.000 & 1.000 \\
-gamma\((k=3)\)       & 0.058 & 0.233 & 0.692 & 1.000 & 1.000 \\
-exponential\((1)\)   & 0.042 & 0.408 & 0.825 & 1.000 & 1.000 \\
-Pareto\((a=3)\)      & 0.025 & 0.683 & 0.992 & 1.000 & 1.000 \\
-half-normal          & 0.083 & 0.208 & 0.592 & 0.992 & 1.000 \\
-bimodal mixture      & 0.042 & 0.525 & 0.875 & 1.000 & 1.000 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{tables/exchangeability}
 
 %---------------------------------------------------------------------
 \subsection{Controlled instantiation on the simulator}
 \label{subsec:results_simulator}
 %---------------------------------------------------------------------
 
+\paragraph{The representation operator and its training.}
+The operator is the convolutional autoencoder of the technical note,
+reproduced without modification at \(847{,}601\) trainable parameters and
+fitted on \(4000\) simulated nominal windows. The epoch count is a budget
+rather than a target: training is stopped by validation loss, the learning
+rate is annealed on plateaus, and the best weights are restored. On the run
+reported here it terminated after \(372\) of a permitted \(500\) epochs, with
+the best validation loss of \(2.62\times10^{-3}\) attained at epoch \(347\)
+and the learning rate annealed from \(10^{-3}\) to \(2\times10^{-6}\) in nine
+reductions. Validation uses a held-out split of the \emph{nominal} data only,
+so early stopping selects for reconstructing nominal behaviour and cannot
+consult a fault.
+
+One operator, trained once, is used for every experiment in this subsection.
+Deterministic kernels are enabled throughout.
+
 \paragraph{End-to-end membership.}
-With the representation operator fitted on \(600\) nominal windows only and
-the radius certified from \(120\) further nominal windows, the held-out
-false-alarm rate on \(1500\) nominal windows is \(1.13\%\) against a nominal
-\(2\%\). The median residual rises from \(2.32\times10^{-3}\) on nominal
-windows to \(6.81\times10^{-3}\), \(1.03\times10^{-2}\) and
-\(1.65\times10^{-2}\) on ball, outer-race and inner-race faults, and the
-single membership rule \eqref{eq:decision_rule} detects them at \(79.0\%\),
-\(99.0\%\) and \(100\%\) respectively. No fault observation entered the
-fitting or the calibration.
+With the radius certified from \(120\) nominal windows, the held-out
+false-alarm rate on \(1500\) further nominal windows is \(\etoeFAR\%\)
+against a nominal \(2\%\). The median residual rises from \(2.32\times10^{-3}\) on
+nominal windows to \(6.88\times10^{-3}\), \(1.08\times10^{-2}\) and
+\(1.73\times10^{-2}\) on ball, outer-race and inner-race faults, and the
+single membership rule \eqref{eq:decision_rule} detects them at \(91.5\%\),
+\(100\%\) and \(100\%\) respectively. No fault observation entered the
+fitting, the calibration or the stopping decision.
 
 Four simulated assets differing only by an installation signature, sharing one
 representation operator and one target coverage, identify radii of
-\(7.15\times10^{-3}\), \(7.40\times10^{-3}\), \(1.78\times10^{-2}\) and
-\(1.15\times10^{-2}\), a spread of \(2.49\) between the largest and the
+\(1.00\times10^{-2}\), \(8.26\times10^{-3}\), \(2.45\times10^{-2}\) and
+\(1.43\times10^{-2}\), a spread of \(2.97\) between the largest and the
 smallest. This is the behaviour Remark~\ref{rem:scale_not_invariant}
 predicts: the representation is shared and its residual scale is not.
 
+\paragraph{Intrinsic dimension of the nominal cloud.}
+Table~\ref{tab:dimension} tests the prediction of
+Remark~\ref{rem:nuisance_on_attractor} that each nuisance parameter acting
+non-trivially contributes one direction to the nominal set.
+
+\input{tables/dimension}
+
+Each additional parameter raises the estimate by close to one, and the
+single-parameter case is recovered exactly. The residual gap grows with the
+dimension, which is the known negative bias of the estimator rather than an
+unexplained discrepancy; a mistaken reading would fail to track the count at
+all. Figure~\ref{fig:dimension} shows the tracking directly.
+
+Additive noise thickens the cloud without adding dimension, and the estimator
+shows this as scale dependence: on the full simulator the estimate falls from
+about twelve at the smallest neighbourhood to close to four at the largest,
+approaching the noise-free values. Against an ambient dimension of \(1200\),
+an intrinsic dimension near four is what makes the covering argument of
+Remark~\ref{rem:fill_rate} usable rather than vacuous, and it is measured here
+rather than assumed.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/intrinsic_dimension}
+\caption{Intrinsic dimension of the nominal cloud. Left: the estimate against
+the number of nuisance parameters actually varied, with the diagonal marking
+exact recovery; the estimator tracks the count with a downward bias that grows
+with dimension. Right: scale dependence on the full simulator, where additive
+noise raises the estimate at small neighbourhoods and the manifold structure
+emerges as the neighbourhood grows. Generated by
+\texttt{experiments/make\_figures.py}.}
+\label{fig:dimension}
+\end{figure}
+
+\paragraph{Attractor drift under slow parameter change.}
+On chronological records of \(700\) windows whose first half is nominal and
+whose severity then ramps smoothly, the radius is commissioned on the
+early-life segment, frozen, and never adapted. Departure is declared by a
+persistence rule. Onset occurs at record \(351\); persistent departure is
+declared at \(473\), \(496\) and \(545\) for inner-race, outer-race and ball
+faults, delays of \(122\), \(145\) and \(194\) records, at severities of
+\(0.211\), \(0.251\) and \(0.335\) on a ramp reaching \(0.6\). Post-departure
+exceedance is \(96.1\%\), \(98.2\%\) and \(96.8\%\).
+Figure~\ref{fig:drift} shows the trajectories.
+
+The false-alarm rate measured after commissioning but before onset, where the
+process is still nominal, is \(5.2\%\) against the \(2\%\) target. This is
+higher than the calibrated level and is worth stating: it is measured on a
+single realisation over roughly \(230\) records, so its sampling error is
+substantial, but it also reflects that the commissioning segment and the later
+nominal segment are not perfectly exchangeable in a record that will
+subsequently degrade. It is the same assumption,
+Assumption~\ref{ass:exchangeability}, that the permutation test of
+Section~\ref{subsec:results_verification} is designed to probe.
+
+What the detector is given is no severity information, no fault label and no
+adaptation after commissioning. What it reports is failure of membership in a
+region estimated before any degradation occurred, which is the distinction
+drawn in Section~\ref{subsec:disc_dynamics} between motion along a fixed orbit
+and motion of the orbit itself.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/degradation_trajectory}
+\caption{Degradation trajectories under a frozen radius. The horizontal line
+is the radius commissioned on the early-life segment and never afterwards
+adapted; the dashed line marks the onset of non-zero severity and the solid
+vertical line the first persistent departure, with the shaded interval the
+detection delay. Generated by \texttt{experiments/make\_figures.py}.}
+\label{fig:drift}
+\end{figure}
+
 \paragraph{Saturation of the nominal radius.}
 Table~\ref{tab:saturation} measures the radius of
-Definition~\ref{def:saturation_radius} against a reference
-\(R_p=22.693\) estimated from \(4000\) held-out nominal windows.
+Definition~\ref{def:saturation_radius} against a reference estimated from
+\(\satRefWindows\) held-out nominal windows. Attained coverage is measured on
+a fresh evaluation block of \(\satEvalBlock\) windows drawn, disjointly from
+the calibration draw, on each of the \(\satReps\) repetitions. The choice is
+not a detail. Holding a single evaluation block fixed estimates coverage
+against that block's empirical distribution function rather than against the
+distribution, an offset of order \(\sqrt{p(1-p)/M}\) that does not average
+away over repetitions and is of the same order as the excess coverage being
+reported. Drawing calibration and evaluation points jointly without
+replacement from one pool is moreover not an approximation to independent
+sampling: the pool is exchangeable, so any \(n+1\) of its members drawn
+without replacement are exchangeable, which is the sole hypothesis of
+Proposition~\ref{prop:coverage}.
 
-\begin{table}[!ht]
+\input{tables/saturation}
+
+\begin{figure}[htbp]
 \centering
-\caption{Saturation of the nominal radius. ``certified'' is the estimator of
-Corollary~\ref{cor:saturation_certification}, ``interp'' the interpolated
-empirical quantile; ``coverage'' and ``int.\ cov'' are the corresponding
-out-of-sample coverages, which the certification requires to be at least
-\(p=0.98\); ``bias'' is the relative departure of the mean certified radius
-from \(R_p\). A dash marks a commissioning length below the floor, at which no
-radius is certifiable.}
-\label{tab:saturation}
-\begin{tabular}{rrrrrrrl}
-\toprule
-\(n\) & certified & sd & bias (\%) & coverage & interp & int.\ cov & max? \\
-\midrule
-30   & --     & --     & --      & --     & 21.235 & 0.9558 & --  \\
-49   & 23.176 & 1.682  & $+2.13$ & 0.9808 & 21.496 & 0.9609 & yes \\
-60   & 23.358 & 1.685  & $+2.93$ & 0.9822 & 21.672 & 0.9640 & yes \\
-80   & 23.921 & 1.445  & $+5.41$ & 0.9878 & 21.894 & 0.9690 & yes \\
-98   & 24.152 & 1.488  & $+6.43$ & 0.9890 & 21.998 & 0.9702 & yes \\
-99   & 22.785 & 1.290  & $+0.41$ & 0.9789 & 21.997 & 0.9700 & no  \\
-150  & 22.677 & 0.951  & $-0.07$ & 0.9790 & 22.115 & 0.9730 & no  \\
-300  & 22.639 & 0.707  & $-0.23$ & 0.9793 & 22.348 & 0.9762 & no  \\
-800  & 22.542 & 0.398  & $-0.67$ & 0.9788 & 22.425 & 0.9776 & no  \\
-2000 & 22.555 & 0.211  & $-0.61$ & 0.9789 & 22.511 & 0.9783 & no  \\
-\bottomrule
-\end{tabular}
-\end{table}
+\includegraphics[width=\linewidth]{figures/saturation}
+\caption{Saturation of the nominal radius. Upper panel: the certified radius
+with a $\pm 1$ standard-deviation band, against the population value; the
+shaded region is the degenerate range of
+Corollary~\ref{cor:degenerate_range}, in which the estimator is the sample
+maximum and therefore rises with $n$ rather than settling, and the vertical
+rule marks the first commissioning length admitting an interior order
+statistic. Lower panel: attained coverage, with Monte Carlo error bars. The
+dotted reference is not the target level but the exact coverage
+\(k_\alpha/(n+1)\) of Proposition~\ref{prop:coverage}, which exceeds the
+target and is not monotone in \(n\); the certified curve tracks it, while the
+interpolated estimator produces the smooth radius curve above and undercovers
+at every length examined. Generated by
+\texttt{experiments/make\_figures.py}.}
+\label{fig:saturation}
+\end{figure}
 
-% [FIGURE PLACEHOLDER -- generate in the final regeneration pass]
-% R_hat_p(n) with a +/-1 sd band and a horizontal line at R_p, both
-% estimators overlaid, with the n=99 discontinuity visible. This carries the
-% first two findings below at a glance. Source: experiments/run_all.py,
-% Experiment 6.
-
-Three things follow, and the first two are the substance of
+Four things follow, and the first three are the substance of
 Remark~\ref{rem:saturation_tension}.
 
-Inside the degenerate range the certified radius does not settle: its mean
-drifts from \(2.13\%\) above \(R_p\) at \(n=49\) to \(6.43\%\) at \(n=98\),
-and then falls discontinuously to \(0.41\%\) at \(n=99\), where an interior
-order statistic first becomes available. This is not a property of the regime
-but of the estimator, which is the sample maximum throughout that band by
+First, the certified coverage agrees with the exact value
+\(k_\alpha/(n+1)\) at every commissioning length on the grid, to within
+\(\satMaxZ\) Monte Carlo standard errors. This is a sharper statement than the
+inequality \(\text{coverage}\ge p\), and it is the sharper statement that is
+worth making: \(k_\alpha/(n+1)\) is not monotone in \(n\) and takes distinctly
+non-trivial values inside the degenerate range, where it rises to
+\(\satExactAtDegHi\) at \(n=98\) against an observed \(\satCovAtDegHi\). An
+estimator that merely covered conservatively would satisfy the inequality
+while missing that structure entirely.
+
+Second, inside the degenerate range the certified radius does not settle: its
+mean drifts from \(\satBiasLo\%\) above \(R_p\) at \(n=49\) to
+\(\satBiasHi\%\) at \(n=98\), and then falls discontinuously to
+\(\satBiasDrop\%\) at \(n=99\), where an interior order statistic first
+becomes available. This is not a property of the regime but of the estimator,
+which is the sample maximum throughout that band by
 Corollary~\ref{cor:degenerate_range}. A saturation curve computed this way
 cannot flatten there, and apparent settling is the maximum of a growing
-sample.
+sample. The excess coverage inside the band is the same fact stated in the
+other coordinate: covering more than the target is precisely what a radius
+that is too large does.
 
-The interpolated estimator behaves in the complementary way. It approaches
-\(R_p\) smoothly from below, producing the familiar saturating curve, and its
-coverage is below the \(0.98\) target at every commissioning length examined,
-from \(0.956\) at \(n=30\) to \(0.978\) at \(n=2000\). The visual impression
-of convergence and the coverage guarantee are supplied by different
-estimators, and not by the same one.
+Third, the interpolated estimator behaves in the complementary way. It
+approaches \(R_p\) smoothly from below, producing the familiar saturating
+curve, and its coverage is below the \(p=0.98\) target at every commissioning
+length examined, from \(\satInterpFirstCov\) at \(n=\satInterpFirstN\) to
+\(\satInterpLastCov\) at \(n=\satInterpLastN\). The visual impression of
+convergence and the coverage guarantee are supplied by different estimators,
+and not by the same one.
 
-Third, replacing the split-sample reference by a plug-in reference fitted on
-the same observations shrinks the radius by \(2.2\) to \(3.0\%\) at
-\(n\in\{49,98,300,800\}\), confirming the sign predicted in
-Remark~\ref{rem:plugin_centroid}. Coverage, however, is not degraded, because
+Fourth, replacing the split-sample reference by a plug-in reference fitted on
+the same observations shrinks the radius by \(\satPlugShiftLo\) to
+\(\satPlugShiftHi\%\) at \(n\in\{\satPlugGrid\}\), confirming the sign
+predicted in Remark~\ref{rem:plugin_centroid}. Coverage, however, is not degraded, because
 the evaluation distances are recomputed in the same plug-in geometry and the
 two shift together. The practical cost of a plug-in reference is therefore the
 comparability of radii across assets and regimes, not the validity of the
@@ -2609,19 +2651,47 @@ membership test, and the remark is refined accordingly.
 
 \paragraph{A negative result: the radius is not a detector.}
 Measured under the shared nominal projection, the certified radius of each
-regime is \(23.13\) for nominal, \(22.63\) for outer-race, \(22.78\) for
-inner-race and \(23.95\) for ball faults, that is, ratios to nominal between
-\(0.98\) and \(1.04\). There is no separation. The explanation is mechanical:
-a two-dimensional principal projection of a raw vibration window is dominated
-by the shaft harmonics, while the fault signature is a low-amplitude impulse
-train contributing almost nothing to the leading variance directions. The same
-simulator, the same nominal-only fitting and the same membership rule detect
-those faults at \(79\)--\(100\%\) when the residual is used instead. Saturation
-of a region and separability of that region from its neighbours are therefore
-independent properties, as
+regime is \(\satRadiusNom\) for nominal, \(\satRadiusOuter\) for outer-race,
+\(\satRadiusInner\) for inner-race and \(\satRadiusBall\) for ball faults,
+that is, ratios to nominal between \(\satRatioLo\) and \(\satRatioHi\). There
+is no separation. The explanation is mechanical: a two-dimensional principal
+projection of a raw vibration window is dominated by the shaft harmonics,
+while the fault signature is a low-amplitude impulse train contributing almost
+nothing to the leading variance directions. The same simulator, the same
+nominal-only fitting and the same membership rule detect those faults at
+\(\etoeDetectLo\)--\(\etoeDetectHi\%\) when the residual is used instead.
+Saturation of a region and separability of that region from its neighbours are
+therefore independent properties, as
 Remark~\ref{rem:radius_not_detector} states, and a saturation plot is evidence
 about the sampling of the nominal geometry rather than about regime
 discrimination.
+
+\paragraph{Operator adequacy: coverage cannot choose between residuals.}
+Table~\ref{tab:adequacy} applies the probe of
+Remark~\ref{rem:level_not_shape} to two operators calibrated identically on
+the same nominal data, at the same target coverage.
+
+\input{tables/adequacy}
+
+The linear operator accepts a point at \(1160\) units from the nearest nominal
+window, some \(380\) times the nominal spacing, while assigning it a residual
+of order \(10^{-28}\). Its accepted region is a slab around the retained
+subspace, not a tube around the nominal manifold, exactly as
+Remark~\ref{rem:level_not_shape} anticipates for a residual that measures
+distance to a structure containing the nominal set rather than to the set.
+The convolutional operator rejects everything beyond \(1.6\) times the
+spacing, and its residual rises from \(1.08\times10^{-3}\) to \(38.6\) across
+the probe, a growth of four orders of magnitude.
+
+The comparison is informative precisely because detection does not separate
+the two. Both reach \(100\%\) on outer- and inner-race faults, and the linear
+operator reaches \(84\%\) on ball faults against \(90\%\) for the
+convolutional one. A reader judging by detection rates alone would find them
+comparable. Coverage does not separate them either, by
+Proposition~\ref{prop:coverage}, which holds for both. Only the probe does,
+and the property it detects is the one on which tightness depends. This is the
+empirical content of the claim that this work certifies the level and inherits
+the shape.
 
 %---------------------------------------------------------------------
 \subsection{Field transfer: CWRU}
@@ -2855,11 +2925,17 @@ The verification experiments confirm Proposition~\ref{prop:coverage} exactly
 by enumeration and to within \(1.5\) standard errors by simulation across six
 dissimilar residual distributions, and they identify interpolation rather than
 adaptive stopping as the dominant source of the excess false-alarm rate
-observed in practice. The simulator experiments exercise the full chain and
-supply two results that qualify how saturation evidence should be read: the
-certified radius cannot flatten inside the degenerate range, and the radius
-does not discriminate between regimes that the residual separates almost
-perfectly. The field experiments show that the representation transfers while
+observed in practice. The simulator experiments exercise the full chain with
+the operator of the technical note and supply four results that qualify how
+the framework should be read: the intrinsic dimension of the nominal cloud
+tracks the number of active nuisance parameters, which is what makes the
+covering argument usable at ambient dimension \(1200\); the certified radius
+cannot flatten inside the degenerate range; the radius does not discriminate
+between regimes that the residual separates almost perfectly; and two
+operators with comparable detection rates and identical calibrated coverage
+differ by a factor of \(240\) in what their accepted regions admit, so
+neither detection nor coverage suffices to choose between them. The field
+experiments show that the representation transfers while
 its numerical scale does not, that local calibration recovers the
 complete-data operating point from at most \(62\) observations, and that
 independently commissioned physical units identify radii differing by a factor

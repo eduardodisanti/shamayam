@@ -180,6 +180,7 @@ class ConvAEResidualOperator:
         self.min_delta = float(min_delta)
         self._ae = None
         self._enc = None
+        self._dec = None
         self._sig_len = None
         self.history_ = None
 
@@ -190,6 +191,7 @@ class ConvAEResidualOperator:
         _, keras = configure(self.seed)
         self._sig_len = X.shape[1]
         self._ae, self._enc = build_autoencoder(self._sig_len, self.latent_dim)
+        self._dec = None
         self._ae.compile(optimizer=keras.optimizers.Adam(self.learning_rate),
                          loss="mse")
 
@@ -265,12 +267,23 @@ class ConvAEResidualOperator:
         return self._enc.predict(X[..., None], verbose=0)
 
     def decode(self, Z):
-        """Decode latent codes; used by the distance-proxy probe."""
+        """
+        Decode latent codes; used by the distance-proxy probe.
+
+        The decoder half is built once and cached. Rebuilding it per call
+        creates a fresh `tf.function` each time and triggers the retracing
+        warning TensorFlow emits after a handful of distinct traces, which is
+        wasteful rather than incorrect but noisy enough to obscure real
+        problems in the log.
+        """
         if self._ae is None:
             raise RuntimeError("operator not fitted")
-        from tensorflow.keras import Model
-        dec = Model(self._ae.get_layer("latent").output, self._ae.output)
-        return dec.predict(np.asarray(Z, dtype=np.float32), verbose=0)[..., 0]
+        if self._dec is None:
+            from tensorflow.keras import Model
+            self._dec = Model(self._ae.get_layer("latent").output,
+                              self._ae.output)
+        return self._dec.predict(np.asarray(Z, dtype=np.float32),
+                                 verbose=0)[..., 0]
 
     @property
     def n_parameters(self):

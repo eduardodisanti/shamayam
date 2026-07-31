@@ -25,11 +25,54 @@ pip install tensorflow                   # A2, optional
 python3 -m pytest tests -q -m "not slow"
 
 # 2. regenerate every reported number  (A2 trains; expect minutes)
-python3 run_all.py                       # -> results/layer_a_results.txt
+python3 run_all.py                       # -> results/{layer_a_results.txt,
+                                         #             data.json, manifest.json}
 
-# 3. the training-dependent tests, run deliberately
+# 3. regenerate the paper's tables, figures and inline numbers FROM that run
+python3 make_tables.py                   # -> ../tables/*.tex
+python3 make_figures.py                  # -> ../figures/*.pdf
+python3 make_macros.py                   # -> ../tables/values.tex
+
+# 4. the training-dependent tests, run deliberately
 python3 -m pytest tests -q -m slow
 ```
+
+### Nothing is transcribed by hand
+
+`run_all.py` writes `results/data.json`, a structured record of every reported
+quantity. Both the LaTeX tables and the figures are generated from that one
+file and from nothing else, and the paper `\input`s the tables and includes
+the figures. A regenerated run therefore propagates into the document without
+anyone copying a number, which is the step at which a results section silently
+goes stale.
+
+Four consequences worth knowing:
+
+* Each generated table carries a provenance header naming the run and seed it
+  came from, and says so in the source if that run was `--quick`. A table that
+  was not regenerated is visible as such.
+* If `data.json` lacks a section — running `--layer a1` produces no A2 data —
+  the generators emit a **visible placeholder** rather than failing or, worse,
+  leaving a stale artefact in place. The document still compiles and the gap
+  is obvious in the PDF.
+* A partial run does **not** discard the sections it did not produce. Running
+  `--layer a1` over a complete `data.json` carries the A2 sections forward and
+  records them under `_carried_over` with the run they came from, so a mixed
+  artefact announces itself instead of masquerading as one run.
+* The numbers quoted **inline in the prose** are generated too, by
+  `make_macros.py` into `tables/values.tex`, which the paper `\input`s in its
+  preamble. The prose says `\satBiasHi`, not `6.43`. This was the last place a
+  value could go stale unnoticed, and it did: a sentence in the saturation
+  discussion outlived the operator whose detection rates it quoted. An
+  undefined macro is a compile error by design — an unavailable number should
+  stop the build rather than leave an old one standing.
+
+Prose that reads well still cannot be generated mechanically, so the sentences
+are written by hand; only the quantities inside them are not.
+
+The CWRU and NASA IMS tables are **not** generated, because they come from
+Layer B rather than from this run. They remain hand-written until that layer is
+re-executed.
 
 Useful variants:
 
@@ -85,15 +128,16 @@ adequacy criterion concrete. Both operators attain the calibrated coverage.
 They differ by more than two orders of magnitude under the distance-proxy
 probe:
 
-| operator | accepts up to | verdict |
-|---|---|---|
-| PCA-16 | **382×** the nominal nearest-neighbour spacing, residual ~1e-30 | **FAIL** |
-| Conv1D AE | **1.2×** that spacing | **PASS** |
+On the reference run: PCA-16 accepts points at **382×** the nominal
+nearest-neighbour spacing with residuals of order `1e-30` and **fails**; the
+Conv1D autoencoder accepts only to **1.6×** and **passes**. The current values
+are in `results/data.json` and in the generated `tables/adequacy.tex`, so this
+paragraph is the only place they are quoted by hand.
 
 The linear residual is exactly distance to a 16-dimensional subspace, so its
 accepted region is a slab around that subspace rather than a tube around the
 four-dimensional nominal manifold. It still detects the simulated faults at
-79–100%, which is the point of keeping it: **good detection on the faults one
+84–100%, which is the point of keeping it: **good detection on the faults one
 happens to have is not evidence that the accepted region is tight.**
 
 ### Determinism

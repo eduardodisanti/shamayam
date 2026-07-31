@@ -173,3 +173,80 @@ def test_projector_is_deterministic_and_validates_input(geometry):
         radial_distances(X, mode="nonsense")
     with pytest.raises(ValueError):
         radial_distances(X, mode="split", reference=None)
+
+
+# ---------------------------------------------------------------------
+# How coverage is MEASURED, not only what it is
+#
+# The two tests below exist because of a real defect, not a hypothetical one.
+# `experiment_saturation` originally evaluated coverage against one fixed
+# block of nominal windows, computed once outside the repetition loop. That
+# measures coverage against the empirical distribution function of a single
+# sample rather than against the distribution, and the resulting offset --
+# order sqrt(p(1-p)/M) -- does not average away over repetitions, because the
+# same block is reused every time. At M=4000 and p=0.98 it is about 0.002,
+# which is the same order as the excess coverage being reported: large enough
+# to put the certified radius visibly below its own target in the published
+# figure, and so to appear to refute the guarantee it was drawn to confirm.
+#
+# Every test in this file passed while that was true, because they all tested
+# the estimator and none tested the measurement.
+# ---------------------------------------------------------------------
+
+def _coverage(rng, D, n, m, reps, fixed_eval):
+    """Mean coverage over `reps` draws, with the evaluation block either held
+    fixed across repetitions or redrawn disjointly on each one."""
+    ev = D[rng.choice(len(D), size=m, replace=False)] if fixed_eval else None
+    out = []
+    for _ in range(reps):
+        idx = rng.choice(len(D), size=n + m, replace=False)
+        r = empirical_radius(D[idx[:n]], p=P, certified=True)
+        block = ev if fixed_eval else D[idx[n:]]
+        out.append(np.mean(block <= r))
+    return float(np.mean(out)), float(np.std(out, ddof=1) / np.sqrt(reps))
+
+
+@pytest.mark.parametrize("n", [99, 300])
+def test_resampled_evaluation_recovers_the_exact_coverage(n):
+    """
+    [prop:coverage] holds as an EQUALITY, and the measurement must be able to
+    see that. Drawing the calibration and evaluation points jointly without
+    replacement from one pool makes any n+1 of them exchangeable, which is the
+    proposition's only hypothesis, so the estimate is unbiased for
+    k_alpha/(n+1) -- exactly, not asymptotically.
+    """
+    from mssp_repro import k_alpha
+    rng = np.random.default_rng(4)
+    D = rng.lognormal(size=8000)
+    got, se = _coverage(rng, D, n, m=300, reps=1500, fixed_eval=False)
+    exact = k_alpha(n, ALPHA) / (n + 1)
+    assert abs(got - exact) < 4.0 * se, (
+        f"n={n}: coverage {got:.5f} differs from the exact {exact:.5f} "
+        f"by {abs(got-exact)/se:.1f} standard errors")
+
+
+def test_a_fixed_evaluation_block_biases_the_measurement():
+    """
+    The failure mode itself, pinned so it cannot return unnoticed. Holding the
+    evaluation block fixed leaves an offset that persists no matter how many
+    repetitions are averaged; resampling removes it. The test asserts the
+    RELATIVE ordering, which is the robust claim -- the sign of the fixed-block
+    offset depends on the particular block drawn, its magnitude does not.
+    """
+    from mssp_repro import k_alpha
+    n, m, reps = 300, 300, 1500
+    exact = k_alpha(n, ALPHA) / (n + 1)
+
+    fixed_err, fresh_err = [], []
+    for seed in range(6):
+        rng = np.random.default_rng(100 + seed)
+        D = rng.lognormal(size=8000)
+        fixed_err.append(abs(_coverage(rng, D, n, m, reps, True)[0] - exact))
+        rng = np.random.default_rng(100 + seed)
+        D = rng.lognormal(size=8000)
+        fresh_err.append(abs(_coverage(rng, D, n, m, reps, False)[0] - exact))
+
+    assert np.mean(fresh_err) < np.mean(fixed_err), (
+        f"resampling the evaluation block did not reduce the departure from "
+        f"the exact coverage: fixed {np.mean(fixed_err):.5f}, "
+        f"fresh {np.mean(fresh_err):.5f}")
