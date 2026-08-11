@@ -122,7 +122,8 @@ class BatchMeanL1:
         return {"l1": self.l1}
 
 
-def assert_operator_learned(reconstruction_mse, input_variance):
+def assert_operator_learned(reconstruction_mse, input_variance,
+                            validation_mse=None, name="operator"):
     """
     Refuse an operator that trained "successfully" without learning anything.
 
@@ -153,11 +154,34 @@ def assert_operator_learned(reconstruction_mse, input_variance):
     published runs, 0.75 and 0.996 for the same code under a later Keras.
     """
     import sys
+    import warnings
 
     var = float(input_variance)
     if not np.isfinite(var) or var <= 0:
         return
     unexplained = float(reconstruction_mse) / var
+
+    # Overfitting is NOT collapse and must not be conflated with it. The CWRU
+    # asset-specific operator fits 847,601 parameters to about 320 training
+    # windows and reaches a training loss of 0.22 against a validation loss of
+    # 0.52: the latent is healthy, all 16 units active, and the model has
+    # certainly learned the data -- rather too well. Passing the validation
+    # loss to a check designed to catch a constant predictor would reject a
+    # working operator for the wrong reason. So the pass/fail test uses the
+    # TRAINING loss, which answers "did it learn anything at all", and the
+    # generalisation gap is reported separately, because it is a real property
+    # of that experiment and worth seeing rather than silencing.
+    if validation_mse is not None and np.isfinite(validation_mse):
+        gap = float(validation_mse) / max(float(reconstruction_mse), 1e-30)
+        if gap > 2.0:
+            warnings.warn(
+                f"{name}: validation loss is {gap:.1f}x the training loss "
+                f"({float(validation_mse):.4g} against "
+                f"{float(reconstruction_mse):.4g}). The operator has learned, "
+                f"but it is memorising: any threshold calibrated on the "
+                f"training data will be optimistic.", RuntimeWarning,
+                stacklevel=2)
+
     if unexplained <= MAX_UNEXPLAINED_VARIANCE:
         return
 

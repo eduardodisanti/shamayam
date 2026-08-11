@@ -154,7 +154,43 @@ def end_to_end(d, m):
     m.add("etoeFAR", e["healthy_far"], "{:.2f}")
 
 
-SECTIONS = [("saturation", saturation), ("end_to_end", end_to_end)]
+
+def nasa(d, m):
+    """
+    The IMS field numbers the prose quotes. These were hand-copied until the
+    trajectory figure, generated from the pipeline, disagreed with the
+    hand-written table by seven hours on one bearing.
+    """
+    import numpy as np
+    from mssp_repro.field.residuals import describe_trajectory, load_cache
+
+    path = Path(__file__).parent / "results" / "field_residuals_ims.npz"
+    if not path.exists():
+        raise KeyError("field_residuals_ims.npz absent")
+    cache = load_cache(path)
+    rows = [describe_trajectory(cache["scores"][i])
+            for i in range(len(cache["meta"]["bearings"]))]
+
+    lead = [r["lead_hours"] for r in rows]
+    taus = [r["tau"] for r in rows]
+    ns = [r["n"] for r in rows]
+    exc = [100 * r["exceedance_post"] for r in rows]
+
+    m.add("nasaBearings", len(rows), "{:d}")
+    m.add("nasaRecordings", rows[0]["n_recordings"], "{:d}")
+    m.add("nasaInactive", rows[0].get("n_trailing_inactive", 0), "{:d}")
+    m.add("nasaLeadLo", min(lead), "{:.1f}")
+    m.add("nasaLeadHi", max(lead), "{:.1f}")
+    m.add("nasaLeadMean", float(np.mean(lead)), "{:.1f}")
+    m.add("nasaNLo", min(ns), "{:d}")
+    m.add("nasaNHi", max(ns), "{:d}")
+    m.add("nasaTauLo", min(taus), "{:.2e}")
+    m.add("nasaTauHi", max(taus), "{:.2e}")
+    m.add("nasaTauSpread", max(taus) / min(taus), "{:.1f}")
+    m.add("nasaExceedanceMean", float(np.mean(exc)), "{:.1f}")
+
+SECTIONS = [("saturation", saturation), ("end_to_end", end_to_end),
+            ("nasa", nasa)]
 
 
 def main():
@@ -168,7 +204,9 @@ def main():
 
     m, missing = Macros(), []
     for key, fn in SECTIONS:
-        if key not in d:
+        # The NASA section reads its own Layer B artefact rather than
+        # data.json, so it decides for itself whether it can run.
+        if key != "nasa" and key not in d:
             missing.append(key)
             continue
         try:

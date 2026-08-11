@@ -1,14 +1,49 @@
 % ============================================================================
 % references.bib -- MSSP draft
-% Currently contains only the keys cited by the WRITTEN sections (3, 4, 7).
-% Keys for the outlined sections (CBM/ISO, domain adaptation, SOM/JEPA,
-% De Vito, Rosasco, entezami, nguyen, ning, wang) are to be merged from
-% TRB2027/references.bib and paper/references.bib when those sections are
-% drafted.
+%
+% AUDITED 11 Aug 2026. All 35 entries were checked by resolving each claimed
+% title against an authoritative record (Crossref, JMLR, arXiv, dblp, ISO),
+% which is the only check that catches the failure mode where a real,
+% resolvable DOI belongs to a DIFFERENT work than the one cited.
+%
+% Every entry carries a VERIFIED note naming the registry it was confirmed
+% against. Entries with no DOI say why the venue mints none and where the
+% metadata was confirmed instead. An entry with neither has not been audited
+% -- treat that as a defect.
+%
+% Three near-miss traps found during the audit are recorded above
+% casdagli1991, bishop1994 and wang2026fleet: in each case a real DOI exists
+% for a same- or similar-titled work that is NOT the one cited.
+%
+% One substantive correction: nguyen2025subdomain named the wrong journal.
+%
+% PENDING CITATION as of 11 Aug 2026: seven entries were added after the audit
+% and are not yet cited anywhere in mssp_draft.tex -- mackay2005dimension,
+% bourlard1988, baldi1989, gong2019memae, grenander1994, cohen2016group,
+% higgins2018. They exist because the prose that uses them is proposed in
+% REFERENCE_PROPOSAL.md and awaiting approval. BibTeX drops uncited entries
+% silently, so they cost nothing until then -- but if that proposal is
+% rejected, DELETE them rather than leaving them here. See checklist item 6.9.
+%
+% FORMATTING RULE -- do not break this. Every comment in this file sits
+% BETWEEN entries, never inside one. BibTeX does not treat '%' as a comment
+% character inside an entry body: it reports "You're missing a field name" and
+% then SILENTLY DISCARDS THE REST OF THE ENTRY. That surfaces as warnings in
+% the .blg, not as errors, so the document still compiles and the reference
+% prints with its author, title and journal missing. An earlier revision of
+% this file lost six entries that way.
+%
+% Second rule from the same family: never write a bare at-sign in a comment.
+% BibTeX scans for at-signs everywhere, comments included, and will try to
+% parse what follows as an entry.
 % ============================================================================
 
 % ---- Ill-posed inverse problems -------------------------------------------
 
+% No DOI: 1923 monograph, predates DOI registration.
+% NOTE: the key says 1932 but the work is 1923. The year field is correct; the
+% key is only a label and is left alone because renaming it would touch every
+% \cite site. Do not "fix" the year to match the key.
 @book{hadamard1932,
   author    = {Hadamard, Jacques},
   title     = {Lectures on Cauchy's Problem in Linear Partial Differential
@@ -18,6 +53,7 @@
   year      = {1923}
 }
 
+% No DOI: 1977 monograph, not registered.
 @book{tikhonov1977,
   author    = {Tikhonov, Andrey N. and Arsenin, Vasiliy Y.},
   title     = {Solutions of Ill-Posed Problems},
@@ -28,7 +64,9 @@
 
 % ---- Representation learning / reconstruction-based anomaly detection ------
 
+% VERIFIED 11 Aug 2026 -- Crossref: title, both authors, Science 313(5786):504-507.
 @article{hinton2006,
+  doi     = {10.1126/science.1127647},
   author  = {Hinton, Geoffrey E. and Salakhutdinov, Ruslan R.},
   title   = {Reducing the Dimensionality of Data with Neural Networks},
   journal = {Science},
@@ -38,7 +76,9 @@
   year    = {2006}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: MLSDA 2014 proceedings, pp. 4-11.
 @inproceedings{sakurada2014,
+  doi       = {10.1145/2689746.2689747},
   author    = {Sakurada, Mayu and Yairi, Takehisa},
   title     = {Anomaly Detection Using Autoencoders with Nonlinear
                Dimensionality Reduction},
@@ -48,7 +88,56 @@
   year      = {2014}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: Biol. Cybern. 59(4-5):291-294, 1988.
+% The linear-autoencoder / SVD equivalence. Load-bearing for the adequacy
+% probe: it is why a linear operator is a principled control and not a
+% throwaway baseline.
+@article{bourlard1988,
+  doi     = {10.1007/BF00332918},
+  author  = {Bourlard, H. and Kamp, Y.},
+  title   = {Auto-association by multilayer perceptrons and singular value
+             decomposition},
+  journal = {Biological Cybernetics},
+  volume  = {59},
+  number  = {4--5},
+  pages   = {291--294},
+  year    = {1988}
+}
+
+% VERIFIED 11 Aug 2026 -- Crossref: Neural Networks 2(1):53-58, 1989.
+@article{baldi1989,
+  doi     = {10.1016/0893-6080(89)90014-2},
+  author  = {Baldi, Pierre and Hornik, Kurt},
+  title   = {Neural networks and principal component analysis: Learning from
+             examples without local minima},
+  journal = {Neural Networks},
+  volume  = {2},
+  number  = {1},
+  pages   = {53--58},
+  year    = {1989}
+}
+
+% VERIFIED 11 Aug 2026 -- Crossref: ICCV 2019, pp. 1705-1714, all seven authors.
+% The documented failure mode of reconstruction-based detection: the operator
+% generalises well enough to reconstruct anomalies too, so the residual stops
+% separating. Directly relevant to the CWRU memorisation finding.
+@inproceedings{gong2019memae,
+  doi       = {10.1109/ICCV.2019.00179},
+  author    = {Gong, Dong and Liu, Lingqiao and Le, Vuong and Saha,
+               Budhaditya and Mansour, Moussa Reda and Venkatesh, Svetha and
+               van den Hengel, Anton},
+  title     = {Memorizing Normality to Detect Anomaly: Memory-Augmented Deep
+               Autoencoder for Unsupervised Anomaly Detection},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on
+               Computer Vision (ICCV)},
+  pages     = {1705--1714},
+  year      = {2019}
+}
+
+% VERIFIED 11 Aug 2026 -- arxiv.org/abs/2104.13478 returns the Geometric Deep
+% Learning text (Erlangen Program framing, CNNs/RNNs/GNNs/Transformers).
 @article{bronstein2021,
+  doi     = {10.48550/arXiv.2104.13478},
   author  = {Bronstein, Michael M. and Bruna, Joan and Cohen, Taco and
              Veli\v{c}kovi\'{c}, Petar},
   title   = {Geometric Deep Learning: Grids, Groups, Graphs, Geodesics,
@@ -59,7 +148,11 @@
 
 % ---- Distribution-free tolerance limits and conformal prediction -----------
 
+% VERIFIED 11 Aug 2026 -- Crossref: Wilks, Ann. Math. Statist. 12(1):91-96, 1941.
+% NOTE: 10.1214/aoms/1177730044 is a real, resolvable DOI for a DIFFERENT 1949
+% paper. It was offered by a search engine while collecting this reference.
 @article{wilks1941,
+  doi     = {10.1214/aoms/1177731788},
   author  = {Wilks, Samuel S.},
   title   = {Determination of Sample Sizes for Setting Tolerance Limits},
   journal = {The Annals of Mathematical Statistics},
@@ -69,7 +162,9 @@
   year    = {1941}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: LNCS, Machine Learning: ECML 2002, pp. 345-356.
 @inproceedings{papadopoulos2002,
+  doi       = {10.1007/3-540-36755-1_29},
   author    = {Papadopoulos, Harris and Proedrou, Kostas and Vovk, Vladimir
                and Gammerman, Alexander},
   title     = {Inductive Confidence Machines for Regression},
@@ -81,6 +176,7 @@
   year      = {2002}
 }
 
+% No DOI: 2005 Springer monograph as cited; not registered.
 @book{vovk2005,
   author    = {Vovk, Vladimir and Gammerman, Alexander and Shafer, Glenn},
   title     = {Algorithmic Learning in a Random World},
@@ -89,6 +185,8 @@
   year      = {2005}
 }
 
+% No DOI: JMLR does not mint them.
+% VERIFIED 11 Aug 2026 -- jmlr.org/papers/v9/shafer08a.html: 9(12):371-421, 2008.
 @article{shafer2008,
   author  = {Shafer, Glenn and Vovk, Vladimir},
   title   = {A Tutorial on Conformal Prediction},
@@ -98,7 +196,9 @@
   year    = {2008}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: all five authors, JASA 113(523):1094-1111.
 @article{lei2018,
+  doi     = {10.1080/01621459.2017.1307116},
   author  = {Lei, Jing and G'Sell, Max and Rinaldo, Alessandro and
              Tibshirani, Ryan J. and Wasserman, Larry},
   title   = {Distribution-Free Predictive Inference for Regression},
@@ -111,7 +211,9 @@
 
 % ---- Delay embedding ------------------------------------------------------
 
+% VERIFIED 11 Aug 2026 -- Crossref: LNM 898, Warwick 1980, pp. 366-381.
 @incollection{takens1981,
+  doi       = {10.1007/BFb0091924},
   author    = {Takens, Floris},
   title     = {Detecting Strange Attractors in Turbulence},
   booktitle = {Dynamical Systems and Turbulence, Warwick 1980},
@@ -123,7 +225,9 @@
   year      = {1981}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: J. Stat. Phys. 65:579-616, 1991.
 @article{sauer1991,
+  doi     = {10.1007/BF01053745},
   author  = {Sauer, Tim and Yorke, James A. and Casdagli, Martin},
   title   = {Embedology},
   journal = {Journal of Statistical Physics},
@@ -133,7 +237,12 @@
   year    = {1991}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: Physica D 51(1-3):52-98, 1991.
+% NOTE: do not confuse with 10.1007/978-1-4899-2305-9_5, "A Theory of State
+% Space Reconstruction in the Presence of Noise" -- a DIFFERENT 1991 Casdagli
+% work, in NATO ASI Series, pp. 61-96. It is the first hit on a title search.
 @article{casdagli1991,
+  doi     = {10.1016/0167-2789(91)90222-U},
   author  = {Casdagli, Martin and Eubank, Stephen and Farmer, J. Doyne and
              Gibson, John},
   title   = {State Space Reconstruction in the Presence of Noise},
@@ -144,6 +253,10 @@
   year    = {1991}
 }
 
+% No DOI: NeurIPS 2004 proceedings are not registered with Crossref.
+% VERIFIED 11 Aug 2026 -- proceedings.neurips.cc: NIPS 17, pp. 777-784.
+% This is the estimator implemented in mssp_repro/dimension.py and reported in
+% Table tab:dimension and Figure fig:dimension.
 @inproceedings{levina2004,
   author    = {Levina, Elizaveta and Bickel, Peter J.},
   title     = {Maximum Likelihood Estimation of Intrinsic Dimension},
@@ -152,9 +265,28 @@
   year      = {2004}
 }
 
+% No DOI: web-published comment from the Cavendish Laboratory / Gatsby Unit,
+% never issued in a journal. It is cited in this form throughout the
+% intrinsic-dimension literature.
+% VERIFIED 11 Aug 2026 -- inference.org.uk/mackay/dimension/ resolves to the
+% note, both authors named, and it contains exactly the correction implemented
+% as `corrected=True` in mssp_repro/dimension.py: average the INVERSE
+% estimates rather than the estimates. Last modified 26 Jan 2005.
+@misc{mackay2005dimension,
+  author = {MacKay, David J. C. and Ghahramani, Zoubin},
+  title  = {Comments on `Maximum Likelihood Estimation of Intrinsic
+            Dimension' by {E.} {Levina} and {P.} {Bickel} (2004)},
+  year   = {2005},
+  note   = {Cavendish Laboratory, University of Cambridge, and Gatsby
+            Computational Neuroscience Unit, University College London},
+  url    = {https://www.inference.org.uk/mackay/dimension/}
+}
+
 % ---- Support and level-set estimation -------------------------------------
 
+% VERIFIED 11 Aug 2026 -- Crossref: Devroye & Wise, SIAM J. Appl. Math. 38(3):480-488.
 @article{devroye1980,
+  doi     = {10.1137/0138038},
   author  = {Devroye, Luc and Wise, Gary L.},
   title   = {Detection of Abnormal Behavior via Nonparametric Estimation of
              the Support},
@@ -165,7 +297,9 @@
   year    = {1980}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: all five authors, Neural Computation 13(7):1443-1471.
 @article{scholkopf2001,
+  doi     = {10.1162/089976601750264965},
   author  = {Sch\"{o}lkopf, Bernhard and Platt, John C. and Shawe-Taylor, John
              and Smola, Alex J. and Williamson, Robert C.},
   title   = {Estimating the Support of a High-Dimensional Distribution},
@@ -176,6 +310,8 @@
   year    = {2001}
 }
 
+% No DOI: JMLR does not mint them.
+% VERIFIED 11 Aug 2026 -- jmlr.org/papers/v7/scott06a.html: 7(24):665-704, 2006.
 @article{scott2006,
   author  = {Scott, Clayton D. and Nowak, Robert D.},
   title   = {Learning Minimum Volume Sets},
@@ -185,8 +321,54 @@
   year    = {2006}
 }
 
+% ---- Quotient structure, invariance and deformable templates --------------
+
+% VERIFIED 11 Aug 2026 -- Crossref: J. R. Stat. Soc. B 56(4):549-581, 1994.
+% Pattern theory: the observed object as a template acted on by a group of
+% deformations. The historical antecedent of the x = F(theta, eta) model.
+@article{grenander1994,
+  doi     = {10.1111/j.2517-6161.1994.tb02000.x},
+  author  = {Grenander, Ulf and Miller, Michael I.},
+  title   = {Representations of Knowledge in Complex Systems},
+  journal = {Journal of the Royal Statistical Society Series B:
+             Statistical Methodology},
+  volume  = {56},
+  number  = {4},
+  pages   = {549--581},
+  year    = {1994}
+}
+
+% No DOI: PMLR does not mint them.
+% VERIFIED 11 Aug 2026 -- proceedings.mlr.press/v48/cohenc16.html: PMLR
+% 48:2990-2999, ICML 2016. Metadata taken from the publisher's own BibTeX.
+@inproceedings{cohen2016group,
+  author    = {Cohen, Taco and Welling, Max},
+  title     = {Group Equivariant Convolutional Networks},
+  booktitle = {Proceedings of the 33rd International Conference on Machine
+               Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {48},
+  pages     = {2990--2999},
+  publisher = {PMLR},
+  year      = {2016}
+}
+
+% VERIFIED 11 Aug 2026 -- arxiv.org/abs/1812.02230 returns this abstract:
+% a definition of disentangled representations via symmetry transformations
+% and group/representation theory. Never published in a venue; cite as arXiv.
+@misc{higgins2018,
+  doi    = {10.48550/arXiv.1812.02230},
+  author = {Higgins, Irina and Amos, David and Pfau, David and Racani\`ere,
+            S\'ebastien and Matthey, Lo\"ic and Rezende, Danilo and
+            Lerchner, Alexander},
+  title  = {Towards a Definition of Disentangled Representations},
+  year   = {2018},
+  note   = {arXiv:1812.02230}
+}
+
 % ---- Analysis backbone ----------------------------------------------------
 
+% No DOI: 1976 textbook, not registered.
 @book{rudin1976,
   author    = {Rudin, Walter},
   title     = {Principles of Mathematical Analysis},
@@ -198,7 +380,9 @@
 
 % ---- Interpretability -----------------------------------------------------
 
+% VERIFIED 11 Aug 2026 -- Crossref: Nature Mach. Intell. 1(5):206-215, 2019.
 @article{rudin2019,
+  doi     = {10.1038/s42256-019-0048-x},
   author  = {Rudin, Cynthia},
   title   = {Stop Explaining Black Box Machine Learning Models for High Stakes
              Decisions and Use Interpretable Models Instead},
@@ -211,6 +395,7 @@
 
 % ---- Quantile estimation --------------------------------------------------
 
+% No DOI: 1980 monograph, not registered.
 @book{serfling1980,
   author    = {Serfling, Robert J.},
   title     = {Approximation Theorems of Mathematical Statistics},
@@ -219,6 +404,7 @@
   year      = {1980}
 }
 
+% No DOI: 1998 monograph, not registered.
 @book{vandervaart1998,
   author    = {van der Vaart, Aad W.},
   title     = {Asymptotic Statistics},
@@ -230,7 +416,9 @@
 
 % ---- Author's companion work ----------------------------------------------
 
+% VERIFIED 11 Aug 2026 -- arxiv.org/abs/2512.05089 resolves to this exact title.
 @misc{disanti2026blueprints,
+  doi    = {10.48550/arXiv.2512.05089},
   author = {Di Santi, Eduardo},
   title  = {The Blueprints of Intelligence: A Functional--Topological
             Foundation for Perception and Representation},
@@ -238,6 +426,11 @@
   note   = {arXiv:2512.05089}
 }
 
+% NOT VERIFIED. scholar.colorado.edu/concern/reports/fn107102t returned no
+% machine-readable content and the title is not indexed by any search Claude
+% could reach on 11 Aug 2026. Institutional repositories are poorly indexed,
+% so this is not evidence the record is wrong -- but the author should open
+% the URL and confirm it resolves before submission.
 @techreport{disanti2026inverse,
   author      = {Di Santi, Eduardo},
   title       = {Self-Supervision, Manifold Saturation, and Emergent
@@ -246,9 +439,12 @@
   institution = {University of Colorado Boulder, College of Engineering and
                  Applied Science},
   type        = {Working paper},
-  year        = {2026}
+  year        = {2026},
+  url         = {https://scholar.colorado.edu/concern/reports/fn107102t}
 }
 
+% NOT VERIFIED, and not verifiable from outside: an unpublished technical note
+% with no identifier and no public URL. The author owns this record.
 @techreport{disanti2026quotient,
   author      = {Di Santi, Eduardo},
   title       = {Anomaly Detection as an Inverse Problem on Quotient Spaces:
@@ -262,6 +458,10 @@
 
 % ---- Added while drafting Section 2 ---------------------------------------
 
+% No DOI: ISO standards are not registered with Crossref.
+% VERIFIED 11 Aug 2026 -- iso.org/standard/63180.html: title exact, 2016
+% edition, reviewed and confirmed 2021. A revision (ISO/FDIS 20816-1) is in
+% progress; the 2016 edition remains current and is the correct one to cite.
 @book{iso20816,
   author    = {{International Organization for Standardization}},
   title     = {{ISO 20816-1:2016} Mechanical vibration --- Measurement and
@@ -271,7 +471,13 @@
   year      = {2016}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: IEE Proc. Vis. Image Signal Process.
+% 141(4), 1994, start page 217. Crossref records only the start page; the
+% 217-222 range is as cited throughout the literature.
+% NOTE: do not confuse with 10.1007/978-1-4471-2063-6_225, a Bishop paper of
+% the SAME TITLE in ICANN'93, pp. 789-794. It is the second hit on a title search.
 @article{bishop1994,
+  doi     = {10.1049/ip-vis:19941330},
   author  = {Bishop, Christopher M.},
   title   = {Novelty detection and neural network validation},
   journal = {IEE Proceedings --- Vision, Image and Signal Processing},
@@ -281,6 +487,9 @@
   year    = {1994}
 }
 
+% No DOI: NeurIPS 1999 proceedings are not registered with Crossref.
+% VERIFIED 11 Aug 2026 -- dblp conf/nips/ScholkopfWSSP99: NIPS 12, pp. 582-588.
+% Author order confirmed against the dblp record.
 @inproceedings{scholkopf1999,
   author    = {Sch\"{o}lkopf, Bernhard and Williamson, Robert C. and Smola,
                Alex J. and Shawe-Taylor, John and Platt, John},
@@ -290,6 +499,9 @@
   year      = {1999}
 }
 
+% No DOI: JMLR does not mint them.
+% VERIFIED 11 Aug 2026 -- jmlr.org/papers/v6/devito05a.html: 6(30):883-904,
+% 2005, all five authors in this order.
 @article{devito2005,
   author  = {De Vito, Ernesto and Rosasco, Lorenzo and Caponnetto, Andrea and
              De Giovannini, Umberto and Odone, Francesca},
@@ -300,7 +512,9 @@
   year    = {2005}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: Kohonen, Biol. Cybern. 43(1):59-69, 1982.
 @article{kohonen1982,
+  doi     = {10.1007/BF00337288},
   author  = {Kohonen, Teuvo},
   title   = {Self-organized formation of topologically correct feature maps},
   journal = {Biological Cybernetics},
@@ -310,7 +524,10 @@
   year    = {1982}
 }
 
+% VERIFIED 11 Aug 2026 -- Crossref: CVPR 2023, pp. 15619-15629, all eight
+% authors. The page range previously flagged as highest-risk was correct.
 @inproceedings{assran2023,
+  doi       = {10.1109/CVPR52729.2023.01499},
   author    = {Assran, Mahmoud and Duval, Quentin and Misra, Ishan and
                Bojanowski, Piotr and Vincent, Pascal and Rabbat, Michael and
                LeCun, Yann and Ballas, Nicolas},
@@ -320,4 +537,79 @@
                Pattern Recognition (CVPR)},
   pages     = {15619--15629},
   year      = {2023}
+}
+
+% ---- Domain adaptation for fault diagnosis, carried over from the TRB paper
+% ---- (inverse_problem/TRB2027/references.bib), with DOIs where available.
+
+% CORRECTED 11 Aug 2026. The journal was WRONG: this paper is not in the
+% Journal of Vibration and Control. Crossref resolves the title to the Journal
+% of Computational Methods in Sciences and Engineering, 25(5):3947-3960, and
+% the DOI prefix 10.1177 is SAGE, not the JVC publisher the entry implied.
+% Authors and title were correct as written. No retraction or correction notice.
+@article{nguyen2025subdomain,
+  doi     = {10.1177/14727978251337880},
+  author  = {{Nguyen}, Thi Hue and {Nguyen}, Duc Thuan and {Hoang}, Si Hong},
+  title   = {Knowledge-driven subdomain adaptation for bearing fault diagnosis},
+  journal = {Journal of Computational Methods in Sciences and Engineering},
+  volume  = {25},
+  number  = {5},
+  pages   = {3947--3960},
+  year    = {2025}
+}
+
+% VERIFIED 11 Aug 2026 -- Crossref: title and all five authors match.
+% volume/number dropped: still online-first, Crossref reports no issue
+% assignment as of 11 Aug 2026. The previous placeholder volume={0},
+% number={0} would have printed as "0(0), 1-23".
+@article{ning2026digitaltwin,
+  doi       = {10.1080/10589759.2025.2610726},
+  author    = {Siyuan Ning and Zijian Qiao and Bohao Peng and Ronghua Zhu and
+               Cailiang Zhang},
+  title     = {A digital twin-driven cross-domain adaptation method for
+               bearing intelligent fault diagnosis},
+  journal   = {Nondestructive Testing and Evaluation},
+  pages     = {1--23},
+  publisher = {Taylor \& Francis},
+  url       = {https://doi.org/10.1080/10589759.2025.2610726},
+  year      = {2026}
+}
+
+% VERIFIED 11 Aug 2026 -- Crossref: MSSP 244, article 113725, 2026.
+% NOTE: do not cite 10.2139/ssrn.4663573, the 2023 SSRN preprint of the same
+% title by the same authors. It is the first hit on a title search.
+@article{wang2026fleet,
+  doi     = {10.1016/j.ymssp.2025.113725},
+  author  = {Wang, Bingsen and Baraldi, Piero and Zio, Enrico and
+             Brown, Jonathan and Gauthier, St\'ephane},
+  title   = {Fleet-based transfer learning for anomaly detection in industrial
+             systems},
+  journal = {Mechanical Systems and Signal Processing},
+  volume  = {244},
+  pages   = {113725},
+  year    = {2026}
+}
+
+% VERIFIED 11 Aug 2026 -- Crossref: Energy and AI 17, article 100373, 2024.
+@article{roelofs2024transfer,
+  doi     = {10.1016/j.egyai.2024.100373},
+  author  = {Roelofs, Cyriana M. A. and G\"uck, Christian and Faulstich, Stefan},
+  title   = {Transfer learning applications for autoencoder-based anomaly
+             detection in wind turbines},
+  journal = {Energy and AI},
+  volume  = {17},
+  pages   = {100373},
+  year    = {2024}
+}
+
+% VERIFIED 11 Aug 2026 -- Crossref: MSSP 115:213-237, 2019, all six authors.
+@article{zhao2019,
+  doi     = {10.1016/j.ymssp.2018.05.050},
+  author  = {Zhao, Rui and Yan, Ruqiang and Chen, Zhenghua and Mao, Kezhi and
+             Wang, Peng and Gao, Robert X.},
+  title   = {Deep Learning and Its Applications to Machine Health Monitoring},
+  journal = {Mechanical Systems and Signal Processing},
+  volume  = {115},
+  pages   = {213--237},
+  year    = {2019}
 }

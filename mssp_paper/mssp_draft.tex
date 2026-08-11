@@ -115,10 +115,25 @@
 Quotient Space of Nuisance-Invariant Functional Manifolds:
 Theory and Validation on Synthetic, CWRU, and NASA IMS Bearing Data}
 
-\author[1]{Eduardo Di Santi}
+\author[1]{Eduardo Di Santi}[orcid=0000-0003-3784-8382]
+\cormark[1]
+\ead{eduardo.disanti@colorado.edu}
+\credit{Conceptualization, Methodology, Formal analysis, Software,
+Investigation, Data curation, Writing -- original draft, Writing -- review and
+editing, Visualization}
 
 \address[1]{Department of Applied Mathematics,
 University of Colorado Boulder, Boulder, CO, USA}
+
+\cortext[1]{Corresponding author.}
+
+\begin{highlights}
+\item Diagnosis is posed as inverse recovery over a nuisance-induced quotient space
+\item The per-asset radius is a distribution-free tolerance limit on the residual
+\item Coverage is exact, and 49 nominal observations certify a boundary at 98\%
+\item Equal coverage does not certify a representation: two operators differ 380-fold
+\item Four run-to-failure bearings warn 14--74 h from radii fixed after ~50 records
+\end{highlights}
 
 \begin{abstract}
 % [TO WRITE LAST, after Sections 1-2 are frozen.] Must state, in MSSP
@@ -132,11 +147,45 @@ University of Colorado Boulder, Boulder, CO, USA}
 % interpolation costs 1.9 pp of coverage; radii spanning a factor of 2.8
 % across independently commissioned bearings; NASA lead times 14.5-74.0 h.
 %
-% The class requires a non-empty abstract, so this placeholder stands in
-% until the abstract is written. It is deliberately conspicuous: an abstract
-% consisting of half a sentence left over from a comment is worse than one
-% that announces itself as missing.
-\textbf{[ABSTRACT NOT YET WRITTEN --- see the drafting note in the source.]}
+% -- WRITTEN. Numbers come from tables/values.tex, so a re-run propagates
+% here as well; see experiments/make_macros.py.
+Condition monitoring sets thresholds on scalar indicators, and those
+thresholds transfer poorly between machines because the same health state
+produces different values under different mounting, load and sensor placement.
+This paper formulates diagnosis instead as inverse recovery over a quotient
+space induced by the nuisance transformations of the observation process, in
+which the object to be recovered is an equivalence class rather than a point.
+Three consequences are established. Under bounded nuisance the nominal orbit
+is relatively compact, so its image under a continuous representation has a
+finite radius and there is a well-defined quantity to estimate rather than a
+threshold to tune. A correct diagnostic decision factors through the quotient,
+which licenses one shared representation in place of a per-asset classifier.
+And that radius is exactly a distribution-free tolerance limit on the nominal
+residual, so its attained coverage is known exactly as \(k_\alpha/(n+1)\)
+rather than bounded: at a target of \(98\%\), \(49\) nominal observations
+suffice to certify a boundary, and a degenerate range above that floor is
+identified in which the certified estimator is the sample maximum and can
+appear to have converged while remaining maximally variable. Validation
+proceeds in three tiers. Exhaustive verification reproduces the exact coverage
+to within \(\satMaxZ\) Monte Carlo standard errors across six deliberately
+dissimilar residual distributions, and isolates the cost of the interpolated
+estimator used in practice at \(1.9\) percentage points of coverage. On a
+bearing simulator, one nominal-only operator detects three fault families at
+\(\etoeDetectLo\)--\(\etoeDetectHi\%\) at a \(\etoeFAR\%\)
+false-alarm rate, and a probe shows that coverage alone cannot certify a
+representation: two operators calibrated identically, at the same attained
+coverage, differ by more than two orders of magnitude in what they accept. On
+CWRU, calibration from roughly fifty sequential observations matches a
+reference fitted and calibrated on each speed's complete healthy record; on
+\(\nasaBearings\) NASA IMS run-to-failure bearings, radii commissioned from
+\(\nasaNLo\)--\(\nasaNHi\) observations and never adapted give persistent
+departure with \(\nasaLeadLo\) to \(\nasaLeadHi\) hours of warning, with
+no fault labels at any stage. Repeating the field pipeline across training
+seeds shows the radius moving by \(4\)--\(7\%\) while the same radius
+normalised by each asset's own residual level moves by under \(1.3\%\), so
+the diagnostic content lies in the geometry of the nominal region relative to
+its own scale rather than in the absolute value of the residual. A
+reproducibility package regenerates every table, figure and quoted number.
 \end{abstract}
 
 \begin{keywords}
@@ -393,6 +442,25 @@ the nominal mass, which is a level-set estimation problem in the sense of
 replaces the explicit region with an operator trained to reproduce nominal
 data, using the residual as the score~\citep{hinton2006,sakurada2014}.
 
+The residual is not a neutral score, and what it measures depends on the
+operator in a way that matters for what follows. In the linear case the
+question is settled: a linear autoencoder trained to minimize reconstruction
+error recovers the principal subspace of the training data
+\citep{bourlard1988,baldi1989}, so its residual is exactly distance to a
+subspace and its accepted region is a slab, unbounded along every retained
+direction. Nonlinear operators are not covered by that result, which is the
+motivation for using them~\citep{hinton2006}; but neither are they exempt from
+the pathology by virtue of being nonlinear. The operator of
+Section~\ref{sec:computational_realization} is a rectified convolutional
+network, hence piecewise affine, and it therefore extrapolates affinely
+outside the region it was trained on --- which is a legitimate reason to
+suspect that it could inherit the same flat residual far from nominal.
+This paper does not settle the question by appeal to nonlinearity. It
+measures it: the probe of Section~\ref{sec:results} evaluates the residual
+against true distance for both operators, and the answer is that they differ
+by four orders of magnitude in residual growth. What the nonlinear operator
+buys is therefore an empirical finding here, not an assumption.
+
 This paper is reconstruction-based, and takes the level-set reading
 seriously rather than as an analogy: the decision rule is membership in an
 estimated region, and Section~\ref{sec:manifolds_saturation} treats the radius
@@ -418,11 +486,34 @@ not regularize the problem, it changes the object recovered, and
 Proposition~\ref{prop:quotient_diagnosis} states the condition under which
 this loses nothing diagnostically.
 
+\paragraph{State-space reconstruction and intrinsic dimension.}
+Treating a fixed-length window as a delay-coordinate vector is the standard
+device of state-space reconstruction. \citet{takens1981} showed that for a
+deterministic system with a compact invariant \emph{manifold} of dimension
+\(d\), a generic delay map into \(\R^{m}\) with \(m\ge 2d+1\) is an embedding;
+\citet{sauer1991} extended the statement to invariant sets that are merely
+compact, giving \(m>2d\) for \(d\) the box-counting dimension. Both require
+determinism, and reconstruction in the presence of measurement noise is a
+separate and weaker theory~\citep{casdagli1991}. What is used here is not a
+reconstruction claim but a dimension claim: the nominal set inherits an
+intrinsic dimension far below the ambient window length, which is what makes a
+covering argument usable at \(n_w=1200\) rather than vacuous. That dimension
+is measured rather than assumed, with the maximum-likelihood estimator
+of~\citet{levina2004}.
+
 \paragraph{Invariance and geometric representation learning.}
 Building known symmetries into a representation rather than learning them from
 data is the organizing idea of geometric deep
 learning~\citep{bronstein2021}, which classifies architectures by the group
-they respect. The nuisance factors of Section~\ref{sec:observation_model} form
+they respect. The mechanism is made concrete by group-equivariant
+architectures, in which the weight sharing of a convolution is generalized to
+an arbitrary symmetry group~\citep{cohen2016group}, and the objective is made
+precise by the group-theoretic definition of a disentangled
+representation~\citep{higgins2018}, which asks that a symmetry acting on the
+world act on the representation as a direct-sum decomposition. Both take the
+group as given and shape the representation around it, which is also what is
+done here when the operator is chosen to be convolutional.
+The nuisance factors of Section~\ref{sec:observation_model} form
 such a group, and the choice of a convolutional operator in
 Section~\ref{sec:computational_realization} is made on that basis:
 translation equivariance matches the acquisition-phase nuisance. Where this
@@ -432,17 +523,23 @@ calibrated operator's accepted region actually respects the geometry, and
 finds a linear operator that attains the target coverage while accepting
 points at hundreds of times the nominal spacing. Equivariance by construction
 constrains the representation; it does not by itself certify the decision
-region built on top of it.
+region built on top of it. The distinction sharpens once invariance is stated
+as a property of the representation, as in \citet{higgins2018}: a
+representation may satisfy such a condition exactly and still induce an
+accepted region of the wrong shape, because the condition governs how the
+representation transforms and not how far the residual extends.
 
 \paragraph{Domain adaptation for fault diagnosis.}
 A large recent literature transfers fault classifiers across operating
 conditions or machines by aligning feature distributions between a labelled
-source domain and an unlabelled target.
-% [PENDING] Cite here the three domain-adaptation references carried over from
-% the TRB paper (Nguyen 2025, Ning 2026, Wang 2026). Their entries are in the
-% TRB bibliography and have NOT been copied into references.bib, because I
-% could not verify their details from this source; copy the entries across
-% and add the \citep here rather than paraphrasing them.
+source domain and an unlabelled target: subdomain adaptation driven by
+physical knowledge of the defect frequencies~\citep{nguyen2025subdomain},
+cross-domain adaptation seeded by a digital twin~\citep{ning2026digitaltwin},
+and fleet-level transfer in which the source is other units of the same
+type~\citep{wang2026fleet}. The same move appears outside bearings, for
+instance across wind-turbine fleets~\citep{roelofs2024transfer}, and the
+broader use of learned representations in machine health monitoring is
+surveyed by~\citet{zhao2019}.
 The distinction from the present work is worth making precisely, because both
 are per-asset procedures and they are not the same per-asset procedure. Domain
 adaptation adapts the \emph{representation} to each asset, and therefore needs
@@ -532,6 +629,15 @@ The observation process is written as
     \label{eq:forward_model}
 \end{equation}
 
+Decomposing an observation into a latent object and a group of
+transformations acting on it is the organizing idea of pattern
+theory~\citep{grenander1994}, where an observed pattern is a template acted on
+by a deformation group and inference proceeds modulo that group. Two things
+specialize it here. The group is a pure nuisance group with no diagnostic
+content, so the object recovered is an equivalence class rather than a
+deformed template; and the quotient is taken explicitly in
+Section~\ref{sec:quotient_formulation} rather than marginalized over.
+
 \begin{remark}[The observation window is a delay-coordinate vector]
 \label{rem:delay_embedding}
 The choice of a fixed-length window as the observation object is not a
@@ -544,9 +650,15 @@ x = \bigl(s(t_0),\,s(t_0+\Delta),\,\ldots,\,s(t_0+(n_w-1)\Delta)\bigr),
 \end{equation}
 is exactly a delay-coordinate vector with lag \(\Delta\) and embedding
 dimension \(m=n_w\). If the underlying mechanical process is deterministic
-with a compact invariant set of box-counting dimension \(d\), then by the
-embedding theorems of \citet{takens1981} and \citet{sauer1991} the map
-\eqref{eq:delay_vector} is generically an embedding whenever \(m>2d\), so
+with a compact invariant set, then \eqref{eq:delay_vector} is generically an
+embedding once \(m\) is large enough, and the precise condition depends on
+what is assumed about that set. \citet{takens1981} requires it to be a
+compact \emph{manifold} of dimension \(d\) and gives \(m\ge 2d+1\);
+\citet{sauer1991} weakens the hypothesis to a compact invariant set of
+box-counting dimension \(d\) and gives \(m>2d\). The second is the form that
+applies here, since nothing in the present setting guarantees that the nominal
+set is a manifold --- and Remark~\ref{rem:manifold_terminology} is explicit
+that no such structure is claimed. Under either statement
 \(\X\) contains a diffeomorphic copy of that set and its topological
 invariants are preserved. For the bearing instantiation of
 Section~\ref{subsec:design_simulator}, \(m=1200\) exceeds \(2d\) by a very
@@ -1820,7 +1932,8 @@ dimension measured in Section~\ref{sec:results} on the same simulator is close
 to four. The nominal set is therefore coverable, and the gap in
 \eqref{eq:fill_bound} closes at a rate governed by four rather than by twelve
 hundred. What the delay embedding contributes is precisely the reason to
-expect \(d\ll n_w\), and Experiment~7 measures \(d\) rather than assuming it.
+expect \(d\ll n_w\), and Experiment~7 measures \(d\) with the
+maximum-likelihood estimator of \citet{levina2004} rather than assuming it.
 
 Two conditions are worth naming. The Lipschitz constant \(L\) is not known in
 practice, so \eqref{eq:fill_bound} gives a rate rather than a usable numerical
@@ -2837,10 +2950,17 @@ non-trivially contributes one direction to the nominal set.
 
 \input{tables/dimension}
 
+The estimator is the maximum-likelihood construction of \citet{levina2004},
+evaluated at several neighbourhood sizes \(k\) and combined by averaging the
+inverse estimates rather than the estimates themselves, which is the
+correction of \citet{mackay2005dimension} and removes the strong bias the
+original averaging exhibits at small \(k\).
+
 Each additional parameter raises the estimate by close to one, and the
 single-parameter case is recovered exactly. The residual gap grows with the
-dimension, which is the known negative bias of the estimator rather than an
-unexplained discrepancy; a mistaken reading would fail to track the count at
+dimension, which is the downward bias documented for this estimator on
+manifolds of increasing dimension rather than an unexplained discrepancy; a
+mistaken reading would fail to track the count at
 all. Figure~\ref{fig:dimension} shows the tracking directly.
 
 Additive noise thickens the cloud without adding dimension, and the estimator
@@ -3136,6 +3256,45 @@ comparable one after \(49\), \(62\), \(58\) and \(49\) observations, a mean of
 \(54.5\pm 6.6\). Table~\ref{tab:cwru_agreement} compares the converged radii
 with the oracle values.
 
+\paragraph{How generous the oracle is, and why that strengthens the comparison.}
+The oracle is an upper bound in the strong sense: it fits its representation
+on an asset's complete healthy record and then calibrates its threshold on
+that same record, with nothing held out. It is not a deployable procedure and
+is not offered as one. What is worth quantifying is how much that costs in
+optimism, because the online arm is being asked to match it.
+
+Refitting the four asset-specific operators shows that they do not merely use
+all the data, they memorise it: the validation loss exceeds the training loss
+by factors of \(2.4\), \(3.9\), \(3.2\) and \(1.5\) across the four speeds,
+for \(847{,}601\) parameters fitted to roughly \(320\) training windows. A
+threshold calibrated on those same windows therefore sits at the \(98\)th
+percentile of residuals the operator has partly reconstructed from memory,
+and the resulting \(2.23\%\) false-alarm rate is optimistic by construction.
+
+The online arm has no such advantage. It calibrates on a chronological prefix
+and is evaluated on what follows, so its false-alarm rate is measured on
+observations the radius never saw. Read against that, the comparison in
+Table~\ref{tab:cwru_transfer} is stronger than parity: the online procedure
+matches the oracle's detection at every speed, exceeds it on ball faults at
+\(1797\,\mathrm{RPM}\) (\(98.52\%\) against \(98.03\%\)), and attains a LOWER
+false-alarm rate at two of the four speeds (\(1.98\%\) against \(2.23\%\), and
+\(1.24\%\) against \(2.23\%\)) --- while using fifty-odd observations against
+four hundred, and while the reference it is being measured against is the one
+allowed to see the answers.
+
+Two details of that table are also explained by sample size rather than by
+anything about the assets. The healthy record at \(1797\,\mathrm{RPM}\) is
+half the length of the other three, \(203\) windows against about \(404\),
+which makes its \(98\)th percentile the fourth-largest order statistic rather
+than the eighth and fixes its attained false-alarm rate at \(2.46\%\) rather
+than \(2.23\%\). Truncating the other three speeds to \(203\) windows
+reproduces \(2.46\%\) at all four, so the difference is arithmetic of the
+estimator and not a property of that operating condition. Its threshold is
+also the lowest of the four, which is a separate and benign fact: the healthy
+record at that speed is the most homogeneous of the four --- the only one whose
+operator does not memorise, at a validation-to-training ratio of \(1.5\) ---
+so a tighter radius is the correct outcome rather than an anomalous one.
+
 \begin{table}[!ht]
 \centering
 \caption{Agreement between the converged online radius and the complete-data
@@ -3213,34 +3372,36 @@ requires \(49\)--\(62\) nominal observations and no field training.
 \label{subsec:results_nasa}
 %---------------------------------------------------------------------
 
-Table~\ref{tab:nasa} reports the four run-to-failure bearings.
+Table~\ref{tab:nasa} reports the four run-to-failure bearings, and
+Figure~\ref{fig:nasa} shows the trajectories they were read from.
 
-\begin{table}[!ht]
+\input{tables/nasa}
+
+\begin{figure}[htbp]
 \centering
-\caption{NASA IMS deployment under one shared simulator-trained
-representation with local radius estimation. Relative error is against the
-complete-data reference for that bearing; lead time is measured to the
-documented end of the experiment.}
-\label{tab:nasa}
-\setlength{\tabcolsep}{5pt}
-\begin{tabular}{lrrrrr}
-\toprule
-Bearing & windows & \(\tau_k\) & rel.\ error (\%) & post-dep.\ exceedance (\%) & lead time (h) \\
-\midrule
-1 & 49 & 0.010680 & 0.10 & 99.12 & 74.00 \\
-2 & 57 & 0.014950 & 0.35 & 86.42 & 38.83 \\
-3 & 49 & 0.018930 & 2.87 & 95.88 & 14.50 \\
-4 & 49 & 0.006672 & 0.18 & 97.02 & 54.33 \\
-\midrule
-mean & 51 & -- & 0.87 & 94.61 & 45.42 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\includegraphics[width=\linewidth]{figures/nasa_trajectories}
+\caption{NASA IMS run-to-failure trajectories under one shared
+simulator-trained representation. Each panel is one bearing's recording-level
+residual over the complete \(164\)-hour record. The shaded prefix is the
+early-life segment from which that bearing commissions its own radius; the
+dotted rule is where the convergence criterion stopped it, near fifty
+recordings out of nine hundred and eighty-four. The horizontal line is the
+radius, frozen at that point and never adapted. The vertical rule is the first
+persistent departure under the eight-of-ten rule, and the shaded interval to
+its right is the lead time. The final two recordings of the archive were taken
+with the rig stopped --- signal standard deviation near \(0.001\) against
+\(0.13\)--\(0.48\) while running --- and are excluded rather than plotted,
+since on a logarithmic axis they produce a cliff that reads as a measurement
+artefact. Generated by \texttt{experiments/make\_figures.py} from the
+committed residual cache, so it regenerates without the archive.}
+\label{fig:nasa}
+\end{figure}
 
-Calibration converged for all four bearings after \(49\)--\(57\) recordings.
-The converged radii span \(6.67\times10^{-3}\) to \(1.89\times10^{-2}\), a
-factor of \(2.8\), under an identical representation, an identical target
-coverage and an identical stopping rule. This is the same phenomenon as the
+Calibration converged for all \(\nasaBearings\) bearings after
+\(\nasaNLo\)--\(\nasaNHi\) recordings. The converged radii span
+\(\nasaTauLo\) to \(\nasaTauHi\), a factor of \(\nasaTauSpread\), under
+an identical representation, an identical target coverage and an identical
+stopping rule. This is the same phenomenon as the
 simulated assets of
 Section~\ref{subsec:results_simulator} and as the CWRU threshold spread of
 Table~\ref{tab:cwru_oracle}, now on physically distinct units: the
@@ -3248,14 +3409,79 @@ transferable object is the representation, and the radius is individual.
 Corollary~\ref{cor:equivalence_class_diagnosis} is the structural statement
 behind it, applied per physical unit rather than per operating condition.
 
-All four bearings subsequently departed persistently from their frozen
-neighbourhood, with a mean post-departure exceedance of \(94.61\%\) and lead
-times of \(14.5\) to \(74.0\) hours, a mean of \(45.4\). Repeating the
+All \(\nasaBearings\) bearings subsequently departed persistently from their
+frozen neighbourhood, with a mean post-departure exceedance of
+\(\nasaExceedanceMean\%\) and lead times of \(\nasaLeadLo\) to
+\(\nasaLeadHi\) hours, a mean of \(\nasaLeadMean\). Two of the four never
+re-enter their neighbourhood once they have left it, at \(100\%\)
+post-departure exceedance. Repeating the
 commissioning with five permuted early-life samples per bearing gave \(20\)
 convergent runs out of \(20\), radii within \(0.83\%\) of their references on
 average, and a healthy false-alarm rate of \(4.98\%\); bearing~3, which shows
 the largest deviation in Table~\ref{tab:nasa}, is also the most sensitive to
 commissioning-sample variability, at \(1.58\pm1.88\%\).
+
+\paragraph{What the radius depends on, and what it does not.}
+The radii of Table~\ref{tab:nasa} are one realisation, and the operator that
+produces them is a trained network whose weights depend on an arbitrary seed.
+Whether that matters is an empirical question with three candidate answers,
+and it is worth separating them rather than assuming the least interesting.
+Repeating the whole field pipeline under the five seeds
+\(\{7,21,42,84,126\}\) --- retraining the shared operator, rescoring all
+\(984\) recordings of all four bearings, recommissioning each --- gives the
+following.
+
+\input{tables/stability}
+
+Three things follow.
+
+First, the radius does move with the seed, by \(4.4\) to \(6.6\%\). Reporting
+it to six significant figures, as Table~\ref{tab:nasa} does for a single run,
+overstates what is determined.
+
+Second, almost none of that comes from the estimator. Holding the operator
+fixed and resampling the commissioning window gives \(0.5\) to \(1.2\%\), so
+the order-statistic estimator contributes between an eighth and a third of the
+observed spread. This is worth stating positively: at the commissioning
+lengths actually selected, near \(n=49\), the estimator is stable, which is
+the empirical counterpart of clearing the degenerate range of
+Corollary~\ref{cor:degenerate_range}. Nor is the spread an artefact of the
+sparsity penalty on the latent layer: all \(16\) latent units remain active
+under every seed, and the concentration of the code correlates with the radius
+at \(+0.13\).
+
+Third, and this is the substantive result, the variation is one of SCALE
+rather than of geometry. Normalising each radius by the median early-life
+residual of the same bearing under the same seed reduces the spread to
+\(0.7\)--\(1.2\%\), a factor of four to nine. A seed fixes an overall gauge
+for the operator: nominal and degraded residuals move together, the radius
+moves with them, and the membership decision does not move at all. The
+consequence is visible in the invariants. The commissioning length is \(49\)
+in \(17\) of the \(20\) bearing--seed combinations, and on bearing~1 the lead
+time is \(74.2\) to \(74.3\) hours across all five seeds --- a spread of
+\(0.12\%\) on a seventy-four-hour forecast, produced by operators whose radii
+differ by \(5.7\%\).
+
+This is what the quotient formulation predicts and had not previously been
+shown: the diagnostic content is in the geometry of the nominal region
+relative to its own scale, not in the absolute value of the residual. The
+radius is not a physical quantity to be reported to six digits but a
+per-asset, per-operator normalisation, and its stability should be judged
+after that normalisation. Where the invariance is weaker --- bearings~2 and~4,
+whose departure indices range over \(63\) and \(44\) recordings against \(1\)
+and \(3\) for bearings~1 and~3 --- the degradation itself is more gradual,
+rising by a factor of \(1.8\) rather than \(5.6\), so the crossing of any
+threshold is correspondingly less sharply timed. The stability of the
+detection follows the sharpness of the fault, which is the expected ordering.
+
+The final \(\nasaInactive\) recordings of the \(\nasaRecordings\) in the
+archive are excluded from all of the above. They carry a signal whose standard
+deviation is near \(0.001\) on every channel, against \(0.13\)--\(0.48\)
+on the recording preceding them: the rig had been shut down. Including them
+would add twenty minutes to every lead time and dilute the post-departure
+exceedance with observations during which nothing was running. The experiment
+ends when the operator stopped it, not when the bearing failed, and the
+distinction matters for a quantity measured to the end of the record.
 
 The lead times depend on the persistence rule, and the dependence has a
 direction worth stating. They are measured under the eight-of-ten rule
@@ -3590,7 +3816,108 @@ this paper reduced to its operational minimum.
 % the nominal-initialization limitation and should be stated once, not
 % twice; (c) adaptive stopping voids exactness of Prop. 3
 % (Remark~\ref{rem:optional_stopping}).
+% -- WRITTEN
 
+The construction rests on assumptions that are not all of the same kind. Some
+are verified here, some are verifiable in principle and were not verified, and
+some are modelling decisions that could be wrong without any of the reported
+numbers changing. Separating them is more useful than listing them.
+
+\paragraph{Assumptions that are asserted rather than checked.}
+Proposition~\ref{prop:compactness} requires that the nuisance space
+\(\EtaSpace\) be compact and the nominal forward family
+\(F(\theta_{\mathrm{N}},\cdot)\) uniformly bounded and equicontinuous
+(Assumption~\ref{ass:compact_eta}). For the simulator this holds by
+construction, because the nuisance family is the one we wrote down. For the
+CWRU and NASA IMS recordings it is assumed. The physical argument is
+reasonable --- load, speed, mounting and gain vary over bounded ranges, and the
+map from them to a vibration window is continuous --- but it is an argument,
+not a measurement, and no experiment reported here would fail if it were
+false in some corner of the operating envelope. The compactness that the
+theory needs is therefore established for the synthetic tier and inherited by
+assumption for the field tiers.
+
+Assumption~\ref{ass:residual_proxy}, that the reconstruction residual is
+monotone in distance to the nominal manifold, is likewise empirical. The
+distance-proxy probe of Section~\ref{sec:results} tests it directly and finds
+that it can fail badly: a linear operator accepts points at hundreds of times
+the nominal spacing while attaining the same calibrated coverage. That the
+convolutional operator passes the probe is evidence, not proof, and the probe
+examines a particular family of displacements rather than all of them.
+
+\paragraph{Exchangeability, and the assets it excludes.}
+Proposition~\ref{prop:coverage} needs only that the commissioning residuals be
+exchangeable (Assumption~\ref{ass:exchangeability}), which is weaker than
+independence but not free. It fails in exactly the case the method is most
+likely to meet in practice: an asset that is already degrading when it is
+commissioned. The radius then certifies a region that includes early damage,
+and the guarantee holds --- for the wrong region. Section~\ref{sec:results}
+reports a permutation test whose size and power are measured, and it is a
+diagnostic rather than a remedy; a positive result tells the operator not to
+trust the radius, but does not supply a better one. The same gap appears in
+the drift experiment, where a radius commissioned before onset is correct and a
+radius commissioned during onset would not be.
+
+\paragraph{Properties of the procedure as run.}
+Two of the reported configurations do not inherit the exact guarantee. The
+adaptive stopping rule chooses the commissioning length by inspecting the
+sequence of radius estimates, so the sample size is not fixed in advance and
+Proposition~\ref{prop:coverage} applies only approximately;
+Section~\ref{sec:results} isolates the effect and finds it under \(0.2\)
+percentage points with inconsistent sign, which bounds it without removing it.
+The field results additionally use the interpolated quantile rather than the
+certified order statistic, which undercovers by design; that arm is reported
+as the published configuration, not as one carrying the proposition.
+
+\paragraph{What the oracle comparison can and cannot support.}
+The CWRU reference arm memorises its training windows, by factors between
+\(1.5\) and \(3.9\) in validation-to-training loss, and the factor differs by
+speed. Section~\ref{sec:results} argues that this makes the online arm's
+parity a conservative result, which it does. The converse limitation is that
+the reference is not equally generous at each speed, so the comparison
+supports the qualitative claim --- online calibration reaches the complete-data
+arm --- and not a fine measurement of the gap between them.
+
+The failure mode itself is not particular to this arm. A reconstruction
+operator with enough capacity reproduces its training set closely enough that
+the residual stops separating, and the same difficulty is documented in the
+anomaly-detection literature, where it motivates architectural remedies that
+deliberately restrict what the decoder can reproduce~\citep{gong2019memae}. No
+such remedy is used here. The relevance is that memorisation degrades the
+residual as a distance proxy in the same direction as the slab pathology of
+Remark~\ref{rem:level_not_shape}, so the adequacy probe is the right
+instrument for it, and the probe was run on the simulator rather than on this
+arm.
+
+\paragraph{Scope of the validation.}
+Every experiment here concerns rolling-element bearings under approximately
+stationary operation, on two public archives and one simulator. The quotient
+formulation is stated for a general nuisance group and a general forward
+model, and nothing in the mathematics is specific to bearings; but nothing in
+the evidence extends beyond them either. Non-stationary duty cycles, in
+particular, would violate the implicit assumption that the nominal region is a
+single region rather than a union of operating modes, and the framework offers
+no way to discover such a union from nominal data alone.
+
+Finally, the method detects departure from a nominal region and does not
+classify what it departed towards. Section~\ref{sec:emergent_classification}
+establishes per-class coverage once regions are labelled, but separation
+between fault regions is neither guaranteed nor demonstrated, and
+Remark~\ref{rem:coverage_not_discrimination} is explicit that coverage does
+not constrain it.
+
+\paragraph{A reproducibility limitation, learned the hard way.}
+The trained operators are reproducible within one software environment and not
+across environments. That is expected. What is worth recording is a sharper
+version: during this work, a change in how a deep-learning library reduces an
+activity-regularisation term over a batch was found to silently collapse the
+latent code, leaving a monotone loss curve, a normal-looking training run and
+residuals, radii and false-alarm rates that were all computable and all
+meaningless. The accompanying package now refuses such an operator, and states
+the reduction explicitly rather than inheriting it. The general point is that
+a result depending on a trained operator inherits the conventions of the
+framework that trained it, and those conventions are not stable over the
+lifetime of a paper.
 % ============================================================================
 \section{Future Work}
 \label{sec:future_work}
@@ -3635,7 +3962,9 @@ this paper reduced to its operational minimum.
 %   - report detection rate per fault regime AT MATCHED NOMINAL COVERAGE.
 % If shape were immaterial the arms would coincide. Sec. 9 already shows they
 % do not: a ball in a 2-D projection separates nothing while the
-% reconstruction residual separates 79-100% on the same data. The experiment
+% reconstruction residual separates 91.5-100% on the same data (the 79% here
+% was from a superseded operator; the written prose uses the generated macro).
+% The experiment
 % would turn that observation into a controlled comparison, and pairing a
 % minimum-volume-set estimator with the distribution-free calibration is the
 % construction that would estimate shape and level together.
@@ -3666,10 +3995,160 @@ this paper reduced to its operational minimum.
 % (Remark~\ref{rem:optional_stopping}); and extending the one-sided
 % tolerance-limit construction to a per-fault-manifold version, which is
 % the natural formal route to the classification step of Sec. 6.
+% -- WRITTEN
 
+Four continuations follow from what this work leaves open, and they are
+ordered by how directly the present machinery already supports them.
+
+\paragraph{Separability between fault regions.}
+Corollary~\ref{cor:per_class_coverage} establishes per-class validity once
+regions are labelled, and Remark~\ref{rem:coverage_not_discrimination} states
+that coverage leaves separation unconstrained. The experiment that would test
+it follows from Remark~\ref{rem:classification_obstructions}: fit ONE residual
+per regime, each nominal-only for its own regime, rather than one residual
+with \(k\) thresholds; calibrate each \(\tau_j\) from
+\(n_j \ge 2/\alpha - 1\) observations, so that every class is clear of the
+degenerate range of Corollary~\ref{cor:degenerate_range}; and report the
+distribution of \(|\Gamma(x)|\) over held-out observations of each regime.
+A singleton carrying the correct label is the success case, \(|\Gamma|>1\)
+measures ambiguity and \(|\Gamma|=0\) measures over-tight radii. Per-class
+coverage predicts \(\Prob(j \in \Gamma(x)) \ge 1-\alpha\) and is a sanity
+check; the informative statistic is the ambiguity rate \(\Expect|\Gamma(x)|\),
+which the theory does not bound. The accompanying package already provides the
+simulator, the operators and the calibration machinery; only the per-regime
+fitting loop is absent.
+
+\paragraph{Estimating the shape of the region, not only its level.}
+This work certifies \(\tau\) and inherits whatever geometry the residual's
+level sets happen to have, which
+Remark~\ref{rem:level_not_shape} states and the distance-proxy probe makes
+concrete. The natural continuation isolates shape as the only variable: fix
+the nominal data, the target coverage and the certified calibration, and vary
+only the residual --- reconstruction error against a linear subspace, which
+gives a slab; Mahalanobis distance in a latent space, which gives an
+ellipsoid; \(k\)-nearest-neighbour distance, which gives a union of balls in
+the sense of \citet{devroye1980}; and a kernel one-class construction, whose
+level set has no closed form. Detection rate is then compared AT MATCHED
+NOMINAL COVERAGE. If shape were immaterial the arms would coincide; Section
+\ref{sec:results} already shows they do not, since a ball in a two-dimensional
+projection separates nothing while the reconstruction residual separates
+\(\etoeDetectLo\)--\(\etoeDetectHi\%\) on the same data. Pairing a
+minimum-volume-set estimator with the distribution-free calibration is the
+construction that would estimate level and shape together.
+
+\paragraph{An orbit-wise residual, and the radius it induces.}
+Remark~\ref{rem:quotient_radius} notes that the radius as implemented is a
+quantity of the observation space that the per-asset estimate absorbs, rather
+than an object of the quotient. The construction that would repair this is the
+orbit-wise reduction \(\bar r([x]) = \inf_{g \in \Gnuis} r(g\cdot x)\), and it
+makes a sharp prediction worth testing: if the spread of radii across
+independently commissioned assets is nuisance-induced, minimising over the
+group should shrink it substantially, and if the spread persists it reflects
+genuine per-unit differences that lie outside \(\Gnuis\) --- which would itself
+be informative about the misspecification recorded in
+Remark~\ref{rem:boundary_invariance_scope}. The cost is one optimisation over
+amplitude, phase, speed and offset per window against one scalar quantile per
+asset, and both should be reported. This is the cleanest available test of
+whether the nuisance family has been correctly identified, and it is worth
+doing before the quotient framing is claimed to be more than interpretive.
+
+\paragraph{Recovering exactness, and extending the tolerance limit.}
+Replacing the adaptive stopping rule by a fixed commissioning length, or by a
+split-sample scheme in which the stopping decision and the certified estimate
+use disjoint observations, would make Proposition~\ref{prop:coverage} exact
+rather than approximate. The measured cost of adaptivity is small
+(Section~\ref{sec:results}), so the case for the change is cleanliness rather
+than accuracy --- but a guarantee that holds exactly is easier to state to an
+operator than one that holds to within a bounded correction. In the same
+direction, extending the one-sided tolerance limit to a per-fault-manifold
+version is the natural formal route to the classification step of
+Section~\ref{sec:emergent_classification}.
+
+\paragraph{Two smaller items, both raised by the reproduction.}
+The recording-level reduction discussed in
+Section~\ref{subsec:design_reproducibility} deserves a controlled comparison
+rather than an argument: mean against high quantile, at matched coverage, on
+a windowing fine enough that a high quantile is not the sample maximum. And
+the asset-specific reference of the CWRU experiments could be reported
+alongside a held-out variant that calibrates \(\tau\) on observations the
+operator did not fit, which would separate the upper bound the present
+reference provides from the tighter one a non-memorising reference would.
 % ============================================================================
 \section{Conclusion}
-% [NEW -- write last, 1 paragraph, no new claims, mirrors abstract]
+\label{sec:conclusion}
+% [NEW -- write last, 1 paragraph, no new claims, mirrors abstract] -- WRITTEN
+
+Diagnostic monitoring was formulated here as inverse recovery over a quotient
+space induced by the nuisance transformations of the observation process. The
+formulation is not a reinterpretation of an existing procedure: it changes
+what must be estimated. Under bounded nuisance the nominal orbit is relatively
+compact and its image under a continuous representation therefore has a finite
+radius, so there is a well-defined scalar to estimate rather than a threshold
+to tune; and a correct diagnostic decision factors through the quotient, which
+is what licenses one shared representation in place of a classifier per asset.
+That scalar is a distribution-free tolerance limit on the nominal residual,
+which supplies an exactly known attained coverage,
+\(k_\alpha/(n+1)\), a minimum commissioning length of \(49\) observations at
+\(98\%\), and a degenerate range above that floor in which the certified
+estimator is the sample maximum and can appear to have converged while
+remaining maximally variable. The verification reproduces the exact coverage
+to within \(\satMaxZ\) Monte Carlo standard errors across the grid, not
+merely the inequality it implies. On four run-to-failure bearings, radii
+commissioned from \(\nasaNLo\)--\(\nasaNHi\) observations and never
+adapted gave persistent departure with \(\nasaLeadLo\) to \(\nasaLeadHi\)
+hours of warning, with no fault labels at any stage; on CWRU, calibration from
+roughly fifty sequential observations matched a reference fitted and
+calibrated on the complete healthy record of each speed. The governing premise
+--- that physically generated signals do not vary without bound, and that
+departure from a compact nominal region is what an anomaly is --- was stated in
+a form that could have failed, and the quantity that would have exposed it,
+a radius that kept growing with the number of observations, was measured
+rather than assumed. What the evidence supports is narrower than the
+formulation: the geometry is validated on bearings, the compactness assumption
+is verified only for the simulator, and separability between fault regions is
+neither guaranteed nor shown. What it does establish is that a diagnostic
+boundary can be a certified quantity rather than a tuned one, and that the
+certification costs tens of observations rather than thousands.
+
+% ============================================================================
+\printcredits
+
+% ============================================================================
+\section*{Declaration of competing interest}
+
+The author declares that he has no known competing financial interests or
+personal relationships that could have appeared to influence the work reported
+in this paper.
+
+% ============================================================================
+\section*{Data availability}
+
+The two field datasets are public and externally maintained, and neither is
+redistributed here. The Case Western Reserve University bearing data are
+available from the CWRU Bearing Data Center; the NASA IMS run-to-failure data
+are available from the NASA Prognostics Center of Excellence data repository.
+No licence restricts their use for the analyses reported here.
+
+Everything else needed to reproduce the paper is in the accompanying software
+package. Its synthetic tiers require no download at all: the bearing simulator
+is distributed with the package, so the verification and simulator experiments
+--- which establish every mathematical claim --- run from a clean checkout in
+about a minute, without either archive and without a deep-learning framework.
+
+The field results are reproducible at two levels. The per-recording residual
+series derived from the NASA IMS archive are committed with the package, about
+\(25\) kB against the \(523\) MB of raw recordings, so every field table and
+figure regenerates without obtaining the archive. A reader who does obtain it
+can run the complete chain --- loading, windowing, operator training, scoring
+--- and the package then compares its own output against those committed series
+and reports the agreement, so the small artefact is an assertion the pipeline
+can be held to rather than a convenience.
+
+Every table, every figure and every number quoted inline in this paper is
+generated from recorded experimental output rather than transcribed, and each
+generated artefact carries a provenance header naming the run that produced
+it. Software version, platform, compute device and random seeds are recorded
+alongside the results.
 
 % ============================================================================
 \bibliographystyle{cas-model2-names}

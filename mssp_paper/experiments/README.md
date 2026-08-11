@@ -33,7 +33,12 @@ python3 make_tables.py                   # -> ../tables/*.tex
 python3 make_figures.py                  # -> ../figures/*.pdf
 python3 make_macros.py                   # -> ../tables/values.tex
 
-# 4. the training-dependent tests, run deliberately
+# 4. layer B: field pipeline (needs the archives)
+python3 verify_operator.py                # is the ported operator the published one?
+python3 build_field_cache.py              # -> results/field_residuals_ims.npz
+python3 stability_experiment.py           # seed stability, ~30 min
+
+# 5. the training-dependent tests, run deliberately
 python3 -m pytest tests -q -m slow
 ```
 

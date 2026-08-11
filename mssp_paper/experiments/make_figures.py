@@ -72,7 +72,7 @@ plt.rcParams.update({
 
 NAMES = {"adequacy": "distance_proxy_probe", "drift": "degradation_trajectory",
          "saturation": "saturation", "variance": "estimator_variance",
-         "dimension": "intrinsic_dimension"}
+         "dimension": "intrinsic_dimension", "nasa": "nasa_trajectories"}
 
 
 def _placeholder(key):
@@ -337,6 +337,113 @@ def figure_dimension(d):
     _save(fig, "intrinsic_dimension")
 
 
+
+# ---------------------------------------------------------------------
+# Figure 6 -- NASA IMS run-to-failure, the only field trajectory
+# ---------------------------------------------------------------------
+
+def figure_nasa(_=None):
+    """
+    Four independently commissioned bearings running to failure.
+
+    This is the paper's only run-to-failure evidence on measured data, and
+    until now it existed solely as a table. The figure carries three things a
+    table cannot: that the radius is fixed early and never touched again,
+    that the residual crosses it and stays across, and how much warning that
+    buys.
+
+    Unlike every other figure here, it reads `results/field_residuals_ims.npz`
+    rather than `data.json`, because it belongs to Layer B. That artefact is
+    committed, so this figure regenerates without the 523 MB archive.
+    """
+    from mssp_repro.field.residuals import (FIELD_WARMUP_RECORDINGS,
+                                            describe_trajectory,
+                                            flag_inactive_recordings,
+                                            load_cache)
+    from mssp_repro.field.ims import IMS_RECORDING_INTERVAL_HOURS
+
+    path = HERE / "results" / "field_residuals_ims.npz"
+    if not path.exists():
+        _placeholder("nasa")
+        return
+    cache = load_cache(path)
+    scores, bearings = cache["scores"], cache["meta"]["bearings"]
+
+    fig, axes = plt.subplots(len(bearings), 1,
+                             figsize=(WIDTH, 1.55 * len(bearings) + 1.1),
+                             sharex=True)
+    axes = np.atleast_1d(axes)
+
+    for ax, row, bearing in zip(axes, scores, bearings):
+        d = describe_trajectory(row)
+        # Recordings taken with the rig stopped are dropped rather than drawn.
+        # On a log axis they are a two-decade cliff at the right edge, and a
+        # reader would take them for a measurement artefact -- correctly, but
+        # not the one they would guess.
+        n_active = d.get("n_active", row.size)
+        row, t = row[:n_active], np.arange(n_active)
+
+        # Commissioning prefix, shaded: the reader should see at a glance how
+        # small it is against the record it governs -- about fifty recordings
+        # out of nine hundred and eighty-four.
+        if d["converged"]:
+            ax.axvspan(0, d["n"], color="0.88", zorder=0)
+        ax.plot(t, row, lw=0.6, color="0.35", zorder=2)
+
+        if d["converged"]:
+            ax.axhline(d["tau"], color=C_CERT, lw=1.2, zorder=3,
+                       label=r"frozen $\tau$")
+            ax.axvline(d["n"], color="0.45", ls=":", lw=1.0, zorder=3,
+                       label="commissioned")
+            if d["departure"] is not None:
+                ax.axvspan(d["departure"], n_active, color=C_BAD, alpha=0.10,
+                           lw=0, zorder=1)
+                ax.axvline(d["departure"], color=C_BAD, lw=1.2, zorder=3,
+                           label="persistent departure")
+                # Vertical position in axes coordinates so a panel whose data
+                # reaches the top cannot clip it; horizontal alignment chosen
+                # from where the shaded band falls, because on the sharpest
+                # bearing the band is narrow and against the right edge, and a
+                # centred label runs off the axes.
+                # A narrow band cannot hold the label: on the sharpest
+                # bearing the departure is at 91% of the record, so anything
+                # centred inside the band overprints the departure rule.
+                # Below a tenth of the width the label goes to the left of the
+                # rule instead, where there is nothing but flat trajectory.
+                band = (n_active - d["departure"]) / n_active
+                inside = band >= 0.10
+                ax.annotate(f"{d['lead_hours']:.1f} h lead",
+                            xy=((d["departure"] + n_active) / 2 if inside
+                                else d["departure"], 0.93),
+                            xycoords=("data", "axes fraction"),
+                            xytext=(0 if inside else -5, 0),
+                            textcoords="offset points",
+                            ha="center" if inside else "right",
+                            va="top", fontsize=7.5, color=C_BAD)
+
+        ax.set_yscale("log")
+        ax.set_ylabel(f"bearing {bearing}", fontsize=8)
+
+    # Above the first panel rather than inside any of them: all four
+    # trajectories are flat and low for most of their length and then rise to
+    # the top right, so every in-axes position covers something on some panel.
+    axes[0].legend(loc="lower left", bbox_to_anchor=(0.0, 1.02), ncol=3,
+                   framealpha=0.95, fontsize=7.5, borderaxespad=0.0)
+    axes[-1].set_xlabel("recording index"
+                        f"    ({IMS_RECORDING_INTERVAL_HOURS*60:.0f} min "
+                        f"apart; {scores.shape[1]*IMS_RECORDING_INTERVAL_HOURS:.0f} h total)")
+    fig.supylabel("recording residual", fontsize=9)
+    n_drop = max((describe_trajectory(r).get("n_trailing_inactive", 0)
+                  for r in scores), default=0)
+    note = ("; the final "
+            f"{n_drop} recordings, taken with the rig stopped, are excluded"
+            if n_drop else "")
+    fig.suptitle("each bearing commissions its own radius from its first "
+                 f"~50 recordings, then never adapts it{note}",
+                 fontsize=8, color="0.30")
+    _save(fig, "nasa_trajectories")
+
+
 # ---------------------------------------------------------------------
 
 FIGURES = [
@@ -345,6 +452,7 @@ FIGURES = [
     ("dimension", figure_dimension, "dimension"),
     ("adequacy", figure_adequacy, "adequacy"),
     ("drift", figure_drift, "drift"),
+    ("nasa", figure_nasa, None),
 ]
 
 
@@ -359,6 +467,12 @@ def main():
 
     drawn, skipped = 0, []
     for key, fn, needs in FIGURES:
+        if needs is None:
+            # Layer B figures read their own artefact and decide for
+            # themselves whether it is there.
+            fn(d)
+            drawn += 1
+            continue
         if needs not in d:
             _placeholder(key)
             skipped.append(key)

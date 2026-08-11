@@ -214,3 +214,136 @@ def compare_to_cache(fresh, cached, *, tau_per_bearing=None):
                      "level_shift": float(level), "departure_shift": shift,
                      "ok": row_ok})
     return ok, rows
+
+
+# ---------------------------------------------------------------------
+# Commissioning, in one place
+#
+# The adaptive rule was previously spelled out in every caller that needed
+# it. Three copies of a five-line procedure is how two callers end up
+# disagreeing about `min_index` and nobody notices, so it lives here and the
+# stability experiment, the figure generator and the table generator all go
+# through it.
+# ---------------------------------------------------------------------
+
+def commission_bearing(series, *, estimator=None, warmup=None):
+    """
+    Commission one bearing from its early-life residual series.
+
+    Returns None when the convergence criterion is never met -- which is a
+    reportable outcome, not an error: an asset whose radius never settles is
+    one the procedure declines to certify.
+    """
+    from ..calibration import (AdaptiveOperationalRadius, find_convergence_index,
+                               interpolated_quantile)
+    from .. import (CONVERGENCE_CONSECUTIVE, CONVERGENCE_LOOKBACK,
+                    CONVERGENCE_TOLERANCE, MAX_CALIBRATION_SIZE,
+                    MIN_CALIBRATION_SIZE, MIN_WARMUP_SAMPLES)
+
+    estimator = estimator or interpolated_quantile
+    warmup = MAX_CALIBRATION_SIZE if warmup is None else int(warmup)
+    early = np.asarray(series, dtype=float)[:warmup]
+
+    trace = AdaptiveOperationalRadius(
+        estimator, window_size=warmup,
+        min_samples=MIN_WARMUP_SAMPLES).warmup_trace(early)
+    idx = find_convergence_index(
+        trace, lookback=CONVERGENCE_LOOKBACK, tolerance=CONVERGENCE_TOLERANCE,
+        consecutive=CONVERGENCE_CONSECUTIVE,
+        min_index=MIN_CALIBRATION_SIZE - 1)
+    if idx is None:
+        return None
+    return {"n": int(idx + 1), "tau": float(trace[idx]),
+            "oracle": float(estimator(early)),
+            "early_median": float(np.median(early)),
+            "trace": trace}
+
+
+def describe_trajectory(series, *, q=8, p=10, interval_hours=None,
+                        warmup=None):
+    """
+    Everything the run-to-failure figure and table need for one bearing.
+
+    Commissioning, the frozen radius, the first persistent departure and the
+    lead time to the documented end of the record.
+    """
+    interval = (IMS_RECORDING_INTERVAL_HOURS if interval_hours is None
+                else float(interval_hours))
+    s = np.asarray(series, dtype=float)
+    c = commission_bearing(s, warmup=warmup)
+    if c is None:
+        return {"converged": False}
+
+    # Trim trailing recordings taken with the rig stopped before measuring
+    # anything: they are not nominal operation and not degradation either.
+    inactive = flag_inactive_recordings(s, warmup=warmup or FIELD_WARMUP_RECORDINGS)
+    n_trailing = 0
+    while n_trailing < s.size and inactive[s.size - 1 - n_trailing]:
+        n_trailing += 1
+    s_active = s[:s.size - n_trailing] if n_trailing else s
+
+    from ..dynamics import first_persistent_departure
+    d = first_persistent_departure(s_active > c["tau"], q=q, p=p, start=c["n"])
+    out = {"converged": True, "n": c["n"], "tau": c["tau"],
+           "n_trailing_inactive": int(n_trailing),
+           "oracle": c["oracle"], "early_median": c["early_median"],
+           "tau_normalised": c["tau"] / c["early_median"],
+           "n_recordings": int(s.size),
+           "n_active": int(s.size - n_trailing),
+           "departure": None, "lead_hours": None,
+           "exceedance_post": None,
+           "far_commissioned": float(np.mean(s[c["n"]:warmup or 200]
+                                             > c["tau"])) if c["n"] < (warmup or 200) else float("nan")}
+    if d is not None:
+        out.update({"departure": int(d),
+                    "lead_hours": float((s_active.size - d) * interval),
+                    "exceedance_post": float(np.mean(s_active[d:] > c["tau"]))})
+    return out
+
+
+# A recording is treated as taken with the machine stopped when its residual
+# falls below this fraction of the SMALLEST residual seen during commissioning.
+# Relative to the minimum rather than the median, because the four bearings sit
+# at different nominal levels and a fraction of the median that catches three
+# of them misses the fourth: bearing 4's stopped recording is 0.53 of its
+# median but 0.56 of its minimum, while bearings 1-3 sit at 0.27-0.40 of theirs.
+# The minimum is the natural reference -- the question is whether a recording is
+# quieter than anything the rig produced while running.
+INACTIVE_FRACTION_OF_MIN = 0.75
+
+# Raw-signal criterion, used when the archive is at hand. A stopped rig gives a
+# standard deviation near 0.001 against 0.13-0.48 while running, so the
+# threshold is nowhere near delicate.
+INACTIVE_SIGNAL_STD = 0.01
+
+
+def flag_inactive_recordings(series, *, warmup=FIELD_WARMUP_RECORDINGS,
+                             signal_std=None):
+    """
+    Recordings taken with the machine stopped.
+
+    IMS Experiment 2 does not end when the bearing fails; it ends when someone
+    shut the rig down. The last two of the 984 files carry a signal with
+    standard deviation near 0.001 on all four channels, against 0.13-0.48 on
+    the recording before them. The rig is not running.
+
+    This matters in three small ways, none fatal and all worth getting right.
+    Those recordings do not exceed the radius, so they dilute the
+    post-departure exceedance. They count towards the record length, so they
+    add twenty minutes to every lead time. And on a log axis they produce a
+    cliff at the right edge of the trajectory figure that a reader will
+    reasonably take for a measurement artefact -- which it is, though not the
+    kind they will guess.
+
+    Pass `signal_std` when the raw archive is available; that is the direct
+    criterion. Without it the test falls back to the residual, which works
+    from the committed cache alone. A stopped rig produces an almost constant
+    window, which the operator reconstructs easily, so its residual sits far
+    BELOW the nominal level rather than above it. A stopped machine looks
+    nothing like a faulty one, and nothing like a healthy one either.
+    """
+    if signal_std is not None:
+        return np.asarray(signal_std, dtype=float) < INACTIVE_SIGNAL_STD
+    s = np.asarray(series, dtype=float)
+    floor = float(np.min(s[:warmup]))
+    return s < INACTIVE_FRACTION_OF_MIN * floor

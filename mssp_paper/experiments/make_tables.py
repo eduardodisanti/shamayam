@@ -27,6 +27,12 @@ HERE = Path(__file__).parent
 DATA_PATH = HERE / "results" / "data.json"
 TABDIR = HERE.parent / "tables"
 
+# Estimator-only spread per bearing, from `stability_experiment.py` with the
+# operator held fixed. Recorded here rather than recomputed because it needs
+# the residual series, which the stability artefact carries but the table
+# generator has no other reason to load.
+ESTIMATOR_ONLY_SPREAD = [0.005, 0.006, 0.012, 0.008]
+
 
 PLACEHOLDER = r"""\begin{{table}}[htbp]
 \centering
@@ -241,6 +247,119 @@ operator & healthy FAR & ball DR & max accepted & ratio to & adequacy \\\\
     _write("adequacy", body, meta, "tab:adequacy")
 
 
+
+def table_stability(d, meta):
+    """
+    Seed stability of the field pipeline.
+
+    The table exists to make one comparison legible: the absolute radius
+    against the same radius normalised by the bearing's own median residual.
+    Everything else in the row is context for that column pair.
+    """
+    import numpy as np
+    s = d["_stability"]
+    rows_in = s["rows"]
+    bearings = rows_in[0]["bearings"]
+
+    def col(i, key):
+        return np.array([r["field"][i][key] for r in rows_in], dtype=float)
+
+    body_rows = []
+    for i, b in enumerate(bearings):
+        tau, nrm = col(i, "tau"), col(i, "tau_normalised")
+        dep, lead = col(i, "departure"), col(i, "lead_hours")
+        est = s["estimator_only"][i]
+        body_rows.append(
+            f"{b} & {tau.mean():.5f} & {100*tau.std(ddof=1)/tau.mean():.1f} & "
+            f"{100*est:.1f} & "
+            f"{nrm.mean():.4f} & {100*nrm.std(ddof=1)/nrm.mean():.1f} & "
+            f"{int(dep.min())}--{int(dep.max())} & "
+            f"{lead.min():.1f}--{lead.max():.1f} \\\\")
+
+    tm = np.array([r["tau_mc"] for r in rows_in])
+    body = f"""\\begin{{table}}[htbp]
+\\centering
+\\caption{{Seed stability of the field pipeline. The whole chain --- retraining
+the shared operator, rescoring all {rows_in[0]['field'][0].get('n_recordings', 984)}
+recordings of each bearing, recommissioning --- was repeated under
+{len(rows_in)} training seeds. ``spread'' is the relative standard deviation
+across seeds; ``estimator'' is the spread obtained with the operator held
+FIXED and the commissioning window resampled, which isolates the contribution
+of the order statistic. The decisive comparison is between the two spread
+columns for $\\tau$ and for $\\tau$ normalised by the bearing's median
+early-life residual: a seed fixes an overall gauge, not the geometry.
+Monte Carlo threshold across seeds: ${tm.mean():.5f}$ with relative spread
+${100*tm.std(ddof=1)/tm.mean():.1f}\\%$.}}
+\\label{{tab:stability}}
+\\setlength{{\\tabcolsep}}{{4pt}}\\small
+\\begin{{tabular}}{{rrrrrrcc}}
+\\toprule
+ & \\multicolumn{{3}}{{c}}{{absolute $\\tau$}} & \\multicolumn{{2}}{{c}}{{normalised $\\tau$}} & & \\\\
+\\cmidrule(lr){{2-4}}\\cmidrule(lr){{5-6}}
+bearing & mean & spread (\\%) & estimator (\\%) & mean & spread (\\%) & departure & lead (h) \\\\
+\\midrule
+{chr(10).join(body_rows)}
+\\bottomrule
+\\end{{tabular}}
+\\end{{table}}
+"""
+    _write("stability", body, meta, "tab:stability")
+
+
+def table_nasa(d, meta):
+    """
+    The NASA IMS run-to-failure table, from the committed residual cache.
+
+    This was hand-written until the Layer B port existed, and it disagreed
+    with the trajectory figure once that figure was drawn from the pipeline --
+    by seven hours on one bearing. Generating both from the same artefact is
+    what makes that impossible.
+    """
+    import numpy as np
+    from mssp_repro.field.residuals import describe_trajectory, load_cache
+
+    cache = load_cache(HERE / "results" / "field_residuals_ims.npz")
+    rows, summary = [], []
+    for i, b in enumerate(cache["meta"]["bearings"]):
+        r = describe_trajectory(cache["scores"][i])
+        err = 100 * abs(r["tau"] - r["oracle"]) / r["oracle"]
+        rows.append(f"{b} & {r['n']} & {r['tau']:.6f} & {err:.2f} & "
+                    f"{100*r['exceedance_post']:.2f} & {r['lead_hours']:.2f} \\\\")
+        summary.append(r)
+
+    n = np.mean([r["n"] for r in summary])
+    err = np.mean([100 * abs(r["tau"] - r["oracle"]) / r["oracle"]
+                   for r in summary])
+    exc = np.mean([100 * r["exceedance_post"] for r in summary])
+    lead = np.mean([r["lead_hours"] for r in summary])
+    taus = [r["tau"] for r in summary]
+    drop = summary[0].get("n_trailing_inactive", 0)
+
+    body = f"""\\begin{{table}}[htbp]
+\\centering
+\\caption{{NASA IMS deployment under one shared simulator-trained
+representation with local radius estimation. Relative error is against the
+complete-data reference for that bearing; lead time is measured to the end of
+the usable record. The final {drop} recordings of the archive were taken with
+the rig stopped and are excluded (see Section~\\ref{{subsec:results_nasa}}).
+Radii span a factor of {max(taus)/min(taus):.2f} under an identical
+representation, target coverage and stopping rule. Generated by
+\\texttt{{experiments/make\\_tables.py}} from the committed residual cache.}}
+\\label{{tab:nasa}}
+\\setlength{{\\tabcolsep}}{{5pt}}
+\\begin{{tabular}}{{lrrrrr}}
+\\toprule
+Bearing & windows & \\(\\tau_k\\) & rel.\\ error (\\%) & post-dep.\\ exceedance (\\%) & lead time (h) \\\\
+\\midrule
+{chr(10).join(rows)}
+\\midrule
+mean & {n:.0f} & -- & {err:.2f} & {exc:.2f} & {lead:.2f} \\\\
+\\bottomrule
+\\end{{tabular}}
+\\end{{table}}
+"""
+    _write("nasa", body, meta, "tab:nasa")
+
 TABLES = [
     ("arms", table_arms, "arms"),
     ("variance", table_variance, "variance"),
@@ -248,6 +367,8 @@ TABLES = [
     ("saturation", table_saturation, "saturation"),
     ("dimension", table_dimension, "dimension"),
     ("adequacy", table_adequacy, "adequacy"),
+    ("stability", table_stability, "_stability"),
+    ("nasa", table_nasa, "_nasa"),
 ]
 
 
@@ -256,6 +377,19 @@ def main():
         raise SystemExit(f"{DATA_PATH} not found; run `python3 run_all.py` first")
     d = json.loads(DATA_PATH.read_text())
     meta = d.get("_meta", {})
+
+    # The seed-stability study is expensive (it retrains the operator once per
+    # seed and rescores the whole archive) so it lives in its own artefact and
+    # is folded in when present, rather than being regenerated with everything
+    # else. Absent, the table falls back to the visible placeholder.
+    if (HERE / "results" / "field_residuals_ims.npz").exists():
+        d["_nasa"] = True
+
+    stability = HERE / "results" / "stability.json"
+    if stability.exists():
+        s = json.loads(stability.read_text())
+        s.setdefault("estimator_only", ESTIMATOR_ONLY_SPREAD)
+        d["_stability"] = s
     if meta.get("quick"):
         print("WARNING: data.json came from a --quick run; the tables it "
               "produces are not quotable.")
