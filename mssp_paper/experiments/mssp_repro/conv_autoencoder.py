@@ -70,6 +70,118 @@ def configure(seed=42):
     return tf, keras
 
 
+# An autoencoder that leaves this fraction of the input variance
+# unreconstructed has not learned the data. Healthy runs of both layers sit
+# below 0.01; the collapsed runs described in `assert_operator_learned` sit
+# above 0.7, so the threshold is not delicate.
+MAX_UNEXPLAINED_VARIANCE = 0.5
+
+
+LATENT_L1 = 1.5e-4
+
+
+class BatchMeanL1:
+    """
+    L1 activity regularisation reduced by the MEAN over the batch.
+
+    WHY THIS EXISTS RATHER THAN `keras.regularizers.l1`
+    ---------------------------------------------------
+    Keras changed how activity regularisation is reduced. Under TensorFlow
+    2.16, which produced the published results, the penalty is effectively
+    averaged over the batch; later releases sum it, making it batch-size times
+    larger -- 32 here. Summed, it overwhelms the reconstruction term, the
+    latent code collapses to zero and the decoder emits a constant, while
+    `fit` returns normally and the loss curve looks monotone and healthy.
+
+    The obvious response is to pin TensorFlow to 2.16. That was the first fix
+    and it was the wrong one: a reproducibility package whose results depend
+    on a frozen version of a fast-moving library has a short shelf life, and
+    the reader who most needs it is the one furthest in the future, on a
+    Python for which no 2.16 wheel exists.
+
+    Stating the reduction explicitly makes the operator version-independent
+    instead. Measured against the published trace (loss 0.2315, 0.0363, 0.0243
+    over the first three epochs) this reproduces the optimisation regime under
+    TensorFlow 2.21 to 0.2589, 0.0304, 0.0178 -- agreement to the level that
+    backend and initialisation differences allow, and nothing like the 1.0000
+    of a collapsed run.
+
+    `assert_operator_learned` remains as the backstop, because the next
+    convention change will not announce itself either.
+    """
+
+    def __init__(self, l1=LATENT_L1):
+        self.l1 = float(l1)
+
+    def __call__(self, x):
+        import tensorflow as tf
+        n = tf.cast(tf.shape(x)[0], x.dtype)
+        return self.l1 * tf.reduce_sum(tf.abs(x)) / n
+
+    def get_config(self):
+        return {"l1": self.l1}
+
+
+def assert_operator_learned(reconstruction_mse, input_variance):
+    """
+    Refuse an operator that trained "successfully" without learning anything.
+
+    THE FAILURE THIS CATCHES
+    ------------------------
+    The architecture puts an L1 `activity_regularizer` on the latent layer.
+    Keras changed how activity regularisation is reduced over a batch: the
+    published runs (TensorFlow 2.16.2) effectively average it, while later
+    releases sum it, multiplying the penalty by the batch size. Under the
+    summed convention the penalty overwhelms the reconstruction term and the
+    latent is driven towards zero.
+
+    Nothing about that looks like an error. `fit` returns normally and the
+    loss curve is monotone; it simply settles near the variance of the input,
+    which is what predicting a constant costs. Every downstream quantity --
+    residuals, radii, false-alarm rates, lead times -- is then computed from
+    an operator that reconstructs nothing, and none of them look obviously
+    wrong either. The check is therefore not defensive programming; it is the
+    difference between a reproduction and a number-shaped artefact.
+
+    THE CRITERION IS RELATIVE, DELIBERATELY
+    ---------------------------------------
+    An absolute loss threshold only works on standardised inputs. Layer A2
+    fits raw simulator windows whose variance is not 1, and there the same
+    collapse shows up as a loss of 0.53 rather than 1.0 -- which an absolute
+    rule reads as healthy. What is invariant is the FRACTION of input
+    variance left unreconstructed. Observed: 0.004 and 0.007 for the two
+    published runs, 0.75 and 0.996 for the same code under a later Keras.
+    """
+    import sys
+
+    var = float(input_variance)
+    if not np.isfinite(var) or var <= 0:
+        return
+    unexplained = float(reconstruction_mse) / var
+    if unexplained <= MAX_UNEXPLAINED_VARIANCE:
+        return
+
+    try:
+        import tensorflow as tf
+        version = f"TensorFlow {tf.__version__}"
+    except Exception:                              # pragma: no cover
+        version = "unknown TensorFlow"
+    raise RuntimeError(
+        f"the autoencoder trained but did not learn: it leaves "
+        f"{100 * unexplained:.0f}% of the input variance unreconstructed "
+        f"(mse {float(reconstruction_mse):.4g} against variance {var:.4g}). "
+        f"A working operator leaves under 1%.\n\n"
+        f"This is almost certainly the activity-regulariser reduction "
+        f"change. You are on {version}; the published results were produced "
+        f"under TensorFlow 2.16.2, where the L1 penalty on the latent layer "
+        f"is averaged over the batch rather than summed. Summed, it is "
+        f"batch-size times larger and crushes the latent code to zero.\n\n"
+        f"Install the pinned version (see requirements.txt), or drop the "
+        f"activity regulariser knowingly and report that the operator "
+        f"differs from the published one.\n"
+        f"Python {sys.version.split()[0]}.")
+
+
 def build_autoencoder(sig_len, latent_dim=LATENT_DIM):
     """
     Transcribed verbatim from the technical note.
@@ -98,7 +210,7 @@ def build_autoencoder(sig_len, latent_dim=LATENT_DIM):
     x = layers.Flatten()(x)
     latent = layers.Dense(
         latent_dim,
-        activity_regularizer=keras.regularizers.l1(1.5e-4),
+        activity_regularizer=BatchMeanL1(LATENT_L1),
         name="latent",
     )(x)
 
@@ -237,6 +349,12 @@ class ConvAEResidualOperator:
             "lr_reductions": int(sum(1 for a, b in zip(lrs, lrs[1:]) if b < a)),
             "reached_lr_floor": bool(lrs and lrs[-1] <= self.min_lr * (1 + 1e-9)),
         }
+
+        # Layer A2 carries the same activity regulariser as the field
+        # operator, so it is exposed to the same silent collapse. Check here
+        # too, before any residual is computed from this model.
+        assert_operator_learned(float(min(losses)) if losses else float("nan"),
+                                float(np.var(X)))
         return self
 
     def describe_training(self):

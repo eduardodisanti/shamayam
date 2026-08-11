@@ -147,3 +147,123 @@ def test_persistence_rule_semantics():
     assert first_persistent_departure(flags, q=3, p=5) == 12
     assert first_persistent_departure(flags, q=4, p=5) is None
     assert first_persistent_departure(flags, q=3, p=5, start=20) is None
+
+
+# ---------------------------------------------------------------------
+# The persistence rule as a decision, not a default
+#
+# The published notebook used three-of-five; the accompanying text described
+# eight-of-ten; the two give different lead times and the discrepancy went
+# unresolved through a full draft. These tests pin the argument that settles
+# it, so the choice cannot quietly revert to the permissive rule.
+# ---------------------------------------------------------------------
+
+def test_permissive_persistence_is_unusable_at_the_attained_false_alarm_rate():
+    """
+    At the healthy false-alarm rate actually attained on the IMS bearings --
+    near 5%, not the nominal 2%, because the field results used the
+    interpolated estimator -- a three-of-five rule declares a spurious
+    departure in a large fraction of records. It cannot be used to time an
+    event it manufactures on its own that often.
+    """
+    from mssp_repro import false_declaration_probability
+    attained = 0.0498
+    _, loose = false_declaration_probability(q=3, p=5, alpha=attained,
+                                             n_recordings=2000)
+    _, strict = false_declaration_probability(q=8, p=10, alpha=attained,
+                                              n_recordings=2000)
+    assert loose > 0.30, f"3/5 spurious-declaration risk was {loose:.3f}"
+    assert strict < 1e-5, f"8/10 spurious-declaration risk was {strict:.3e}"
+    assert strict < loose / 1e5
+
+
+def test_the_gap_survives_at_the_nominal_rate_too():
+    """The conclusion must not depend on using the attained rather than the
+    target rate: at 2% the separation is even wider."""
+    from mssp_repro import false_declaration_probability
+    loose = false_declaration_probability(q=3, p=5, alpha=0.02)
+    strict = false_declaration_probability(q=8, p=10, alpha=0.02)
+    assert strict < loose / 1e6
+
+
+def test_stricter_rule_never_declares_earlier():
+    """
+    Monotonicity, which is the reason the choice matters for lead times: a
+    stricter rule can only postpone the declaration, so it can only SHORTEN
+    the reported lead time. Adopting it works against the headline result.
+    """
+    from mssp_repro import first_persistent_departure
+    rng = np.random.default_rng(7)
+    for _ in range(200):
+        flags = rng.random(400) < rng.uniform(0.05, 0.5)
+        loose = first_persistent_departure(flags, q=3, p=5)
+        strict = first_persistent_departure(flags, q=8, p=10)
+        if strict is not None:
+            assert loose is not None, "8/10 fired where 3/5 did not"
+            assert loose <= strict
+
+
+def test_aggregation_is_explicit_and_rejects_silent_defaults():
+    from mssp_repro import recording_score
+    import pytest as _pytest
+    w = [1.0, 1.0, 1.0, 9.0]
+    assert recording_score(w) == pytest.approx(3.0)
+    assert recording_score(w, mode="percentile") > 7.0
+    with _pytest.raises(ValueError):
+        recording_score(w, mode="p95")
+    with _pytest.raises(ValueError):
+        recording_score([])
+
+
+def test_a_high_quantile_over_few_windows_is_the_sample_maximum():
+    """
+    The reduction from window residuals to a recording score is itself a
+    quantile estimate, and the corollaries of Section 7 apply to it. At the 17
+    windows of an IMS recording a 95th percentile is not a percentile: it is
+    the sample maximum, and it is not even feasible distribution-free.
+
+    This is the argument that settled the aggregation question, so it is
+    pinned rather than left in prose.
+    """
+    from mssp_repro import (k_alpha, is_feasible, minimum_commissioning_length,
+                            is_degenerate_maximum, recording_score)
+    n_windows, alpha = 17, 0.05
+
+    assert not is_feasible(n_windows, alpha), (
+        "17 windows should be below the feasibility floor at alpha=0.05")
+    assert minimum_commissioning_length(alpha) == 19
+    assert k_alpha(n_windows, alpha) > n_windows
+
+    # Overlapping to 33 windows clears the floor but not the degenerate range.
+    assert is_feasible(33, alpha)
+    assert is_degenerate_maximum(33, alpha), (
+        "at 33 windows the estimator is still the sample maximum")
+
+    # And the empirical statement: p95 of 17 draws IS the largest or the
+    # second largest, never an interior order statistic.
+    rng = np.random.default_rng(3)
+    for _ in range(300):
+        x = rng.lognormal(size=n_windows)
+        p95 = recording_score(x, mode="percentile")
+        assert p95 >= np.sort(x)[-2]
+
+
+def test_averaging_wins_when_the_signature_is_ubiquitous():
+    """
+    The sensitivity claim, in the regime that actually holds for a bearing
+    defect: the signature is present in every window, so the mean improves the
+    normalized contrast by averaging noise, while a high quantile discards 16
+    of 17 observations.
+    """
+    from mssp_repro import recording_score
+    rng = np.random.default_rng(11)
+    n, reps = 17, 4000
+    nominal = rng.lognormal(sigma=0.5, size=(reps, n))
+    degraded = nominal * 3.0            # ubiquitous: every window affected
+
+    def contrast(mode):
+        s_nom = np.array([recording_score(r, mode=mode) for r in nominal])
+        s_deg = np.array([recording_score(r, mode=mode) for r in degraded])
+        return (s_deg.mean() - s_nom.mean()) / s_nom.std()
+
+    assert contrast("mean") > 1.4 * contrast("percentile")

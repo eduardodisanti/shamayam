@@ -62,7 +62,7 @@
 %               machinery).
 % ============================================================================
 
-\documentclass[a4paper]{cas-sc}
+\documentclass[a4paper]{cas-sc} 
 
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{amsthm}
@@ -131,6 +131,12 @@ University of Colorado Boulder, Boulder, CO, USA}
 % with headline numbers: coverage 0.98136 against 0.98039 predicted;
 % interpolation costs 1.9 pp of coverage; radii spanning a factor of 2.8
 % across independently commissioned bearings; NASA lead times 14.5-74.0 h.
+%
+% The class requires a non-empty abstract, so this placeholder stands in
+% until the abstract is written. It is deliberately conspicuous: an abstract
+% consisting of half a sentence left over from a comment is worse than one
+% that announces itself as missing.
+\textbf{[ABSTRACT NOT YET WRITTEN --- see the drafting note in the source.]}
 \end{abstract}
 
 \begin{keywords}
@@ -195,6 +201,134 @@ Quotient spaces \sep Nuisance invariance \sep Predictive maintenance
 % could fail, not as a slogan. Do not soften it into "signals are often
 % structured": the whole construction is vacuous if the nominal orbit is not
 % relatively compact, and saying so is what makes the paper falsifiable.
+% -- WRITTEN
+
+A rotating machine in steady operation does not produce arbitrary signals. Its
+vibration is the output of a mechanism with finitely many degrees of freedom,
+observed through a sensing chain that introduces its own bounded distortions,
+and the set of waveforms it can emit while healthy is correspondingly
+restricted. Load, speed, mounting, sensor gain and acquisition phase move the
+observed signal about, but they move it within a region rather than across an
+unbounded space.
+
+This paper takes that restriction as its governing premise and states it
+sharply, because it is the premise that makes the rest of the construction
+either meaningful or vacuous: \emph{physically generated signals do not
+exhibit unbounded or adversarial variation, and departure from a compact
+nominal region is what an anomaly is}. The claim is not that nominal signals
+are often well behaved. It is that the nominal set is relatively compact, and
+therefore has a finite extent that can be estimated from finitely many
+observations. If that fails, no finite boundary exists, and a method built on
+estimating one is not merely inaccurate but meaningless.
+
+Stating the premise this way makes it refutable, and Section~\ref{sec:results}
+is arranged so that it could have been refuted. A process whose nominal
+variation did not concentrate would show a boundary estimate that kept growing
+with the number of observations rather than settling; the experiments measure
+exactly that quantity, and report both the regime in which it settles and the
+regime in which it does not.
+
+\paragraph{Diagnosis as inverse recovery.}
+An observation is the output of a forward process. A vibration window \(x\) is
+produced by a mechanism in some health state \(\theta\), acted on by nuisance
+factors \(\eta\) that carry no diagnostic information, so that
+\(x=F(\theta,\eta)\). Recovering \(\theta\) from \(x\) is an inverse problem,
+and in the classical sense an ill-posed one: the forward map is not injective,
+because distinct \((\theta,\eta)\) pairs can produce the same observation, and
+its inverse is unstable where it exists.
+
+The usual response is to identify the forward model and invert it. For
+rotating machinery this is neither tractable nor necessary. It is intractable
+because a faithful forward model of a bearing in an installed drivetrain
+requires contact mechanics, lubrication state, structural transmission paths
+and sensor dynamics that are not identifiable from routine monitoring data. It
+is unnecessary because diagnosis does not require \(\theta\) itself. It
+requires \(\theta\) only up to the nuisance factors: two windows differing by
+mounting phase or sensor gain must receive the same diagnostic verdict, so
+the object to be recovered is not a point but an equivalence class.
+
+That observation is the central claim of this work, and we state it in the
+form used in the companion technical note~\citep{disanti2026quotient}:
+diagnostic monitoring can be formulated as inverse recovery over a quotient
+space induced by nuisance transformations of the observation process.
+
+The reformulation changes what must be estimated. In the quotient space
+\(\quotient\), the nuisance orbit of a nominal signal collapses to a single
+element, the nominal set becomes a region rather than a scattered cloud, and
+the diagnostic question becomes membership in that region. Three things then
+follow that do not follow in the ambient space. Membership is decidable from
+nominal data alone, so no fault examples are needed. The region has a finite
+extent, because bounded nuisance makes the orbit relatively compact. And that
+extent is a scalar, which is exactly the kind of quantity for which
+distribution-free statistical guarantees exist.
+
+\paragraph{What the premise buys, quantitatively.}
+The last point is where a qualitative geometric argument becomes an
+engineering statement. If the nominal region has a finite radius, then
+estimating that radius is a tolerance-limit problem, and the coverage of the
+estimate can be certified without assuming a distribution for the residual.
+The certification is not asymptotic and does not appeal to a limit: at a
+target coverage of \(98\%\), forty-nine nominal observations suffice, and the
+attained coverage is known exactly rather than bounded.
+
+That number is the operational form of the premise. A regime that can be
+bounded from tens of observations is compact in the sense the premise asserts;
+a process without that structure would require the estimate to keep growing.
+The same analysis also delimits its own validity, and this is worth stating in
+the introduction rather than burying in the results: below forty-nine
+observations no boundary is certifiable at all, and between forty-nine and
+ninety-eight the certified estimator is the sample maximum, so it can appear
+to have converged while remaining maximally variable. A commissioning length
+chosen just above the floor satisfies the guarantee and is nonetheless a poor
+choice.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+\item A quotient-space formalization of anomaly detection, with two results
+      that carry the argument: the nominal orbit is relatively compact under
+      bounded nuisance (Proposition~\ref{prop:compactness}), and a correct
+      diagnostic decision factors through the quotient
+      (Proposition~\ref{prop:quotient_diagnosis}), which is what licenses
+      seeking one shared representation rather than a per-asset classifier.
+
+\item A distribution-free coverage guarantee for the locally estimated
+      operational radius (Proposition~\ref{prop:coverage}), given with proof.
+      The statistical machinery is classical; the contribution is recognizing
+      that the per-asset diagnostic radius is exactly a distribution-free
+      tolerance limit on the nominal residual. Two consequences follow that
+      are specific to the diagnostic setting and, to our knowledge, have not
+      been stated for it: a minimum commissioning length
+      (Corollary~\ref{cor:min_commissioning}), and a degenerate range above
+      that floor in which the estimator is the sample maximum
+      (Corollary~\ref{cor:degenerate_range}).
+
+\item A saturation criterion connecting this formulation to the
+      functional--topological account of~\citet{disanti2026blueprints}, with
+      an explicit statement of what rapid convergence means quantitatively
+      (Definition~\ref{def:saturation_radius},
+      Proposition~\ref{prop:radius_consistency}), together with an operator
+      adequacy criterion showing that coverage alone cannot certify a
+      representation: two operators calibrated identically, at the same
+      attained coverage, differ by more than two orders of magnitude in what
+      they accept.
+
+\item Validation across three tiers of increasing realism: synthetic assets
+      under controlled nuisance, CWRU under four operating regimes with an
+      oracle-versus-online calibration ablation, and NASA IMS run-to-failure
+      bearings commissioned independently and with no fault labels at any
+      stage.
+\end{enumerate}
+
+\paragraph{Scope.}
+Two boundaries should be set at the outset. The framework addresses membership
+in a nominal region, not fault classification: it reports that an asset has
+left its region, not which failure mode it has entered, and the taxonomy in
+Section~\ref{sec:emergent_classification} grows from expert feedback rather
+than from the geometry alone. And the guarantee is conditional on
+exchangeability of the nominal commissioning residuals
+(Assumption~\ref{ass:exchangeability}), which is an assumption about the
+commissioning window and not a property of the method; Section~\ref{sec:results}
+reports a test of it rather than presuming it holds.
 
 % ============================================================================
 \section{Related Work}
@@ -228,6 +362,140 @@ Quotient spaces \sep Nuisance invariance \sep Predictive maintenance
 % recognizing that the per-asset diagnostic radius is exactly a
 % distribution-free tolerance limit on the nominal residual, which supplies
 % both a coverage guarantee and a minimum commissioning length.
+% -- WRITTEN
+
+\paragraph{Condition monitoring and fixed thresholds.}
+Industrial vibration monitoring is dominated by band-limited scalar
+indicators --- root-mean-square velocity, kurtosis, crest factor, envelope
+band energies --- compared against thresholds. The reference framework is
+\mbox{ISO~20816}~\citep{iso20816}, which specifies evaluation zones in terms of broadband
+vibration magnitude and, importantly for what follows, distinguishes absolute
+criteria from criteria based on change relative to a baseline established for
+the individual machine. The standard is explicit that zone boundaries are
+indicative and that a machine's own history is the more reliable reference.
+
+That distinction is the practical origin of the present work. Absolute
+thresholds transfer poorly across assets because the same health state
+produces different indicator values under different mounting, load and sensor
+placement, and the resulting practice --- retune the threshold per machine ---
+is effective but unprincipled: it has no statement of what coverage the tuned
+threshold attains, and no rule for how many observations are needed before it
+may be trusted. Sections~\ref{sec:computational_realization}
+and~\ref{sec:results} supply both for the quantity used here.
+
+\paragraph{Novelty detection and reconstruction-based methods.}
+Detecting departure from a nominal set without fault examples is the subject
+of novelty detection~\citep{bishop1994} and one-class methods, of which the
+support-vector formulation of \citet{scholkopf1999,scholkopf2001} is the
+canonical instance: it estimates a region containing a prescribed fraction of
+the nominal mass, which is a level-set estimation problem in the sense of
+\citet{devroye1980} and \citet{scott2006}. Reconstruction-based detection
+replaces the explicit region with an operator trained to reproduce nominal
+data, using the residual as the score~\citep{hinton2006,sakurada2014}.
+
+This paper is reconstruction-based, and takes the level-set reading
+seriously rather than as an analogy: the decision rule is membership in an
+estimated region, and Section~\ref{sec:manifolds_saturation} treats the radius
+as an estimate of that region's extent, with the fill-distance argument of
+Proposition~\ref{prop:fill_distance} controlling how the estimate approaches
+it. The difference from the one-class literature is not the detector but what
+is claimed about it. A one-class boundary is usually reported through its
+empirical false-alarm rate; here the boundary carries a distribution-free
+coverage statement with an exactly known attained level, and a minimum sample
+size below which no such statement is available.
+
+\paragraph{Learning as an inverse problem.}
+Treating estimation from examples as an ill-posed inverse problem requiring
+regularization goes back to \citet{hadamard1932} and
+\citet{tikhonov1977}, and was made precise for statistical learning by
+\citet{devito2005}, who identify the learning problem with the inversion of a
+compact operator and derive regularization rates accordingly. The framing
+adopted here is the same in spirit and different in target. Those works invert
+towards a function; this one inverts towards an equivalence class, and the
+ill-posedness removed is not the instability of an operator inverse but the
+non-injectivity introduced by nuisance factors. Passing to the quotient does
+not regularize the problem, it changes the object recovered, and
+Proposition~\ref{prop:quotient_diagnosis} states the condition under which
+this loses nothing diagnostically.
+
+\paragraph{Invariance and geometric representation learning.}
+Building known symmetries into a representation rather than learning them from
+data is the organizing idea of geometric deep
+learning~\citep{bronstein2021}, which classifies architectures by the group
+they respect. The nuisance factors of Section~\ref{sec:observation_model} form
+such a group, and the choice of a convolutional operator in
+Section~\ref{sec:computational_realization} is made on that basis:
+translation equivariance matches the acquisition-phase nuisance. Where this
+work departs is that invariance is not asserted architecturally and then
+assumed. Section~\ref{sec:results} reports a probe that tests whether a
+calibrated operator's accepted region actually respects the geometry, and
+finds a linear operator that attains the target coverage while accepting
+points at hundreds of times the nominal spacing. Equivariance by construction
+constrains the representation; it does not by itself certify the decision
+region built on top of it.
+
+\paragraph{Domain adaptation for fault diagnosis.}
+A large recent literature transfers fault classifiers across operating
+conditions or machines by aligning feature distributions between a labelled
+source domain and an unlabelled target.
+% [PENDING] Cite here the three domain-adaptation references carried over from
+% the TRB paper (Nguyen 2025, Ning 2026, Wang 2026). Their entries are in the
+% TRB bibliography and have NOT been copied into references.bib, because I
+% could not verify their details from this source; copy the entries across
+% and add the \citep here rather than paraphrasing them.
+The distinction from the present work is worth making precisely, because both
+are per-asset procedures and they are not the same per-asset procedure. Domain
+adaptation adapts the \emph{representation} to each asset, and therefore needs
+target-domain data at training time, a criterion for when alignment has
+succeeded, and in the supervised variants labelled faults in the source
+domain. What is adapted here is not the representation but the
+\emph{radius}: one operator is shared across assets, and each asset estimates
+a scalar from its own nominal data. The consequences are concrete. Adding an
+asset requires no retraining and no fault labels, the per-asset quantity has a
+coverage guarantee that a learned alignment does not, and the commissioning
+cost is a number of observations that can be stated in advance rather than a
+data requirement that can only be checked after the fact.
+
+\paragraph{Topological and predictive representation learning.}
+Two families are close enough in motivation to require explicit positioning.
+Self-organizing maps~\citep{kohonen1982} also learn a topology-preserving
+organization of observations without labels, and joint-embedding predictive
+architectures~\citep{assran2023} also learn representations by predicting in
+a latent space rather than reconstructing in the input space. Four differences
+separate them from the construction here. The organization is geometric over
+the learned representation rather than imposed on a fixed lattice, so the
+nominal region has an extent that can be measured rather than a grid
+coordinate. The problem is stated as an explicit inverse recovery with the
+invariance group named, rather than left implicit in the training objective.
+Convergence has a stopping criterion --- saturation of the estimated radius,
+Definition~\ref{def:saturation_radius} --- rather than a fixed training
+budget. And labelling is attached to regions rather than to samples, which is
+what allows the taxonomy of Section~\ref{sec:emergent_classification} to grow
+without recalibrating classes already established.
+
+\paragraph{Distribution-free tolerance limits and conformal prediction.}
+The statistical result used in Section~\ref{sec:computational_realization} is
+classical. \citet{wilks1941} showed that order statistics of a sample give
+tolerance limits whose coverage does not depend on the underlying
+distribution, and the modern development of the same exchangeability argument
+is conformal prediction~\citep{vovk2005,shafer2008,papadopoulos2002,lei2018},
+which converts a nonconformity score into a prediction set with finite-sample
+validity.
+
+We claim no contribution to that theory. The contribution is the
+identification: the per-asset diagnostic radius is exactly a distribution-free
+tolerance limit on the nominal residual, and the decision rule of
+Section~\ref{sec:computational_realization} is a conformal predictor whose
+nonconformity score is the reconstruction residual. Once the identification is
+made, two things follow that are not usually stated in diagnostic terms. The
+attained coverage is known exactly rather than bounded
+(Proposition~\ref{prop:coverage}), so a commissioning procedure can be
+specified rather than tuned. And the guarantee has a minimum sample size
+(Corollary~\ref{cor:min_commissioning}) together with a range above it in
+which the estimator is degenerate
+(Corollary~\ref{cor:degenerate_range}) --- a caveat that matters in practice,
+where commissioning data is scarce and the temptation is to certify from as
+few observations as the guarantee formally permits.
 
 % ============================================================================
 \section{Observation Model}
@@ -690,6 +958,9 @@ is the reason a representation that is insensitive to nuisance variability can
 expose compact functional regions where raw observations show none. The
 projection does not create physical structure; it removes variability that is
 irrelevant to the latent state.
+Figure~\ref{fig:quotient_manifold_concept} shows the two pictures side by
+side: extended orbits in the observation space, and the compact regions they
+collapse to once the nuisance directions are quotiented away.
 
 \begin{figure}[htbp]
 \centering
@@ -2271,11 +2542,28 @@ independently monitored bearings from Experiment~2, each comprising \(984\)
 chronologically ordered recordings at a \(10\)-minute interval.
 
 Each bearing estimates its radius from an early-life segment and freezes it.
-Departure is declared by a persistence rule over a fixed window of recordings,
-and the reported quantities are the number of observations to convergence, the
-spread of the converged radii across bearings, the healthy-period false-alarm
-rate, the time of first persistent departure, and the lead time to the
-documented end of the run.
+Departure is declared when at least eight of the ten most recent recordings
+exceed that radius, and the reported quantities are the number of observations
+to convergence, the spread of the converged radii across bearings, the
+healthy-period false-alarm rate, the time of first persistent departure, and
+the lead time to the documented end of the run.
+
+The persistence rule is the one free parameter of this protocol and it sets
+the reported lead times, since a permissive rule declares departure earlier
+and so flatters the result. It is therefore fixed by argument rather than by
+inspection. Under the nominal regime an exceedance occurs with probability
+equal to the attained false-alarm rate, so the probability that a window of
+\(p\) recordings contains at least \(q\) exceedances is an upper Binomial
+tail. What matters is that this be evaluated at the rate actually attained,
+near \(5\%\) here for the reason given in
+Section~\ref{subsec:design_caveat}, and not at the \(2\%\) target. At that
+rate a three-of-five rule would declare a spurious departure with probability
+\(0.37\) over a run of two thousand recordings, against \(3.1\times10^{-7}\)
+for eight of ten. A rule that manufactures the event in a third of records
+cannot be used to time it. The calculation assumes independence between
+recordings and is therefore optimistic, since neighbouring residuals are
+positively correlated; the accompanying package computes it, and the choice of
+window is recorded with the results rather than left to the reader to infer.
 
 Unlike CWRU, this setting has no discrete fault classes and no balanced
 evaluation set; what it tests is whether an independently commissioned radius
@@ -2335,13 +2623,43 @@ stopping floor to \(44\) while leaving \(\alpha\) untouched.
 \label{subsec:design_reproducibility}
 %---------------------------------------------------------------------
 
-Two details of the NASA IMS protocol are recorded as unresolved rather than
-silently fixed, because both affect reported lead times. The persistence rule
-appears in the source code with a threshold of three exceedances in five
-recordings, while the accompanying text describes eight in ten; and the
-recording-level score is computed as the mean of the window residuals in the
-code, while a \(95\)th-percentile aggregation is also defined. The results in
-Section~\ref{sec:results} state which convention was used.
+One convention of the NASA IMS protocol deserves stating explicitly, because
+it is a choice rather than a default and the obvious alternative is the wrong
+one here. Each recording is divided into \(17\) non-overlapping windows of
+\(1200\) samples, and those window residuals must be reduced to a single score
+per recording. Every IMS result reported in this paper uses the mean. A high
+quantile is the reduction one might reach for instead, on the grounds that a
+localized disturbance should not be diluted by the nominal windows sharing its
+recording, and it is worth saying why that reasoning does not apply at this
+window length.
+
+The first reason is the subject of
+Corollary~\ref{cor:degenerate_range}, applied to the reduction rather than to
+the commissioning. A \(95\)th percentile of \(17\) values is the sample
+maximum: at \(\alpha=0.05\) the feasibility floor of
+Corollary~\ref{cor:min_commissioning} is \(1/\alpha-1=19\) observations, and
+with \(k_\alpha=\lceil 0.95\times 18\rceil = 18 > 17\) no such quantile is
+even defined distribution-free. Overlapping the windows to reach \(33\) would
+not repair this: the degenerate range at that level extends to \(39\), so the
+estimator would remain the sample maximum, stable in appearance and maximally
+variable in fact. Adopting it would be an instance of precisely the failure
+this paper identifies.
+
+The second reason is physical. The bearings of IMS Experiment~2 run at
+\(2000\) rpm with an outer-race defect frequency near \(236\) Hz, so a
+\(1200\)-sample window at \(20\) kHz spans about \(60\) ms and contains on the
+order of fourteen defect impulses. The damage signature is not localized at
+this scale but present in every window, which is the regime in which averaging
+is the better reduction rather than the worse one: it divides the nominal
+dispersion by \(\sqrt{17}\) while leaving the shift in the mean intact. A high
+quantile would be preferable for a genuinely rare event --- a single impact, an
+ingress of contaminant --- and that is not the failure mode here.
+
+The choice of reduction does not in any case affect the coverage statement of
+Proposition~\ref{prop:coverage}, since it enters calibration and evaluation
+identically and the radius is therefore compared against scores on its own
+scale. What it affects is sensitivity, and it is on sensitivity grounds that
+the mean is retained.
 
 The experiments divide cleanly by what a reader must obtain in order to repeat
 them. The verification and simulator experiments generate their own data from
@@ -2441,7 +2759,21 @@ as a function of \(n\).
 
 \input{tables/variance}
 
-The dispersion is flat to within \(1\%\) across \([49,98]\) and then falls by
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/estimator_variance}
+\caption{Dispersion of the certified radius against commissioning length. The
+shaded region is the degenerate range of
+Corollary~\ref{cor:degenerate_range} and the vertical rule the first length
+admitting an interior order statistic. The gap between the two curves is not
+missing data: the estimator changes identity there, from the sample maximum to
+an interior order statistic, and only then does its dispersion begin to
+contract. Generated by \texttt{experiments/make\_figures.py}.}
+\label{fig:variance}
+\end{figure}
+
+Figure~\ref{fig:variance} shows the consequence directly. The dispersion is
+flat to within \(1\%\) across \([49,98]\) and then falls by
 a factor of \(1.6\) at the first interior order statistic and by \(2.5\) by
 \(n=200\). Clearing the commissioning floor is therefore necessary but not
 sufficient: a commissioning length chosen just above \(49\) satisfies
@@ -2607,7 +2939,8 @@ at every length examined. Generated by
 \label{fig:saturation}
 \end{figure}
 
-Four things follow, and the first three are the substance of
+Four things follow from Table~\ref{tab:saturation} and
+Figure~\ref{fig:saturation}, and the first three are the substance of
 Remark~\ref{rem:saturation_tension}.
 
 First, the certified coverage agrees with the exact value
@@ -2673,7 +3006,24 @@ the same nominal data, at the same target coverage.
 
 \input{tables/adequacy}
 
-The linear operator accepts a point at \(1160\) units from the nearest nominal
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/distance_proxy_probe}
+\caption{The distance-proxy probe. Latent codes are pushed away from the
+nominal range, decoded, and the resulting residual plotted against the true
+distance to a disjoint nominal cloud; hollow markers are points the calibrated
+radius accepts. Both axes are logarithmic because the two operators differ by
+some thirty orders of magnitude in residual and two in accepted distance. The
+two calibrated radii nearly coincide, which is the point: identical
+calibration data and an identical target coverage give almost the same
+threshold, and the operators nevertheless accept points that are twenty-five
+orders of magnitude apart in residual and two apart in true distance.
+Generated by \texttt{experiments/make\_figures.py}.}
+\label{fig:adequacy}
+\end{figure}
+
+Figure~\ref{fig:adequacy} makes the separation visible. The linear operator
+accepts a point at \(1160\) units from the nearest nominal
 window, some \(380\) times the nominal spacing, while assigning it a residual
 of order \(10^{-28}\). Its accepted region is a slab around the retained
 subspace, not a tube around the nominal manifold, exactly as
@@ -2907,14 +3257,12 @@ average, and a healthy false-alarm rate of \(4.98\%\); bearing~3, which shows
 the largest deviation in Table~\ref{tab:nasa}, is also the most sensitive to
 commissioning-sample variability, at \(1.58\pm1.88\%\).
 
-Two caveats attach to the lead times specifically. They depend on the
-persistence rule and on the recording-level aggregation, and
-Section~\ref{subsec:design_reproducibility} records that the source code and
-the accompanying text disagree on both: three exceedances in five recordings
-against eight in ten, and a mean against a \(95\)th-percentile aggregation.
-The values above are those produced by the code as executed. Resolving the
-discrepancy is a prerequisite for quoting lead times as a headline result, and
-is listed in Section~\ref{sec:future_work}.
+The lead times depend on the persistence rule, and the dependence has a
+direction worth stating. They are measured under the eight-of-ten rule
+specified in Section~\ref{subsec:design_nasa}; since a stricter rule can only
+postpone a declaration, these are the shorter lead times that the more
+conservative of the two candidate rules produces, not the longer ones a
+permissive rule would have yielded.
 
 %---------------------------------------------------------------------
 \subsection{Summary}

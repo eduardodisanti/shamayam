@@ -42,7 +42,8 @@ from .saturation import (RadialProjector, radial_distances, empirical_radius,
                          population_radius)
 from .dimension import levina_bickel, predicted_dimension
 from .dynamics import (nominal_family, degradation_trajectory,
-                       first_persistent_departure)
+                       first_persistent_departure,
+                       false_declaration_probability, recording_score)
 from .probes import distance_proxy_probe, passes_distance_proxy
 
 # The Conv1D operator needs TensorFlow and therefore belongs to layer A2; it is
@@ -67,5 +68,6 @@ __all__ = [
     "population_radius",
     "levina_bickel", "predicted_dimension",
     "nominal_family", "degradation_trajectory", "first_persistent_departure",
+    "false_declaration_probability", "recording_score",
     "distance_proxy_probe", "passes_distance_proxy",
 ]

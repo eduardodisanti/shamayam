@@ -18,6 +18,8 @@ and lets the frozen-radius protocol be exercised end to end without requiring
 the IMS archive.
 """
 
+import math
+
 import numpy as np
 
 from .bearing_simulator import BearingSignalSimulator, CWRU_PARAMS
@@ -134,3 +136,112 @@ def first_persistent_departure(flags, *, q=8, p=10, start=0):
         if flags[t - p + 1: t + 1].sum() >= q:
             return int(t)
     return None
+
+
+def false_declaration_probability(*, q=8, p=10, alpha=0.02, n_recordings=None):
+    """
+    Probability that the persistence rule declares a departure while the
+    process is still nominal.
+
+    WHY THIS FUNCTION EXISTS
+    ------------------------
+    The persistence rule is the one free parameter of the run-to-failure
+    protocol, and it is the parameter that sets the reported lead times: a
+    permissive rule declares departure earlier and therefore flatters the
+    result. It should not be chosen by inspection.
+
+    Under the nominal regime an exceedance occurs with probability `alpha`, so
+    the probability that a window of `p` consecutive recordings contains at
+    least `q` exceedances is the upper tail of a Binomial(p, alpha). The
+    calculation assumes independence between recordings, which is optimistic:
+    residuals of neighbouring recordings are positively correlated, so the
+    true probability is HIGHER than this returns. Treat the value as a lower
+    bound on the risk.
+
+    The numbers decide the question for the IMS protocol. At the healthy
+    false-alarm rate actually attained there, near 5% rather than the nominal
+    2%, a three-of-five rule declares a spurious departure in roughly a third
+    of bearings over a run of two thousand recordings, while eight-of-ten does
+    so with probability of order 1e-9. A rule cannot be used to time an event
+    it produces on its own that often.
+
+    Parameters
+    ----------
+    q, p : int
+        Declare departure when at least `q` of the trailing `p` recordings
+        exceed the radius. Must satisfy 1 <= q <= p.
+    alpha : float
+        Per-recording exceedance probability under the nominal regime. Use the
+        ATTAINED false-alarm rate, not the target: the two differ whenever the
+        estimator undercovers, and it is the attained rate that governs.
+    n_recordings : int, optional
+        If given, also return the probability of at least one spurious
+        declaration over a record of this length, counting disjoint windows.
+
+    Returns
+    -------
+    float or tuple(float, float)
+        Per-window probability, and if `n_recordings` is given, the
+        probability of at least one spurious declaration over the record.
+    """
+    if not 1 <= q <= p:
+        raise ValueError(f"need 1 <= q <= p, got q={q}, p={p}")
+    if not 0.0 <= alpha <= 1.0:
+        raise ValueError(f"alpha must be a probability, got {alpha}")
+
+    per_window = float(sum(math.comb(p, k) * alpha**k * (1.0 - alpha)**(p - k)
+                           for k in range(q, p + 1)))
+    if n_recordings is None:
+        return per_window
+    n_windows = int(n_recordings) // int(p)
+    return per_window, float(1.0 - (1.0 - per_window)**n_windows)
+
+
+def recording_score(window_scores, *, mode="mean", percentile=95.0):
+    """
+    Aggregate the window-level residuals of one recording into a single score.
+
+    The aggregation must be IDENTICAL in calibration and in evaluation. This
+    is not a stylistic requirement: the radius is a quantile of the calibration
+    scores, so calibrating on one statistic and testing against another
+    compares quantities on different scales and voids the coverage guarantee
+    entirely. Stating the rule in one function, used by both paths, is what
+    makes that impossible to get wrong by accident.
+
+    `mode="mean"` is the convention under which the reported field results were
+    produced, and it is the correct one at the window length used. That is not
+    obvious, so the argument is recorded here rather than in a commit message.
+
+    A high quantile looks like the more sensitive statistic -- the usual
+    justification is that a localized disturbance should not be diluted by the
+    nominal windows sharing its recording -- but it fails on two counts at 17
+    windows per IMS recording.
+
+    First, a 95th percentile of 17 values IS the sample maximum. At alpha=0.05
+    the feasibility floor is 1/alpha - 1 = 19 observations and k_alpha = 18 >
+    17, so no such quantile is defined distribution-free at all; overlapping
+    the windows to reach 33 does not help, because the degenerate range extends
+    to 39 and the estimator stays the sample maximum. Using it would reproduce,
+    inside the reduction, exactly the failure mode this package exists to
+    document.
+
+    Second, the premise is false for this signal. The IMS bearings run at 2000
+    rpm with an outer-race defect frequency near 236 Hz, so a 1200-sample
+    window at 20 kHz spans 60 ms and holds roughly fourteen defect impulses.
+    The signature is in every window, not in a few, which is the regime where
+    averaging divides the nominal dispersion by sqrt(17) and leaves the shift
+    in the mean untouched.
+
+    `mode="percentile"` is therefore kept for a genuinely sparse anomaly -- a
+    single impact, an ingress of contaminant -- and for window counts well
+    clear of the degenerate range. It is not a drop-in alternative.
+    """
+    w = np.asarray(window_scores, dtype=float)
+    if w.size == 0:
+        raise ValueError("no window scores to aggregate")
+    if mode == "mean":
+        return float(np.mean(w))
+    if mode == "percentile":
+        return float(np.percentile(w, percentile))
+    raise ValueError(f"unknown aggregation mode {mode!r}; "
+                     "use 'mean' or 'percentile'")

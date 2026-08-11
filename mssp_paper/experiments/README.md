@@ -307,16 +307,81 @@ conventions can be compared on identical machinery.
 pins the port bit-for-bit against an independent transcription, so the `A1`
 arm is the published pipeline and not an approximation of it.
 
-## Known discrepancies between the notebooks and the published text
+## Discrepancies between the notebooks and the published text
 
-Flagged here because they affect reported field numbers and are unresolved:
+### 1. NASA persistence rule — NO DISCREPANCY. The published run used 8 of 10
 
-1. **NASA persistence rule.** The notebook sets `PERSISTENCE_Q = 3`,
-   `PERSISTENCE_P = 5`, whereas the text describes "at least eight of the next
-   ten" recordings. Lead times depend on which was used.
-2. **NASA recording-level aggregation.** `RECORDING_SCORE_PERCENTILE = 95.0`
-   is defined, but `shared_nasa_recording_scores` aggregates with
-   `np.mean(window_scores)`. The function's own docstring warns that both
-   experiments must use the same rule.
+This was recorded as an open discrepancy through a full draft. It is not one,
+and the record is corrected here rather than quietly deleted.
 
-Neither affects Layer A.
+The notebook defines `PERSISTENCE_Q = 3`, `PERSISTENCE_P = 5` at module level,
+and those constants are what an inspection of the file finds first. They belong
+to the per-asset path. The cell that actually produces the reported
+run-to-failure results defines its own:
+
+```python
+PERSISTENCE_WINDOW   = 10
+PERSISTENCE_REQUIRED = 8
+```
+
+so the published lead times were computed under **eight of ten**, exactly as
+the text describes. The saved cell output confirms it arithmetically:
+`declaration_index = onset_index + window_size - 1`, and every bearing shows
+`declaration - onset = 9` — that is `10 - 1`, which is impossible under a
+five-recording window.
+
+    Bearing 1 | persistent onset=530 | declaration=539 | lead time=74.00 h
+    Bearing 2 | persistent onset=741 | declaration=750 | lead time=38.83 h
+    Bearing 3 | persistent onset=887 | declaration=896 | lead time=14.50 h
+    Bearing 4 | persistent onset=648 | declaration=657 | lead time=54.33 h
+
+**The reported lead times therefore stand and require no recomputation.** The
+lesson is about the audit, not the experiment: module-level constants were read
+as though they governed a cell that overrides them.
+
+The analysis that was done while believing the discrepancy was real is kept,
+because it justifies the rule rather than merely recording it.
+`false_declaration_probability` shows that at the attained healthy false-alarm
+rate near 5% a three-of-five rule would declare a spurious departure with
+probability 0.37 over a 2000-recording run, against 3.1e-07 for eight of ten.
+The published choice is the defensible one; it is now defended rather than
+assumed.
+
+### 2. NASA recording-level aggregation — RESOLVED: the mean is correct
+
+`RECORDING_SCORE_PERCENTILE = 95.0` is not a dead constant. It is used by
+`aggregate_window_scores_by_recording` on the per-asset path, while
+`shared_nasa_recording_scores` uses `np.mean` under a comment reading "Must
+match the aggregation used in the main NASA experiment". The two paths
+disagree.
+
+**Every IMS number in the paper comes from the mean path** — the shared
+representation experiment, the resampled-commissioning experiment and the
+run-to-failure cell all call `shared_nasa_recording_scores`. The manuscript is
+internally consistent; the inconsistency is between a reported experiment and
+an unreported one.
+
+The mean is also the right choice, for two reasons that are pinned by tests in
+`tests/test_dynamics_dimension.py`.
+
+**A 95th percentile of 17 windows is the sample maximum.** At alpha=0.05 the
+feasibility floor of `cor:min_commissioning` is 19 observations, and
+k_alpha = 18 > 17, so the quantile is not defined distribution-free at all.
+Overlapping to 33 windows clears the floor but lands inside the degenerate
+range, which extends to 39. Adopting the percentile would reproduce, inside
+the reduction, the exact failure mode this package documents.
+
+**The premise behind the percentile is false at this window length.** IMS
+Experiment 2 runs at 2000 rpm with an outer-race defect frequency near 236 Hz,
+so a 1200-sample window at 20 kHz spans 60 ms and contains roughly fourteen
+defect impulses. The signature is in every window, not in a few. In that
+regime averaging divides the nominal dispersion by sqrt(17) and leaves the
+shift in the mean intact — measured contrast 15.5 against 9.3 for the
+percentile. The percentile only wins when the anomaly is genuinely sparse.
+
+Note that the choice does not affect coverage either way: the reduction enters
+calibration and evaluation identically, so the radius is compared against
+scores on its own scale. It affects sensitivity, and that is the ground on
+which it was decided.
+
+Neither discrepancy affects Layer A.

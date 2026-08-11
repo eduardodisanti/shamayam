@@ -28,10 +28,23 @@ matplotlib>=3.5
 #
 #   pip install tensorflow
 #
+# NO UPPER BOUND, DELIBERATELY. Keras changed how activity regularisation is
+# reduced over a batch: TensorFlow 2.16, which produced the published results,
+# averages it; later releases sum it, making it batch-size times larger. Summed,
+# the L1 penalty on the latent layer collapses the code to zero and the decoder
+# emits a constant -- silently, with a monotone loss curve.
+#
+# The first fix here was a version pin. It was the wrong one: a package whose
+# results depend on a frozen version of a fast-moving library has a short shelf
+# life. `conv_autoencoder.BatchMeanL1` states the reduction explicitly instead,
+# which reproduces the published optimisation regime on any version, and
+# `assert_operator_learned` refuses an operator that failed to learn whatever
+# the cause.
+#
 # A2 is optional: `python3 run_all.py --layer a1` skips it, and none of the
 # mathematical claims depend on it.
 # ---------------------------------------------------------------------------
-# tensorflow>=2.15
+# tensorflow>=2.16
 
 # ---------------------------------------------------------------------------
 # Layer B -- field reproduction on CWRU and NASA IMS. Needs TensorFlow plus
