@@ -196,10 +196,11 @@ def table_dimension(d, meta):
             for r in d["dimension"]["tracking"]]
     body = f"""\\begin{{table}}[htbp]
 \\centering
-\\caption{{Maximum-likelihood intrinsic dimension of the noise-free nominal
-family, against the number of active nuisance parameters. The estimator is
-biased downward, increasingly so with dimension, so the criterion is whether
-it \\emph{{tracks}} the prediction rather than whether it matches it. Ambient
+\\caption{{Maximum-likelihood intrinsic dimension \\citep{{levina2004}} of the
+noise-free nominal family, against the number of active nuisance parameters,
+at three neighbourhood sizes $k$. The estimator is biased downward,
+increasingly so with dimension, so the criterion is whether it
+\\emph{{tracks}} the prediction rather than whether it matches it. Ambient
 dimension is {d['dimension']['ambient']}.}}
 \\label{{tab:dimension}}
 \\begin{{tabular}}{{lrrrr}}
