@@ -136,56 +136,35 @@ University of Colorado Boulder, Boulder, CO, USA}
 \end{highlights}
 
 \begin{abstract}
-% [TO WRITE LAST, after Sections 1-2 are frozen.] Must state, in MSSP
-% register: (1) the inverse-problem/quotient-space claim as a general
-% diagnostic principle, not a deployment trick; (2) the formal results --
-% compactness of the nominal orbit, quotient factorization of diagnostic
-% maps, distribution-free coverage of the local operational radius, the
-% commissioning floor and the degenerate range, and per-class validity;
-% (3) the three-tier validation (verification, simulator, CWRU + NASA IMS)
-% with headline numbers: coverage 0.98136 against 0.98039 predicted;
-% interpolation costs 1.9 pp of coverage; radii spanning a factor of 2.8
-% across independently commissioned bearings; NASA lead times 14.5-74.0 h.
-%
-% -- WRITTEN. Numbers come from tables/values.tex, so a re-run propagates
-% here as well; see experiments/make_macros.py.
-Condition monitoring sets thresholds on scalar indicators, and those
-thresholds transfer poorly between machines because the same health state
-produces different values under different mounting, load and sensor placement.
-This paper formulates diagnosis instead as inverse recovery over a quotient
-space induced by the nuisance transformations of the observation process, in
-which the object to be recovered is an equivalence class rather than a point.
-Three consequences are established. Under bounded nuisance the nominal orbit
-is relatively compact, so its image under a continuous representation has a
-finite radius and there is a well-defined quantity to estimate rather than a
-threshold to tune. A correct diagnostic decision factors through the quotient,
-which licenses one shared representation in place of a per-asset classifier.
-And that radius is exactly a distribution-free tolerance limit on the nominal
-residual, so its attained coverage is known exactly as \(k_\alpha/(n+1)\)
-rather than bounded: at a target of \(98\%\), \(49\) nominal observations
-suffice to certify a boundary, and a degenerate range above that floor is
-identified in which the certified estimator is the sample maximum and can
-appear to have converged while remaining maximally variable. Validation
-proceeds in three tiers. Exhaustive verification reproduces the exact coverage
-to within \(\satMaxZ\) Monte Carlo standard errors across six deliberately
-dissimilar residual distributions, and isolates the cost of the interpolated
-estimator used in practice at \(1.9\) percentage points of coverage. On a
-bearing simulator, one nominal-only operator detects three fault families at
-\(\etoeDetectLo\)--\(\etoeDetectHi\%\) at a \(\etoeFAR\%\)
-false-alarm rate, and a probe shows that coverage alone cannot certify a
-representation: two operators calibrated identically, at the same attained
-coverage, differ by more than two orders of magnitude in what they accept. On
-CWRU, calibration from roughly fifty sequential observations matches a
-reference fitted and calibrated on each speed's complete healthy record; on
-\(\nasaBearings\) NASA IMS run-to-failure bearings, radii commissioned from
-\(\nasaNLo\)--\(\nasaNHi\) observations and never adapted give persistent
-departure with \(\nasaLeadLo\) to \(\nasaLeadHi\) hours of warning, with
-no fault labels at any stage. Repeating the field pipeline across training
-seeds shows the radius moving by \(4\)--\(7\%\) while the same radius
-normalised by each asset's own residual level moves by under \(1.3\%\), so
-the diagnostic content lies in the geometry of the nominal region relative to
-its own scale rather than in the absolute value of the residual. A
-reproducibility package regenerates every table, figure and quoted number.
+A generic nominal model, trained by an OEM, in simulation, or from fleet data,
+should ideally be deployable on a previously unseen physical asset without fault
+labels or asset-specific retraining. We propose a mathematically justified method
+for achieving this through finite, label-free local self-calibration. During
+commissioning, the new asset provides only nominal observations, which are used
+to estimate its local operational boundary, while a shared model preserves the
+transferable diagnostic geometry.
+
+We show that this deployment principle follows from two complementary results.
+First, diagnostic invariance induces a quotient structure in which
+nuisance-related observations represent the same underlying physical state,
+justifying a shared representation across assets. Second, bounded nuisance
+variability makes the nominal region relatively compact, implying a finite local
+extent that can be estimated from nominal commissioning observations.
+
+We formulate this estimation as a distribution-free tolerance-limit problem,
+providing an explicit finite-sample commissioning requirement. For a target
+nominal coverage of 98\%, 49 exchangeable nominal observations suffice to
+certify the local boundary, although larger commissioning sets provide
+progressively finer order-statistic resolution.
+
+Experiments on the CWRU and NASA IMS bearing datasets demonstrate the resulting
+generic-to-local deployment procedure using a single shared operator across
+previously unseen assets, without fault labels or per-asset representation
+learning. The results separate two roles that are often conflated in anomaly
+detection: the shared model captures transferable nominal geometry, whereas
+local self-calibration determines how that geometry is metrically realized on
+each physical asset.
+
 \end{abstract}
 
 \begin{keywords}
@@ -196,222 +175,204 @@ Quotient spaces \sep Nuisance invariance \sep Predictive maintenance
 \maketitle
 
 
-
-
 % ============================================================================
 \section{Introduction}
 \label{sec:introduction}
-% [MERGE: TECHNOTE Sec.1 intro + COMPANION core thesis + BLUEPRINTS thesis]
-%
-% Opening move (new framing, not present as such in any source): ground the
-% paper in the BLUEPRINTS thesis explicitly -- physically generated signals
-% do not exhibit unbounded or adversarial variation; they concentrate on
-% compact regions of functional space, and DEVIATION FROM THAT COMPACTNESS
-% IS THE OPERATIONAL DEFINITION OF ANOMALY. State this as the governing
-% principle, then specialize it: bearings under nuisance variability
-% (amplitude, phase, speed, offset, noise) are the deterministic phenomenon;
-% rapid convergence to a compact nominal region is the empirical content
-% tested in Sections 8-9.
-%
-% Then reuse TECHNOTE's inverse-problem framing (para 2-4 of its
-% Introduction): observation is output of a forward process F(theta,eta);
-% full forward-model identification is neither necessary nor tractable;
-% goal is recovery of theta modulo nuisance, i.e. quotient-space membership.
-%
-% State central claim verbatim from TECHNOTE:
-%   "Diagnostic monitoring can be formulated as inverse recovery over a
-%    quotient space induced by nuisance transformations of the observation
-%    process."
-%
-% Close the introduction with explicit contributions list [NEW, do not
-% copy TRB's contributions list verbatim -- TRB's contributions are about
-% fleet deployment, which is out of scope here]. Proposed contributions for
-% THIS paper:
-%   (i)   a quotient-space formalization of anomaly detection with two
-%         proofs (compactness, factorization) [TECHNOTE, reused];
-%   (ii)  a distribution-free coverage guarantee for the locally estimated
-%         operational radius, given as a proposition with proof [NEW,
-%         formalizing the sketch in TRB Sec.3 "Structural and coverage
-%         properties"] -- NOW WRITTEN, see Prop. 3 / Cor. 3 in Sec. 7;
-%   (iii) the blueprint-saturation criterion connecting this formulation to
-%         [BLUEPRINTS] and [COMPANION], with an explicit statement of what
-%         "rapid convergence" means quantitatively (H(n), r_max(n) -> limits);
-%   (iv)  validation across three tiers of increasing realism: synthetic
-%         (4 simulated assets), CWRU (4 operating regimes, oracle vs. online
-%         calibration ablation), and NASA IMS (4 run-to-failure bearings).
-%
-% [NEW, REQUIRED FOR SEC. 10.6] The governing premise must be stated HERE in
-% the form the Discussion closes on: physically generated signals do not
-% exhibit unbounded or adversarial variation, and departure from a compact
-% nominal region is what an anomaly IS. Sec.~\ref{subsec:disc_synthesis}
-% gives that premise two falsifiable renderings -- the finite radius
-% (Cor.~\ref{cor:finite_radius}) and the commissioning floor (49 observations
-% at 98% coverage) -- so the Introduction must set it up as a claim that
-% could fail, not as a slogan. Do not soften it into "signals are often
-% structured": the whole construction is vacuous if the nominal orbit is not
-% relatively compact, and saying so is what makes the paper falsifiable.
-% -- WRITTEN
 
-A rotating machine in steady operation does not produce arbitrary signals. Its
-vibration is the output of a mechanism with finitely many degrees of freedom,
-observed through a sensing chain that introduces its own bounded distortions,
-and the set of waveforms it can emit while healthy is correspondingly
-restricted. Load, speed, mounting, sensor gain and acquisition phase move the
-observed signal about, but they move it within a region rather than across an
-unbounded space.
+Condition-monitoring models are commonly developed before the physical asset on
+which they will ultimately operate is available. An OEM may train a nominal
+model from test-bench measurements, a simulator may provide representative
+healthy behaviour, or a shared model may be learned from data collected across
+a fleet. The practical problem is therefore not merely whether such a model can
+distinguish nominal from anomalous behaviour, but whether it can be deployed on
+a previously unseen physical asset and commissioned using only the observations
+naturally available at deployment.
 
-This paper takes that restriction as its governing premise and states it
-sharply, because it is the premise that makes the rest of the construction
-either meaningful or vacuous: \emph{physically generated signals do not
-exhibit unbounded or adversarial variation, and departure from a compact
-nominal region is what an anomaly is}. The claim is not that nominal signals
-are often well behaved. It is that the nominal set is relatively compact, and
-therefore has a finite extent that can be estimated from finitely many
-observations. If that fails, no finite boundary exists, and a method built on
-estimating one is not merely inaccurate but meaningless.
+This is difficult for a simple reason. A shared model cannot generally be
+expected to transfer a fixed anomaly threshold. Two healthy assets implementing
+the same physical function need not produce identical observations. Load,
+speed, mounting, sensor gain, acquisition phase, structural transmission paths,
+and other nuisance factors change the observed realization of otherwise
+equivalent physical behaviour. Retraining a separate model for every asset
+defeats the purpose of fleet-scale deployment, while requiring representative
+fault examples during commissioning is usually unrealistic.
 
-Stating the premise this way makes it refutable, and Section~\ref{sec:results}
-is arranged so that it could have been refuted. A process whose nominal
-variation did not concentrate would show a boundary estimate that kept growing
-with the number of observations rather than settling; the experiments measure
-exactly that quantity, and report both the regime in which it settles and the
-regime in which it does not.
+This paper addresses the problem by separating what must be shared from what
+must be local. The diagnostic representation is shared across assets; the
+operational boundary is not. A generic nominal model is deployed unchanged on
+a new asset, and the asset estimates its own local operational boundary from a
+finite set of nominal commissioning observations. No fault labels, per-asset
+representation learning, or model retraining are required.
 
-\paragraph{Diagnosis as inverse recovery.}
-An observation is the output of a forward process. A vibration window \(x\) is
-produced by a mechanism in some health state \(\theta\), acted on by nuisance
-factors \(\eta\) that carry no diagnostic information, so that
-\(x=F(\theta,\eta)\). Recovering \(\theta\) from \(x\) is an inverse problem,
-and in the classical sense an ill-posed one: the forward map is not injective,
-because distinct \((\theta,\eta)\) pairs can produce the same observation, and
-its inverse is unstable where it exists.
+The central question of this paper is whether this generic-to-local deployment
+procedure admits a mathematical justification. Specifically, we ask why a
+diagnostic representation learned elsewhere can legitimately be shared, why a
+finite local operational boundary should exist for a previously unseen asset,
+and how many nominal observations are required before that boundary can be
+certified.
 
-The usual response is to identify the forward model and invert it. For
-rotating machinery this is neither tractable nor necessary. It is intractable
-because a faithful forward model of a bearing in an installed drivetrain
-requires contact mechanics, lubrication state, structural transmission paths
-and sensor dynamics that are not identifiable from routine monitoring data. It
-is unnecessary because diagnosis does not require \(\theta\) itself. It
-requires \(\theta\) only up to the nuisance factors: two windows differing by
-mounting phase or sensor gain must receive the same diagnostic verdict, so
-the object to be recovered is not a point but an equivalence class.
+\paragraph{Why a representation can be shared.}
+An observation is the output of a forward physical process. A vibration window
+\(x\) is produced by a mechanism in some health state \(\theta\), acted on by
+nuisance factors \(\eta\) that carry no diagnostic information, so that
+\[
+    x = F(\theta,\eta).
+\]
+Recovering diagnostic state from \(x\) is therefore an inverse problem. The
+forward map is generally not injective with respect to the variables relevant
+to observation: changes in mounting, phase, gain, operating condition, or
+other nuisance factors may alter the waveform without altering the diagnostic
+state.
 
-That observation is the central claim of this work, and we state it in the
-form used in the companion technical note~\citep{disanti2026quotient}:
-diagnostic monitoring can be formulated as inverse recovery over a quotient
-space induced by nuisance transformations of the observation process.
+Diagnosis, however, does not require recovery of those nuisance variables.
+Observations that differ only through diagnostically irrelevant transformations
+should receive the same diagnostic verdict. The appropriate object is therefore
+not an individual waveform but its equivalence class under nuisance
+transformations.
 
-The reformulation changes what must be estimated. In the quotient space
-\(\quotient\), the nuisance orbit of a nominal signal collapses to a single
-element, the nominal set becomes a region rather than a scattered cloud, and
-the diagnostic question becomes membership in that region. Three things then
-follow that do not follow in the ambient space. Membership is decidable from
-nominal data alone, so no fault examples are needed. The region has a finite
-extent, because bounded nuisance makes the orbit relatively compact. And that
-extent is a scalar, which is exactly the kind of quantity for which
-distribution-free statistical guarantees exist.
+Following the formulation developed in the companion technical
+note~\citep{disanti2026quotient}, we express this as inverse recovery over the
+quotient space induced by nuisance transformations of the observation process.
+A diagnostic decision that is invariant to those transformations factors
+through the quotient. This factorization provides the mathematical reason for
+seeking a shared diagnostic representation: different observed realizations
+may correspond to the same diagnostic object.
 
-\paragraph{What the premise buys, quantitatively.}
-The last point is where a qualitative geometric argument becomes an
-engineering statement. If the nominal region has a finite radius, then
-estimating that radius is a tolerance-limit problem, and the coverage of the
-estimate can be certified without assuming a distribution for the residual.
-The certification is not asymptotic and does not appeal to a limit: at a
-target coverage of \(98\%\), forty-nine nominal observations suffice, and the
-attained coverage is known exactly rather than bounded.
+Importantly, this argument does not prescribe how the shared representation
+must be obtained. It may originate from OEM data, simulation, fleet data, or
+another source capable of representing nominal behaviour. Nor does it require
+a particular model class. The autoencoder used in the experiments is one
+realization of such an operator, not the definition of the deployment method.
 
-That number is the operational form of the premise. A regime that can be
-bounded from tens of observations is compact in the sense the premise asserts;
-a process without that structure would require the estimate to keep growing.
-The same analysis also delimits its own validity, and this is worth stating in
-the introduction rather than burying in the results: below forty-nine
-observations no boundary is certifiable at all, and between forty-nine and
-ninety-eight the certified estimator is the sample maximum, so it can appear
-to have converged while remaining maximally variable. A commissioning length
-chosen just above the floor satisfies the guarantee and is nonetheless a poor
-choice.
+\paragraph{Why the boundary must be local.}
+Sharing a diagnostic representation does not imply that its metric realization
+is identical on every installed asset. A rotating machine in steady operation
+does not produce arbitrary signals: its vibration is generated by a mechanism
+with finitely many degrees of freedom and observed through a sensing chain with
+bounded physical distortions. Load, speed, mounting, sensor gain, and
+acquisition phase move the observed signal, but under nominal operation they
+move it within a restricted region rather than across an unbounded observation
+space.
+
+We state this premise sharply because the proposed commissioning procedure
+depends on it: \emph{physically generated nominal signals do not exhibit
+unbounded or adversarial variation}. Under bounded nuisance variability, the
+nominal orbit is relatively compact and therefore has finite extent. A new
+asset need not relearn the shared representation; it need only determine how
+that representation is locally realized by estimating this finite extent from
+its own nominal observations.
+
+This yields the central deployment principle of the paper:
+\[
+\boxed{
+\text{shared nominal representation}
+\;+\;
+\text{local nominal calibration}
+\;\longrightarrow\;
+\text{asset-specific operational boundary}.
+}
+\]
+The representation transfers; the boundary is calibrated locally.
+
+The premise is also refutable. If nominal variation on an asset does not
+concentrate, its estimated boundary should continue to grow as commissioning
+observations accumulate rather than stabilize. Section~\ref{sec:results}
+therefore measures the evolution of this boundary explicitly and reports both
+regimes in which it settles and regimes in which it does not.
+
+\paragraph{Finite self-calibration.}
+Once the nominal region has finite extent, commissioning becomes a statistical
+estimation problem. Let a shared operator produce a scalar residual measuring
+departure from its nominal representation. During commissioning, the new asset
+provides only nominal residuals. Its operational boundary can then be defined
+as a tolerance limit on the local nominal residual distribution.
+
+This formulation gives a distribution-free finite-sample guarantee. Under
+exchangeability of the commissioning residuals, the attained coverage is known
+exactly without assuming a parametric residual distribution. At a target
+nominal coverage of \(98\%\), forty-nine nominal observations suffice to
+certify a local operational boundary.
+
+The number is operational rather than merely asymptotic: it provides an
+explicit minimum commissioning requirement. It does not, however, imply that
+forty-nine observations constitute a desirable engineering commissioning
+length. Below forty-nine observations no boundary is certifiable at the target
+coverage, while between forty-nine and ninety-eight observations the certified
+estimator is the sample maximum. It may therefore appear to have stabilized
+while remaining maximally sensitive to the next extreme observation. The
+framework consequently distinguishes a theoretical minimum commissioning
+length from an engineering criterion for adequate commissioning.
+
+The resulting procedure is deliberately simple. A generic nominal model is
+constructed once, deployed unchanged on a previously unseen asset, exposed to a
+finite sequence of nominal commissioning observations, and paired with the
+local boundary estimated from those observations. Subsequent observations are
+evaluated against that locally calibrated boundary. Fault examples are not
+required at any stage of commissioning.
 
 \paragraph{Contributions.}
-\begin{enumerate}
-\item A quotient-space formalization of anomaly detection, with two results
-      that carry the argument: the nominal orbit is relatively compact under
-      bounded nuisance (Proposition~\ref{prop:compactness}), and a correct
-      diagnostic decision factors through the quotient
-      (Proposition~\ref{prop:quotient_diagnosis}), which is what licenses
-      seeking one shared representation rather than a per-asset classifier.
+The paper makes the following contributions:
 
-\item A distribution-free coverage guarantee for the locally estimated
-      operational radius (Proposition~\ref{prop:coverage}), given with proof.
-      The statistical machinery is classical; the contribution is recognizing
-      that the per-asset diagnostic radius is exactly a distribution-free
-      tolerance limit on the nominal residual. Two consequences follow that
-      are specific to the diagnostic setting and, to our knowledge, have not
-      been stated for it: a minimum commissioning length
-      (Corollary~\ref{cor:min_commissioning}), and a degenerate range above
-      that floor in which the estimator is the sample maximum
+\begin{enumerate}
+
+\item We formulate and justify a generic-to-local deployment method in which a
+      nominal model obtained from OEM data, simulation, fleet data, or another
+      representative source is deployed unchanged on a previously unseen
+      physical asset and self-calibrated using only finite nominal commissioning
+      data. The method separates a shared diagnostic representation from an
+      asset-specific operational boundary and requires neither fault labels nor
+      per-asset representation learning.
+
+\item We provide the geometric justification for sharing the representation.
+      Diagnostic invariance induces a quotient structure, and a correct
+      diagnostic decision factors through that quotient
+      (Proposition~\ref{prop:quotient_diagnosis}). Under bounded nuisance
+      variability, the nominal orbit is relatively compact
+      (Proposition~\ref{prop:compactness}), establishing the existence of a
+      finite local extent to be estimated during commissioning.
+
+\item We formulate local self-calibration as a distribution-free tolerance-limit
+      problem and provide the corresponding coverage guarantee
+      (Proposition~\ref{prop:coverage}). This yields an explicit minimum
+      commissioning length (Corollary~\ref{cor:min_commissioning}) and
+      identifies a degenerate range above that floor in which the certified
+      estimator remains the sample maximum
       (Corollary~\ref{cor:degenerate_range}).
 
-\item A saturation criterion connecting this formulation to the
-      functional--topological account of~\citet{disanti2026blueprints}, with
-      an explicit statement of what rapid convergence means quantitatively
+\item We provide a saturation criterion for determining whether the local
+      boundary has stabilized, connecting the commissioning procedure to the
+      functional--topological account of~\citet{disanti2026blueprints}
       (Definition~\ref{def:saturation_radius},
-      Proposition~\ref{prop:radius_consistency}), together with an operator
-      adequacy criterion showing that coverage alone cannot certify a
-      representation: two operators calibrated identically, at the same
-      attained coverage, differ by more than two orders of magnitude in what
-      they accept.
+      Proposition~\ref{prop:radius_consistency}). We further introduce an
+      operator adequacy criterion showing why successful local coverage alone
+      cannot establish that the shared representation is diagnostically
+      meaningful.
 
-\item Validation across three tiers of increasing realism: synthetic assets
-      under controlled nuisance, CWRU under four operating regimes with an
-      oracle-versus-online calibration ablation, and NASA IMS run-to-failure
-      bearings commissioned independently and with no fault labels at any
-      stage.
+\item We validate the complete generic-to-local procedure across three tiers of
+      increasing realism: synthetic assets under controlled nuisance, CWRU
+      under four operating regimes with an oracle-versus-online calibration
+      ablation, and NASA IMS run-to-failure bearings commissioned independently
+      without fault labels or per-asset retraining.
+
 \end{enumerate}
 
 \paragraph{Scope.}
 Two boundaries should be set at the outset. The framework addresses membership
 in a nominal region, not fault classification: it reports that an asset has
-left its region, not which failure mode it has entered, and the taxonomy in
-Section~\ref{sec:emergent_classification} grows from expert feedback rather
-than from the geometry alone. And the guarantee is conditional on
-exchangeability of the nominal commissioning residuals
-(Assumption~\ref{ass:exchangeability}), which is an assumption about the
-commissioning window and not a property of the method; Section~\ref{sec:results}
-reports a test of it rather than presuming it holds.
+left its locally calibrated nominal region, not which failure mode it has
+entered. The taxonomy in Section~\ref{sec:emergent_classification} grows from
+expert feedback rather than from the geometry alone.
+
+The statistical guarantee is conditional on exchangeability of the nominal
+commissioning residuals (Assumption~\ref{ass:exchangeability}). Exchangeability
+is an assumption about the commissioning observations, not a property conferred
+by the method. Section~\ref{sec:results} therefore tests this condition rather
+than presuming that it holds.
 
 % ============================================================================
 \section{Related Work}
 \label{sec:related}
-% [MERGE: TRB Sec.2 (CBM/ISO20816/domain adaptation/fleet lit) +
-%          TECHNOTE bibliography (novelty detection, geometric DL) +
-%          COMPANION related work (SOM, JEPA, De Vito 2005, Rosasco 2004,
-%          Tikhonov & Arsenin, Hadamard)]
-%
-% For MSSP, weight this toward: (a) classical CBM/rotating-machinery
-% diagnostics and ISO 20816 (TRB has this well-written, reuse near
-% verbatim); (b) one-class/reconstruction anomaly detection (Scholkopf 1999,
-% Bishop 1994, Hinton 2006, Sakurada 2014 -- all already cited in TECHNOTE);
-% (c) inverse-problem theory in learning (De Vito 2005, Rosasco 2004,
-% Tikhonov & Arsenin 1977, Hadamard 1932 -- from COMPANION); (d) geometric/
-% invariant representation learning (Bronstein 2021); (e) domain adaptation
-% for fault diagnosis (Nguyen 2025, Ning 2026, Wang 2026 -- from TRB,
-% keep the paragraph distinguishing "per-asset adaptation" from "per-asset
-% radius estimation", it is a genuinely good point).
-%
-% [NEW] paragraph explicitly positioning against SOM and JEPA using
-% COMPANION's four-point differentiation list (geometric clustering over
-% features vs fixed grid; explicit inverse-problem formalization;
-% blueprint-saturation criterion; manifold-level vs sample-level labeling).
-%
-% [NEW, added while drafting Sec.7] A short paragraph is now also required on
-% distribution-free tolerance limits and conformal prediction (Wilks 1941;
-% Vovk et al. 2005; Papadopoulos et al. 2002; Lei et al. 2018), since
-% Proposition 3 is an application of that theory to the operational radius.
-% Position it as: the statistical machinery is classical, the contribution is
-% recognizing that the per-asset diagnostic radius is exactly a
-% distribution-free tolerance limit on the nominal residual, which supplies
-% both a coverage guarantee and a minimum commissioning length.
-% -- WRITTEN
+
 
 \paragraph{Condition monitoring and fixed thresholds.}
 Industrial vibration monitoring is dominated by band-limited scalar

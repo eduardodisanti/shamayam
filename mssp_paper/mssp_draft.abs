@@ -1,1 +1,29 @@
-{[ABSTRACT NOT YET WRITTEN --- see the drafting note in the source.]}
+A generic nominal model, trained by an OEM, in simulation, or from fleet data,
+should ideally be deployable on a previously unseen physical asset without fault
+labels or asset-specific retraining. We propose a mathematically justified method
+for achieving this through finite, label-free local self-calibration. During
+commissioning, the new asset provides only nominal observations, which are used
+to estimate its local operational boundary, while a shared model preserves the
+transferable diagnostic geometry.
+
+We show that this deployment principle follows from two complementary results.
+First, diagnostic invariance induces a quotient structure in which
+nuisance-related observations represent the same underlying physical state,
+justifying a shared representation across assets. Second, bounded nuisance
+variability makes the nominal region relatively compact, implying a finite local
+extent that can be estimated from nominal commissioning observations.
+
+We formulate this estimation as a distribution-free tolerance-limit problem,
+providing an explicit finite-sample commissioning requirement. For a target
+nominal coverage of 98\%, 49 exchangeable nominal observations suffice to
+certify the local boundary, although larger commissioning sets provide
+progressively finer order-statistic resolution.
+
+Experiments on the CWRU and NASA IMS bearing datasets demonstrate the resulting
+generic-to-local deployment procedure using a single shared operator across
+previously unseen assets, without fault labels or per-asset representation
+learning. The results separate two roles that are often conflated in anomaly
+detection: the shared model captures transferable nominal geometry, whereas
+local self-calibration determines how that geometry is metrically realized on
+each physical asset.
+
