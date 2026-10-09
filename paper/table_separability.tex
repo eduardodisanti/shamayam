@@ -1,0 +1,15 @@
+\begin{tabular}{lrrrrrrrr}
+\toprule
+& \multicolumn{6}{c}{separability at $n$ per class} & within & between \\
+\cmidrule(lr){2-7}
+dataset & 5 & 10 & 20 & 40 & 80 & 160 & median & median \\
+\midrule
+UCI digits 8x8 & 0.874 & 0.870 & 0.868 & 0.861 & 0.865 & 0.866 & 0.166 & 0.323 \\
+MNIST 28x28 & 0.772 & 0.760 & 0.760 & 0.752 & 0.755 & 0.752 & 0.474 & 0.616 \\
+Spoken digits, zero-padded & 0.546 & 0.559 & 0.555 & 0.552 & 0.554 & 0.555 & 0.025 & 0.028 \\
+Spoken digits (FSDD) & 0.622 & 0.635 & 0.631 & 0.629 & 0.628 & 0.630 & 0.041 & 0.049 \\
+\bottomrule
+\end{tabular}
+% separability = P(d_within < d_between), mean over the ten
+%   classes; 0.5 is chance. Each class against the other nine.
+% The medians are at the largest n.

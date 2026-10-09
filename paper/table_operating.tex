@@ -1,0 +1,20 @@
+\begin{tabular}{llrrrr}
+\toprule
+& & \multicolumn{3}{c}{exemplars per class required} & \\
+\cmidrule(lr){3-5}
+dataset & quotient & $F_1\!\ge\!0.80$ & $F_1\!\ge\!0.90$ & $F_1\!\ge\!0.95$ & ceiling $F_1$ \\
+\midrule
+UCI digits 8x8 & raw & 13 & 23 & --- & $0.906 \pm 0.006$ \\
+UCI digits 8x8 & quotient (deskew) & 14 & --- & --- & $0.881 \pm 0.005$ \\
+MNIST 28x28 & raw & --- & --- & --- & $0.763 \pm 0.007$ \\
+MNIST 28x28 & quotient (deskew) & --- & --- & --- & $0.768 \pm 0.006$ \\
+Spoken digits (FSDD) & raw & 70 & --- & --- & $0.811 \pm 0.008$ \\
+\bottomrule
+\end{tabular}
+% One-class rule, one-vs-rest, single global tau.
+% '---' = the demanded F1 is above this rule's ceiling, given
+%   in the last column. NOT a claim about the phenomenon: the
+%   comparative readout of table_learning_target reaches
+%   accuracies this rule cannot, on the same data.
+% Every curve peaks inside the tau grid, so the ceiling is the
+%   rule's and not the grid's.

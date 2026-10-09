@@ -1,0 +1,13 @@
+\begin{tabular}{llrrrr}
+\toprule
+& & \multicolumn{3}{c}{accuracy knee: smallest $n$ per class reaching 95\% of its own maximum} & within-class \\
+\cmidrule(lr){3-5}
+dataset & quotient & linear SVM & logistic & 1-NN & median drift \\
+\midrule
+UCI digits 8x8 & raw & 20 & 20 & 20 & 10\% \\
+UCI digits 8x8 & quotient (deskew) & 20 & 20 & 20 & 14\% \\
+MNIST 28x28 & raw & 160 & 160 & 320 & 0\% \\
+MNIST 28x28 & quotient (deskew) & 40 & 80 & 160 & 7\% \\
+Spoken digits (FSDD) & raw & 80 & 160 & 80 & 10\% \\
+\bottomrule
+\end{tabular}

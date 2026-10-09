@@ -1,0 +1,16 @@
+\begin{tabular}{llrrrrrr}
+\toprule
+& & \multicolumn{3}{c}{candidate set} & accuracy & set & forced \\
+\cmidrule(lr){3-5}
+dataset & quotient & one & several & none & on \emph{one} & coverage & choice \\
+\midrule
+UCI digits 8x8 & raw & 0.82 & 0.10 & 0.08 & 0.995 & 0.915 & 0.970 \\
+UCI digits 8x8 & quotient (deskew) & 0.78 & 0.12 & 0.10 & 0.991 & 0.896 & 0.967 \\
+MNIST 28x28 & raw & 0.61 & 0.17 & 0.21 & 0.979 & 0.771 & 0.920 \\
+MNIST 28x28 & quotient (deskew) & 0.63 & 0.07 & 0.30 & 0.993 & 0.695 & 0.962 \\
+Spoken digits (FSDD) & raw & 0.70 & 0.15 & 0.15 & 0.986 & 0.833 & 0.933 \\
+\bottomrule
+\end{tabular}
+% At the tau maximising one-class F1. Set coverage is how often
+% the true class is among the candidates; the gap between it and
+% forced-choice accuracy is the room a decision rule has.
