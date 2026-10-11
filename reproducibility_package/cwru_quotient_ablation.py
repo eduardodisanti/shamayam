@@ -40,7 +40,13 @@ N_COMMISSION = 49
 N_AUG = 4000
 SEEDS = (0, 1)
 SPEEDS = ("1730", "1750", "1772")
-LEVELS = ("G0", "G1", "G2", "G3", "G4")
+LEVELS = ("G1", "G2", "G3")
+# G0 (the 49 windows, no added variation) and G4 (full group, same ranges)
+# are not re-run here: they are the asset-specific arm of
+# cwru_limited_data_reference.py and the quot_local arm of
+# cwru_raw_vs_quotient.py. G0 is the costly one -- duplicated windows never
+# trigger early stopping -- and repeating it would add nothing but time.
+# cwru_projection_report.py assembles the five levels from the three files.
 HERE = Path(__file__).resolve().parent
 RESULTS = HERE / "results" / "cwru_projection"
 

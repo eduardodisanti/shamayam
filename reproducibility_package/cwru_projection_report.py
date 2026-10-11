@@ -203,6 +203,57 @@ def main(d):
         md.append("\nEntrenamientos que no aprendieron: " +
                   ", ".join(f"{k}: {v}" for k, v in fails.items()) + ".\n")
 
+    ab_path = d / "quotient_ablation.json"
+    if ab_path.exists() and lim_path.exists() and rq_path.exists():
+        Ab = json.loads(ab_path.read_text())
+        Lm = json.loads(lim_path.read_text())
+        Q = json.loads(rq_path.read_text())
+        names = {"G0": "solo proyección", "G1": "+ fase", "G2": "+ ganancia",
+                 "G3": "+ offset", "G4": "+ ruido (grupo completo)"}
+        src = {"G0": "datos limitados (49 ventanas, sin aumento)",
+               "G4": "crudo frente a cociente (quot_local)"}
+        sp = list(Ab["speeds"])
+        runs = {}
+        for s in sp:
+            runs[("G0", s)] = Lm["speeds"][s]["asset"]
+            runs[("G4", s)] = Q["speeds"][s]["quot_local"]
+            for lv in Ab["levels"]:
+                runs[(lv, s)] = Ab["speeds"][s][lv]
+        levels = ["G0"] + list(Ab["levels"]) + ["G4"]
+        md.append("\n### Describir mejor el cociente: modelo local con "
+                  "subconjuntos crecientes del grupo\n")
+        md.append("Mismos ~5 s de puesta en marcha; solo cambia la "
+                  "descripción del grupo. Radio r_(k) sobre las 49 ventanas "
+                  "de puesta en marcha; FAR en las sanas posteriores (rango "
+                  "sobre semillas). G1–G3: "
+                  f"{Ab['n_aug']} ventanas aumentadas, semillas "
+                  f"{', '.join(str(s) for s in Ab['seeds'])}. "
+                  "G0 y G4 vienen de experimentos anteriores con el mismo "
+                  "protocolo: " + "; ".join(f"{k}: {v}" for k, v in src.items())
+                  + ".\n")
+        rows = []
+        for lv in levels:
+            row = [lv, names[lv]]
+            for s in sp:
+                allr = runs[(lv, s)]
+                ok = [r for r in allr if r.get("learned")]
+                if not ok:
+                    row.append("no aprende")
+                    continue
+                v = [100 * r["far_k"] / r["far_n"] for r in ok]
+                txt = (f"{f(min(v), 1)}–{f(max(v), 1)}%" if min(v) != max(v)
+                       else f"{f(v[0], 1)}%") + f" (de {ok[0]['far_n']})"
+                bad = len(allr) - len(ok)
+                row.append(txt + (f"; {bad} no aprende" if bad else ""))
+            row.append(str(max(len(runs[(lv, s)]) for s in sp)))
+            dr = [min(r[f"{x}_dr"] for s in sp for r in runs[(lv, s)]
+                      if r.get("learned")) for x in FAM]
+            row.append(" / ".join(f(v, 1) for v in dr))
+            rows.append(row)
+        md.append(table(["nivel", "grupo"] + [f"FAR {s} rpm" for s in sp]
+                        + ["semillas", "DR mín. bola / int. / ext. (%)"],
+                        rows))
+
     md.append("\n### AUROC sano vs fallo (sin umbral)\n")
     md.append("Valores por velocidad; 1,00 = separación perfecta. "
               "Los descriptores triviales se puntúan como |valor − mediana sana|.\n")
