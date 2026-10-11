@@ -44,6 +44,24 @@ Referencia específica: un autoencoder por condición, entrenado y umbralizado (
 Generalización de la referencia (val_loss / train_loss): 1730: 2.34, 1750: 1.94, 1772: 2.08, 1797: 1.40.
 
 
+### Igualdad de datos: 49 ventanas sanas para ambos — configuración B
+
+Los dos modelos disponen solo de las 49 primeras ventanas sanas de cada condición. Específico: entrenado con ellas y radio r_(k) sobre sus propios residuos de esas ventanas (no hay más datos para calibrar). OEM: entrenado solo con simulación, radio r_(k) sobre las mismas ventanas. FAR medida en las sanas posteriores, que ninguno vio. Específico con 5 semillas.
+
+| rpm | modelo | semillas que aprenden | FAR en sanas no vistas | DR mín. bola / int. / ext. (%) |
+|---|---|---|---|---|
+| 1730 | OEM + radio local | — | 4/47 = 8.5% [2.4; 20.4] | 100.0 / 100.0 / 100.0 |
+| 1730 | específico (mismas ventanas) | 5 de 5 | 23.4–57.4% (mediana 31.9%; sobre 47 sanas) | 100.0 / 100.0 / 100.0 |
+| 1750 | OEM + radio local | — | 3/49 = 6.1% [1.3; 16.9] | 100.0 / 100.0 / 100.0 |
+| 1750 | específico (mismas ventanas) | 5 de 5 | 2.0–26.5% (mediana 6.1%; sobre 49 sanas) | 100.0 / 100.0 / 100.0 |
+| 1772 | OEM + radio local | — | 0/50 = 0.0% [0.0; 7.1] | 100.0 / 100.0 / 100.0 |
+| 1772 | específico (mismas ventanas) | 4 de 5 (1 no aprendió) | 4.0–18.0% (mediana 10.0%; sobre 50 sanas) | 100.0 / 100.0 / 100.0 |
+| 1797 | OEM + radio local | — | n/d | 100.0 / 100.0 / 100.0 |
+| 1797 | específico (mismas ventanas) | 5 de 5 | n/d | 100.0 / 100.0 / 100.0 |
+
+Generalización del específico (val_loss / train_loss): 1.28–4.85.
+
+
 ### AUROC sano vs fallo (sin umbral)
 
 Valores por velocidad; 1,00 = separación perfecta. Los descriptores triviales se puntúan como |valor − mediana sana|.

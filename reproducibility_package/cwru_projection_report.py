@@ -97,6 +97,58 @@ def main(d):
                   ", ".join(f"{s}: {A[s]['generalisation_gap']:.2f}"
                             for s in SPEEDS) + ".\n")
 
+    lim_path = d / "limited_data.json"
+    if lim_path.exists():
+        from scipy.stats import beta as _b
+        Lm = json.loads(lim_path.read_text())
+        nb = Lm["n_budget"]
+        md.append(f"\n### Igualdad de datos: {nb} ventanas sanas para ambos "
+                  "— configuración B\n")
+        md.append(f"Los dos modelos disponen solo de las {nb} primeras "
+                  "ventanas sanas de cada condición. Específico: entrenado "
+                  "con ellas y radio r_(k) sobre sus propios residuos de esas "
+                  "ventanas (no hay más datos para calibrar). OEM: entrenado "
+                  "solo con simulación, radio r_(k) sobre las mismas ventanas. "
+                  "FAR medida en las sanas posteriores, que ninguno vio. "
+                  f"Específico con {len(Lm['seeds'])} semillas.\n")
+        rows = []
+        for s in SPEEDS:
+            e = Lm["speeds"][s]
+            o = e["oem"]
+            k, n = o["far_k"], o["far_n"]
+            lo = 0.0 if k == 0 else _b.ppf(0.025, k, n - k + 1)
+            hi = 1.0 if k == n else _b.ppf(0.975, k + 1, n - k)
+            rows.append([s, "OEM + radio local", "—",
+                         f"{k}/{n} = {f(100 * k / n, 1)}% "
+                         f"[{f(100 * lo, 1)}; {f(100 * hi, 1)}]"
+                         if n >= 10 else "n/d",
+                         " / ".join(f(o[f"{x}_dr"], 1) for x in FAM)])
+            ok = [r for r in e["asset"] if r["learned"]]
+            bad = len(e["asset"]) - len(ok)
+            if ok:
+                fars = [100 * r["far_k"] / r["far_n"] for r in ok
+                        if r["far_n"]]
+                far_txt = (f"{f(min(fars), 1)}–{f(max(fars), 1)}% "
+                           f"(mediana {f(float(np.median(fars)), 1)}%; "
+                           f"sobre {ok[0]['far_n']} sanas)"
+                           if fars and ok[0]["far_n"] >= 10 else "n/d")
+                dr = " / ".join(
+                    f"{f(min(r[f'{x}_dr'] for r in ok), 1)}"
+                    for x in FAM)
+            else:
+                far_txt, dr = "—", "—"
+            rows.append([s, "específico (mismas ventanas)",
+                         f"{len(ok)} de {len(e['asset'])}"
+                         + (f" ({bad} no aprendió)" if bad else ""),
+                         far_txt, dr])
+        md.append(table(["rpm", "modelo", "semillas que aprenden",
+                         "FAR en sanas no vistas",
+                         "DR mín. bola / int. / ext. (%)"], rows))
+        gaps = [r["gap"] for e in Lm["speeds"].values() for r in e["asset"]
+                if r["learned"]]
+        md.append(f"\nGeneralización del específico (val_loss / train_loss): "
+                  f"{f(min(gaps))}–{f(max(gaps))}.\n")
+
     md.append("\n### AUROC sano vs fallo (sin umbral)\n")
     md.append("Valores por velocidad; 1,00 = separación perfecta. "
               "Los descriptores triviales se puntúan como |valor − mediana sana|.\n")

@@ -16,6 +16,29 @@ En la configuración corregida (B), el modelo compartido entrenado **solo con si
 - **Con el radio certificado sobre las 49 primeras sanas,** el modelo OEM mantiene el 100% de detección y da FAR del 0–8,5% en las sanas siguientes. La incertidumbre es grande (sección 5).
 - **CWRU es un caso fácil:** cualquier modelo de energía llega ahí (sección 2). Demuestra viabilidad, no dificultad. La viabilidad en un caso exigente ya está en IMS (Tabla 10 del manuscrito), ahora recalibrada con radios certificados: ver [`tablas_ims_certificado.md`](tablas_ims_certificado.md).
 
+## Con los mismos datos limitados (49 ventanas sanas)
+
+Un activo nuevo no tiene historial. La alternativa realista al modelo OEM es un modelo específico entrenado con lo que da la puesta en marcha. Los dos reciben exactamente las mismas 49 primeras ventanas sanas de cada condición, y la FAR se mide en las sanas posteriores, que ninguno vio.
+
+→ Tabla **"Igualdad de datos: 49 ventanas sanas para ambos"** en [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md).
+
+**Lo que se ve:**
+- **Detección:** 100% en los dos, en todas las condiciones y semillas.
+- **Falsas alarmas en sanas no vistas:** el OEM queda en el 0–8,5%; el específico, entre el 2% y el 57% según condición y semilla (a 1730 rpm, 23–57%). A 1797 no quedan sanas para medir.
+- **Entrenamiento:** a 1772 rpm, una de las cinco semillas del específico no llega a aprender.
+
+**Por qué:**
+- El modelo específico tiene que calibrar el radio con las mismas ventanas con las que se entrenó. Las memoriza (val/train de 1,28 a 4,85), así que sus residuos de calibración salen más bajos que los de las ventanas nuevas y el radio queda corto.
+- Es exactamente la condición que la Proposición 7 exige y que aquí se rompe: los residuos de calibración tienen que ser intercambiables con los futuros.
+- El OEM la cumple por construcción. Se entrena con simulación y nunca vio esas ventanas, así que sus residuos de calibración son tan "nuevos" como los que vendrán.
+- Para cumplirla, el específico tendría que repartir las 49 ventanas entre entrenar y calibrar. Así quedaría por debajo de 49 para el radio, y no se podría certificar nada.
+
+**Cómo contarlo (tono acordado):**
+- No es "el OEM es mejor que un modelo entrenado con el activo". Con todo el historial, el específico llega al mismo punto (sección anterior).
+- Lo que muestra es que, cuando los datos del activo son pocos, separar entrenamiento (simulación) y calibración (campo) es lo que permite que la garantía sea válida.
+- Lo dejamos como resultado y que el revisor saque la conclusión.
+- **Matiz:** es un caso fácil (CWRU), con unas 50 sanas evaluadas por condición, y las cinco semillas comparten esas mismas ventanas, así que los rangos no son independientes.
+
 ## Resumen en cinco frases
 
 1. **El problema estaba ahí.** En la configuración publicada (A), la Normal (48 kHz) se leía como si fuera de 12 kHz frente a fallos `DE12`. Un simple conteo de cruces por cero separa sanos y fallos con AUROC = 1,000 en las cuatro velocidades.
