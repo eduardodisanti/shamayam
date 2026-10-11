@@ -149,6 +149,60 @@ def main(d):
         md.append(f"\nGeneralización del específico (val_loss / train_loss): "
                   f"{f(min(gaps))}–{f(max(gaps))}.\n")
 
+    rq_path = d / "raw_vs_quotient.json"
+    if rq_path.exists():
+        Q = json.loads(rq_path.read_text())
+        md.append("\n### Crudo frente a cociente, mismo tiempo de puesta en "
+                  "marcha\n")
+        md.append(f"Puesta en marcha: las {Q['n_commission']} primeras "
+                  "ventanas en órdenes (147 vueltas) o los mismos segundos "
+                  "de señal cruda. FAR en las sanas posteriores; detección "
+                  "sobre todos los fallos DE48. Modelos locales con "
+                  f"{len(Q['seeds'])} semillas (rango).\n")
+
+        def rng_far(runs):
+            ok = [r for r in runs if r.get("learned")]
+            if not ok or not ok[0]["far_n"]:
+                return "n/d", ok
+            v = [100 * r["far_k"] / r["far_n"] for r in ok]
+            txt = (f"{f(min(v), 1)}–{f(max(v), 1)}% (de {ok[0]['far_n']})"
+                   if min(v) != max(v) else
+                   f"{f(v[0], 1)}% (de {ok[0]['far_n']})")
+            return txt, ok
+
+        def rng_dr(ok):
+            return " / ".join(f(min(r[f"{x}_dr"] for r in ok), 1)
+                              for x in FAM) if ok else "—"
+
+        rows = []
+        for s in SPEEDS:
+            e = Q["speeds"][s]
+            full = [r for r in e["raw_local_full"] if r.get("learned")]
+            rows.append([s, "crudo, local, todo el historial (referencia "
+                         "Tabla 7)", "—",
+                         (f"{f(min(r['far_insample'] for r in full), 1)}% "
+                          "(en la muestra de entrenamiento)") if full else "—",
+                         rng_dr(full)])
+            txt, ok = rng_far(e["raw_local"])
+            rows.append([s, "crudo, local, solo puesta en marcha",
+                         e["raw_cal_windows"], txt, rng_dr(ok)])
+            txt, ok = rng_far(e["quot_local"])
+            rows.append([s, "cociente, local (aumentado sobre G)",
+                         Q["n_commission"], txt, rng_dr(ok)])
+            o = e["quot_oem"]
+            rows.append([s, "cociente, OEM (simulación)", Q["n_commission"],
+                         f"{f(100 * o['far_k'] / o['far_n'], 1)}% "
+                         f"(de {o['far_n']})" if o["far_n"] >= 10 else "n/d",
+                         " / ".join(f(o[f"{x}_dr"], 1) for x in FAM)])
+        md.append(table(["rpm", "modelo", "ventanas de puesta en marcha",
+                         "FAR en sanas no vistas",
+                         "DR mín. bola / int. / ext. (%)"], rows))
+        fails = {k: sum(1 for e in Q["speeds"].values() for r in e[k]
+                        if not r.get("learned"))
+                 for k in ("raw_local_full", "raw_local", "quot_local")}
+        md.append("\nEntrenamientos que no aprendieron: " +
+                  ", ".join(f"{k}: {v}" for k, v in fails.items()) + ".\n")
+
     md.append("\n### AUROC sano vs fallo (sin umbral)\n")
     md.append("Valores por velocidad; 1,00 = separación perfecta. "
               "Los descriptores triviales se puntúan como |valor − mediana sana|.\n")

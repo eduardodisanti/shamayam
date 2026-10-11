@@ -39,6 +39,34 @@ Un activo nuevo no tiene historial. La alternativa realista al modelo OEM es un 
 - Lo dejamos como resultado y que el revisor saque la conclusión.
 - **Matiz:** es un caso fácil (CWRU), con unas 50 sanas evaluadas por condición, y las cinco semillas comparten esas mismas ventanas, así que los rangos no son independientes.
 
+## Crudo frente a cociente: para qué sirve el método
+
+La referencia que haría un ingeniero sin el método es un autoencoder entrenado con la señal **cruda** del rodamiento: 48 kHz tal cual, ventanas de 1200 muestras, sin proyección ni modelo de perturbaciones. Se compara, con el **mismo tiempo de puesta en marcha** (~5 s), con dos formas de trabajar en el cociente: un modelo local entrenado en el cociente (proyección + aumento sobre el grupo) y el OEM.
+
+→ Tabla **"Crudo frente a cociente, mismo tiempo de puesta en marcha"** en [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md); el paso intermedio (proyección sin aumento) es la tabla **"Igualdad de datos"**.
+
+**Lo que se ve (1730 / 1750 / 1772 rpm; a 1797 no quedan sanas para medir):**
+- **Detección:** 100% de los fallos en todos los modelos.
+- **Falsas alarmas en las sanas posteriores, de peor a mejor:**
+  - crudo, local: 100% / 100% / 9–14%;
+  - solo proyección, local (sin cubrir el resto del grupo): 23–57% / 2–27% / 4–18%;
+  - cociente completo, local (proyección + aumento sobre el grupo): 0–4% / 0% / 0–6%;
+  - cociente, OEM: 8,5% / 6,1% / 0%.
+- **Lectura:** con poco tiempo de puesta en marcha, lo que hace viable el detector es **trabajar en el espacio cociente**. Da igual que el modelo se entrene en el sitio (local, aumentado sobre el grupo) o de fábrica con simulación (OEM): los dos funcionan, y el crudo no. El autoencoder es solo el vehículo.
+- **Qué añade el OEM sobre el local en el cociente:** no requiere entrenar nada en el sitio, solo calcular un radio, y el modelo existe antes de instalar el activo. Aquí el local en el cociente da incluso algo menos de FAR.
+
+**Por qué falla el crudo (comprobado y con hipótesis):**
+- **Comprobado:** el registro sano es estacionario (media y desviación constantes segundo a segundo). El modelo crudo reconstruye bien ventanas nuevas de esos mismos 5 s, pero las posteriores le dan un error claramente mayor: ha memorizado lo que vio en esos 5 s, no la órbita nominal.
+- **Hipótesis, pendiente de verificar con un script:**
+  - En el dominio de órdenes, con ventanas de exactamente 3 vueltas, todas las ventanas empiezan en el mismo ángulo del eje: la sección fija la fase del eje.
+  - Las ventanas crudas (25 ms, menos de una vuelta) empiezan en un ángulo cualquiera y mezclan componentes no síncronos con el eje.
+  - 5 s no bastan para cubrir esa órbita sin el cociente.
+
+**Matices:**
+- La ventana cruda de 1200 muestras a 48 kHz es una elección; un ingeniero podría usar ventanas más largas, y se puede probar como variante.
+- La referencia cruda con todo el historial solo tiene FAR medida sobre sus propios datos de entrenamiento (2,2–2,5% por construcción). No hay sanas no vistas para evaluarla.
+- Caso fácil (CWRU), unas 50 sanas evaluadas en el cociente y unas 200 en crudo por condición, y 3 semillas.
+
 ## Resumen en cinco frases
 
 1. **El problema estaba ahí.** En la configuración publicada (A), la Normal (48 kHz) se leía como si fuera de 12 kHz frente a fallos `DE12`. Un simple conteo de cruces por cero separa sanos y fallos con AUROC = 1,000 en las cuatro velocidades.

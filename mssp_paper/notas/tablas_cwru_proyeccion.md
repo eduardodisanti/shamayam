@@ -62,6 +62,32 @@ Los dos modelos disponen solo de las 49 primeras ventanas sanas de cada condici�
 Generalización del específico (val_loss / train_loss): 1.28–4.85.
 
 
+### Crudo frente a cociente, mismo tiempo de puesta en marcha
+
+Puesta en marcha: las 49 primeras ventanas en órdenes (147 vueltas) o los mismos segundos de señal cruda. FAR en las sanas posteriores; detección sobre todos los fallos DE48. Modelos locales con 3 semillas (rango).
+
+| rpm | modelo | ventanas de puesta en marcha | FAR en sanas no vistas | DR mín. bola / int. / ext. (%) |
+|---|---|---|---|---|
+| 1730 | crudo, local, todo el historial (referencia Tabla 7) | — | 2.2% (en la muestra de entrenamiento) | 100.0 / 100.0 / 100.0 |
+| 1730 | crudo, local, solo puesta en marcha | 204 | 100.0% (de 200) | 100.0 / 100.0 / 100.0 |
+| 1730 | cociente, local (aumentado sobre G) | 49 | 0.0–4.3% (de 47) | 100.0 / 100.0 / 100.0 |
+| 1730 | cociente, OEM (simulación) | 49 | 8.5% (de 47) | 100.0 / 100.0 / 100.0 |
+| 1750 | crudo, local, todo el historial (referencia Tabla 7) | — | 2.2% (en la muestra de entrenamiento) | 100.0 / 100.0 / 100.0 |
+| 1750 | crudo, local, solo puesta en marcha | 201 | 100.0% (de 202) | 100.0 / 100.0 / 100.0 |
+| 1750 | cociente, local (aumentado sobre G) | 49 | 0.0% (de 49) | 100.0 / 100.0 / 100.0 |
+| 1750 | cociente, OEM (simulación) | 49 | 6.1% (de 49) | 100.0 / 100.0 / 100.0 |
+| 1772 | crudo, local, todo el historial (referencia Tabla 7) | — | 2.2% (en la muestra de entrenamiento) | 100.0 / 100.0 / 100.0 |
+| 1772 | crudo, local, solo puesta en marcha | 199 | 8.8–13.7% (de 204) | 100.0 / 100.0 / 100.0 |
+| 1772 | cociente, local (aumentado sobre G) | 49 | 0.0–6.0% (de 50) | 100.0 / 100.0 / 100.0 |
+| 1772 | cociente, OEM (simulación) | 49 | 0.0% (de 50) | 100.0 / 100.0 / 100.0 |
+| 1797 | crudo, local, todo el historial (referencia Tabla 7) | — | 2.5% (en la muestra de entrenamiento) | 100.0 / 100.0 / 100.0 |
+| 1797 | crudo, local, solo puesta en marcha | 196 | 33.3% (de 6) | 100.0 / 100.0 / 100.0 |
+| 1797 | cociente, local (aumentado sobre G) | 49 | 0.0% (de 1) | 100.0 / 100.0 / 100.0 |
+| 1797 | cociente, OEM (simulación) | 49 | n/d | 100.0 / 100.0 / 100.0 |
+
+Entrenamientos que no aprendieron: raw_local_full: 0, raw_local: 0, quot_local: 0.
+
+
 ### AUROC sano vs fallo (sin umbral)
 
 Valores por velocidad; 1,00 = separación perfecta. Los descriptores triviales se puntúan como |valor − mediana sana|.
