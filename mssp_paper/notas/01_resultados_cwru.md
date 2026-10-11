@@ -1,9 +1,6 @@
 # CWRU tras corregir la frecuencia de muestreo: resultados
 
-*Rama `mssp`, 11-oct-2026. Todas las cifras salen de
-`reproducibility_package/results/cwru_projection/` (`results.json`, `scores.npz`).
-Las tablas completas, generadas por script, están en
-[`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md).*
+*Rama `mssp`, 11-oct-2026. Todas las tablas están en [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md), generadas por `cwru_projection_report.py` desde `results/cwru_projection/` (`results.json`, `scores.npz`, `asset_reference.json`). `tests/test_generated_notes.py` comprueba que coinciden byte a byte con lo que regenera el script. Esta nota no contiene tablas de resultados: las cifras del texto resumen esas tablas y, si alguna difiere, mandan las tablas.*
 
 > Los rodamientos son **solo validación**: el paper es de método (modelo estilo OEM + calibración local, sin datos ni etiquetas del activo) y CWRU/IMS son el banco donde se comprueba que es posible.
 
@@ -11,18 +8,13 @@ Las tablas completas, generadas por script, están en
 
 En la configuración corregida (B), el modelo compartido entrenado **solo con simulación** y con el radio calibrado localmente llega al **mismo punto de operación** que un autoencoder específico entrenado con las sanas de cada condición (la referencia de la Tabla 7 publicada, rehecha con los datos corregidos):
 
-| rpm | Específico del activo: FAR / DR (bola, int., ext.) / AUROC mín. | OEM + radio local: FAR / DR / AUROC mín. |
-|---|---|---|
-| 1730 | 2,08% / 100, 100, 100 / 1,000 | 2,08% / 100, 100, 100 / 1,000 |
-| 1750 | 2,04% / 100, 100, 100 / 1,000 | 2,04% / 100, 100, 100 / 1,000 |
-| 1772 | 2,02% / 100, 100, 100 / 1,000 | 2,02% / 100, 100, 100 / 1,000 |
-| 1797 | 2,00% / 100, 100, 100 / 1,000 | 2,00% / 100, 100, 100 / 1,000 |
+→ Tabla **"Viabilidad: modelo compartido (OEM) frente a modelo específico del activo"** en [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md). En las cuatro condiciones: misma FAR (2,00–2,08%), detección del 100% en las tres familias de fallo y AUROC 1,000 en ambos.
 
 **Cómo leerlo honestamente:**
 - **La igualdad de FAR es aritmética.** Los dos fijan el umbral en el p98 de las mismas n sanas, así que dejan fuera el mismo número de ventanas. Lo que se compara de verdad es la detección (100% en ambos) y la separación sin umbral (AUROC 1,000 en ambos).
 - **La referencia está favorecida:** entrena y umbraliza con las mismas ventanas, con memorización (val/train = 1,40–2,34).
 - **Con el radio certificado sobre las 49 primeras sanas,** el modelo OEM mantiene el 100% de detección y da FAR del 0–8,5% en las sanas siguientes. La incertidumbre es grande (sección 5).
-- **CWRU es un caso fácil:** cualquier modelo de energía llega ahí (sección 2). Demuestra viabilidad, no dificultad. La viabilidad en un caso exigente queda para IMS.
+- **CWRU es un caso fácil:** cualquier modelo de energía llega ahí (sección 2). Demuestra viabilidad, no dificultad. La viabilidad en un caso exigente ya está en IMS (Tabla 10 del manuscrito), ahora recalibrada con radios certificados: ver [`tablas_ims_certificado.md`](tablas_ims_certificado.md).
 
 ## Resumen en cinco frases
 
@@ -63,11 +55,7 @@ En la configuración corregida (B), el modelo compartido entrenado **solo con si
 
 AUROC sano frente a fallo, con los cruces por cero como detector trivial:
 
-| Config | Bola (1730/1750/1772/1797) | Pista int. | Pista ext. |
-|---|---|---|---|
-| A original | 1,000 / 1,000 / 1,000 / 1,000 | 1,000 / 1,000 / 1,000 / 1,000 | 1,000 / 1,000 / 1,000 / 1,000 |
-| B corregida | 0,712 / 0,876 / 0,912 / 1,000 | 0,785 / 0,624 / 0,516 / 1,000 | 0,769 / 0,802 / 0,757 / 0,987 |
-| C control | 0,904 / 0,914 / 0,908 / 1,000 | 0,890 / 0,946 / 0,965 / 1,000 | 0,893 / 0,876 / 0,829 / 0,980 |
+→ Tabla **"AUROC sano vs fallo (sin umbral)"**, fila `zcr` de cada configuración, en [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md).
 
 Mediana de cruces por cero en A: sanas 0,17–0,21 frente a fallos 0,43–0,50, un factor ~2,5 que es la huella del factor 4 de escala temporal. En B, sanas y fallos quedan en 0,42–0,47, salvo 1797 (véase el punto 5).
 
@@ -77,14 +65,9 @@ Mediana de cruces por cero en A: sanas 0,17–0,21 frente a fallos 0,43–0,50, 
 
 AUROC del autoencoder compartido y del RMS en B: **1,000 en las 12 combinaciones** de velocidad y familia, para los dos detectores. Con calibración certificada (n = 49), el RMS detecta el 100% de los fallos en todas las velocidades, igual que el autoencoder.
 
-| Mediana RMS en B | Sanas | Bola | Pista int. | Pista ext. |
-|---|---|---|---|---|
-| 1730 | 0,058 | 0,151 | 0,280 | 0,451 |
-| 1750 | 0,057 | 0,151 | 0,280 | 0,471 |
-| 1772 | 0,061 | 0,148 | 0,281 | 0,527 |
-| 1797 | 0,072 | 0,152 | 0,582 | 0,499 |
+→ Tabla **"Medianas de los descriptores (qué separa)"**, configuración B, en [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md).
 
-**Consecuencia para un paper de viabilidad:** el 100% de detección en CWRU sigue siendo cierto tras la corrección. No sirve para decir que el método es *mejor* (lo conseguiría cualquier indicador de energía), y tampoco hace falta, porque esa no es la afirmación. Sirve para decir que el esquema OEM + radio local *llega* al punto de operación esperado. Conviene reconocer que CWRU es fácil (Smith & Randall, 2015, MSSP) y que la demostración exigente es IMS (detección temprana en run-to-failure).
+**Consecuencia para un paper de viabilidad:** el 100% de detección en CWRU sigue siendo cierto tras la corrección. No sirve para decir que el método es *mejor* (lo conseguiría cualquier indicador de energía), y tampoco hace falta, porque esa no es la afirmación. Sirve para decir que el esquema OEM + radio local *llega* al punto de operación esperado. Conviene reconocer que CWRU es fácil (Smith & Randall, 2015, MSSP) y que la demostración exigente está en IMS (detección temprana en run-to-failure).
 
 **La comparación de viabilidad** (modelo OEM frente a modelo específico del activo) está en la sección "Resultado principal" de arriba: mismo punto de operación en las cuatro condiciones.
 
@@ -94,12 +77,7 @@ La curtosis es el único descriptor que no llega a 1,000 (bola 0,78–0,87). Es 
 
 Radio oráculo del autoencoder calibrado en la fila y aplicado a las sanas de la columna (% fuera del radio). En B:
 
-| Calibrada en \ evaluada en | 1730 | 1750 | 1772 | 1797 |
-|---|---|---|---|---|
-| 1730 | 2,1 | 3,1 | 92,9 | 100,0 |
-| 1750 | 1,0 | 2,0 | 92,9 | 100,0 |
-| 1772 | 0,0 | 0,0 | 2,0 | 100,0 |
-| 1797 | 0,0 | 0,0 | 0,0 | 2,0 |
+→ Tabla **"Transferencia del radio entre velocidades (solo sanas)"**, B — ae, en [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md). Calibrado en 1730 o 1750, deja fuera el 92,9% de las sanas de 1772 y el 100% de las de 1797.
 
 Radios oráculo en B: 0,0579 / 0,0583 / 0,0680 / 0,0871, un factor 1,50 entre extremos. El RMS sano también cambia con la condición (0,057–0,072) y su radio tampoco se transfiere.
 
@@ -121,16 +99,7 @@ En A (este reentrenamiento), τ_MC = 0,0452 queda a 0,78–1,04 del oráculo, y 
 
 FAR en sanas **no vistas** tras calibrar, autoencoder compartido, con intervalo de Clopper–Pearson al 95%:
 
-| Config | rpm | Certificado n = 49 | Online (regla publicada) |
-|---|---|---|---|
-| B | 1730 | 4/47 = 8,5% [2,4; 20,4] | 3/21 = 14,3% [3,0; 36,3] (n = 75) |
-| B | 1750 | 3/49 = 6,1% [1,3; 16,9] | 3/49 = 6,1% [1,3; 16,9] (n = 49) |
-| B | 1772 | 0/50 = 0% [0; 7,1] | 0/43 = 0% [0; 8,2] (n = 56) |
-| B | 1797 | 0/1 (no evaluable) | **no converge** (solo 50 sanas) |
-| A | 1730 | 8/355 = 2,3% [1,0; 4,4] | 11/346 = 3,2% [1,6; 5,6] |
-| A | 1750 | 9/355 = 2,5% [1,2; 4,8] | 13/343 = 3,8% [2,0; 6,4] |
-| A | 1772 | **30/354 = 8,5% [5,8; 11,9]** | 34/354 = 9,6% [6,7; 13,2] |
-| A | 1797 | 5/154 = 3,2% [1,1; 7,4] | 7/154 = 4,5% [1,8; 9,1] |
+→ Tablas **"FAR en sanas no vistas, con IC 95% de Clopper–Pearson"** y **"Deriva cronológica de las sanas"** en [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md).
 
 **Lectura:**
 - Con el máximo de 49, la cobertura realizada sigue una Beta(49, 1): P(FAR > 5%) ≈ 8%. Los valores de B son compatibles con eso, pero con 50 sanas no se puede distinguir nada.

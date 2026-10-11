@@ -145,6 +145,40 @@ Valores por velocidad; 1,00 = separación perfecta. Los descriptores triviales s
 FAR: en el oráculo y la transferencia directa, sobre todas las sanas (incluidas las de calibración); en online, solo las posteriores a la convergencia; en el certificado, solo las posteriores a las 49 de calibración.
 
 
+### FAR en sanas no vistas, con IC 95% de Clopper–Pearson (operador compartido)
+
+| config | rpm | certificado n=49 | online (regla publicada) |
+|---|---|---|---|
+| A | 1730 | 8/355 = 2.3% [1.0; 4.4] | 11/346 = 3.2% [1.6; 5.6] (n calib. = 58) |
+| A | 1750 | 9/355 = 2.5% [1.2; 4.8] | 13/343 = 3.8% [2.0; 6.4] (n calib. = 61) |
+| A | 1772 | 30/354 = 8.5% [5.8; 11.9] | 34/354 = 9.6% [6.7; 13.2] (n calib. = 49) |
+| A | 1797 | 5/154 = 3.2% [1.1; 7.4] | 7/154 = 4.5% [1.8; 9.1] (n calib. = 49) |
+| B | 1730 | 4/47 = 8.5% [2.4; 20.4] | 3/21 = 14.3% [3.0; 36.3] (n calib. = 75) |
+| B | 1750 | 3/49 = 6.1% [1.3; 16.9] | 3/49 = 6.1% [1.3; 16.9] (n calib. = 49) |
+| B | 1772 | 0/50 = 0.0% [0.0; 7.1] | 0/43 = 0.0% [0.0; 8.2] (n calib. = 56) |
+| B | 1797 | 0/1 = 0.0% [0.0; 97.5] | no converge |
+| C | 1730 | 4/47 = 8.5% [2.4; 20.4] | 3/21 = 14.3% [3.0; 36.3] (n calib. = 75) |
+| C | 1750 | 3/49 = 6.1% [1.3; 16.9] | 3/49 = 6.1% [1.3; 16.9] (n calib. = 49) |
+| C | 1772 | 0/50 = 0.0% [0.0; 7.1] | 0/43 = 0.0% [0.0; 8.2] (n calib. = 56) |
+| C | 1797 | 0/1 = 0.0% [0.0; 97.5] | no converge |
+
+### Deriva cronológica de las sanas (Spearman índice–residuo, operador compartido)
+
+| config | rpm | n sanas | ρ | p |
+|---|---|---|---|---|
+| A | 1730 | 404 | 0.207 | 2.7e-05 |
+| A | 1750 | 404 | 0.009 | 0.85 |
+| A | 1772 | 403 | 0.207 | 2.8e-05 |
+| A | 1797 | 203 | 0.025 | 0.72 |
+| B | 1730 | 96 | 0.112 | 0.28 |
+| B | 1750 | 98 | 0.256 | 0.011 |
+| B | 1772 | 99 | 0.100 | 0.33 |
+| B | 1797 | 50 | 0.285 | 0.045 |
+| C | 1730 | 96 | 0.112 | 0.28 |
+| C | 1750 | 98 | 0.256 | 0.011 |
+| C | 1772 | 99 | 0.100 | 0.33 |
+| C | 1797 | 50 | 0.285 | 0.045 |
+
 ### Descriptores triviales con calibración certificada (n=49)
 
 

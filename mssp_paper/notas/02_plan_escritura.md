@@ -41,7 +41,7 @@
 Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usaría para lo que sí demuestra:
 
 1. **Viabilidad frente a la referencia específica.** Modelo OEM + radio local frente a un modelo entrenado con el histórico de cada condición (Tabla 7 rehecha en la configuración corregida). El mensaje es "llega al mismo punto de operación", no "es mejor".
-2. **Tabla de AUROC** (autoencoder compartido, RMS, curtosis, cruces por cero) en la configuración corregida. Se dice abiertamente que la detección en CWRU es fácil: todos los modelos compartidos de energía llegan a 1,000. Esto vacuna contra el revisor que suspira al leer "CWRU" y deja la demostración exigente para IMS.
+2. **Tabla de AUROC** (autoencoder compartido, RMS, curtosis, cruces por cero) en la configuración corregida. Se dice abiertamente que la detección en CWRU es fácil: todos los modelos compartidos de energía llegan a 1,000. Esto vacuna contra el revisor que suspira al leer "CWRU" y remite la demostración exigente a IMS, que ya está en el manuscrito y ahora recalibrada con radios certificados (03_resultados_ims).
 3. **Tabla de transferencia del radio entre condiciones.** Es la evidencia de que la escala es local y de que la carga no está en G.
 4. **Calibración con FAR en sanas no vistas e intervalos.** Se presenta como ilustración del procedimiento con la incertidumbre real. 1797 va aparte, como condición con datos insuficientes.
 5. **Una frase metodológica sobre el emparejamiento Normal/`DE48`,** citando a Smith & Randall. ¿Contamos que la versión anterior usaba `DE12`? Yo no lo contaría como historia. Bastaría con la nota metodológica y quizá con el control de cruces por cero como figura pequeña: "por qué hay que emparejar adquisiciones". Esto lo decidimos juntos.
@@ -62,11 +62,10 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 ## 5. Experimentos pendientes, por orden
 
 0. ~~**Referencia específica por activo en CWRU corregido (B).**~~ **Hecho** (11-oct): mismo punto de operación que el modelo OEM en las cuatro condiciones. Ver 01_resultados, "Resultado principal".
-1. **IMS con la proyección:**
-   - solo el bearing 1 como fallo;
-   - calibración certificada con n ≥ 99 y la versión con confianza (n ≥ 149, hay ~200 registros de vida temprana);
-   - baselines (RMS, curtosis, envolvente) con la misma calibración;
-   - lead time con la regla 8 de 10.
+1. **IMS.** ✔ Recalibración certificada desde la caché (11-oct, ver 03_resultados_ims): el bearing 1 sale en el registro 539 con todos los radios. Pendiente, con el archivo bruto:
+   - referencia específica: un modelo entrenado con la vida temprana del bearing 1 (comparación de viabilidad, como en CWRU);
+   - otros modelos estilo OEM (RMS, curtosis, envolvente) con la misma calibración;
+   - proyección angular, si se adopta D1.
 2. **Dominio nuevo,** con el mismo protocolo.
 3. **Corolario β-contenido** (un test en `tests/test_coverage_exact.py`, además de la prueba en el `.tex`).
 4. **Cinco semillas** del operador en órdenes, para ver cuánto cambian los radios de CWRU.

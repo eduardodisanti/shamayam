@@ -146,6 +146,50 @@ def main(d):
               "las posteriores a la convergencia; en el certificado, solo "
               "las posteriores a las 49 de calibración.\n")
 
+    md.append("\n### FAR en sanas no vistas, con IC 95% de Clopper–Pearson "
+              "(operador compartido)\n")
+    from scipy.stats import beta as _beta
+
+    def cp(k, n):
+        lo = 0.0 if k == 0 else _beta.ppf(0.025, k, n - k + 1)
+        hi = 1.0 if k == n else _beta.ppf(0.975, k + 1, n - k)
+        return 100 * lo, 100 * hi
+
+    rows = []
+    for c in cfgs:
+        for s in SPEEDS:
+            a = R["configs"][c][s]["ae"]
+            cells = [c, s]
+            for arm, key, nk in (("certified", "far_heldout", "n_heldout"),
+                                 ("online", "far_post", "n_post")):
+                x = a.get(arm, {})
+                if arm == "online" and not x.get("converged"):
+                    cells.append("no converge")
+                    continue
+                n = x[nk]
+                if not n:
+                    cells.append("—")
+                    continue
+                k = int(round(x[key] * n / 100))
+                lo, hi = cp(k, n)
+                extra = f" (n calib. = {x['n']})" if arm == "online" else ""
+                cells.append(f"{k}/{n} = {f(x[key], 1)}% "
+                             f"[{f(lo, 1)}; {f(hi, 1)}]{extra}")
+            rows.append(cells)
+    md.append(table(["config", "rpm", "certificado n=49",
+                     "online (regla publicada)"], rows))
+
+    md.append("\n### Deriva cronológica de las sanas (Spearman índice–residuo, "
+              "operador compartido)\n")
+    from scipy.stats import spearmanr
+    rows = []
+    for c in cfgs:
+        for s in SPEEDS:
+            h = S[f"{c}/{s}/healthy/ae"]
+            rho, p = spearmanr(np.arange(len(h)), h)
+            rows.append([c, s, len(h), f(float(rho), 3), f"{p:.2g}"])
+    md.append(table(["config", "rpm", "n sanas", "ρ", "p"], rows))
+
     md.append("\n### Descriptores triviales con calibración certificada (n=49)\n")
     for c in cfgs:
         md.append(f"\n**{CFG_ES[c]}**\n")

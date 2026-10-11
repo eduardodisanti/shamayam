@@ -81,6 +81,43 @@ def certified_order_statistic(a, alpha=ALPHA):
     return float(a[k - 1])              # a[] is 0-indexed, k is 1-indexed
 
 
+def tolerance_rank(n, content=TARGET_PERCENTILE / 100.0, confidence=0.95):
+    """
+    Smallest rank k such that r_(k) covers at least `content` of the nominal
+    distribution with probability at least `confidence` (Wilks, 1941).
+
+    The coverage of r_(k) is Beta(k, n - k + 1) under exchangeability, so
+
+        P(coverage >= content) = P(Binomial(n, content) <= k - 1),
+
+    and k is the smallest rank making that at least `confidence`. Returns None
+    when even the sample maximum does not reach it, i.e. when
+    1 - content**n < confidence (n < 149 at content 0.98, confidence 0.95).
+
+    This is the guarantee a FROZEN radius needs: the coverage proposition
+    holds in expectation over commissioning samples, while a deployed radius
+    is one realisation of that sample.
+    """
+    from scipy.stats import binom
+    n = int(n)
+    for k in range(1, n + 1):
+        if binom.cdf(k - 1, n, content) >= confidence:
+            return k
+    return None
+
+
+def tolerance_order_statistic(a, content=TARGET_PERCENTILE / 100.0,
+                              confidence=0.95):
+    """
+    The (content, confidence) tolerance radius r_(k), k = tolerance_rank(n).
+    NaN when n is too small for the pair, mirroring
+    `certified_order_statistic`: an uncertifiable radius must not be deployed.
+    """
+    a = np.sort(np.asarray(a, dtype=np.float64))
+    k = tolerance_rank(a.size, content, confidence)
+    return np.nan if k is None else float(a[k - 1])
+
+
 # ---------------------------------------------------------------------
 # Online estimator and stopping rule (ported verbatim)
 # ---------------------------------------------------------------------
