@@ -38,6 +38,8 @@ del radio. Si alguna cifra del texto difiere de la tabla, manda la tabla.*
    - **n = 99:** la *misma* garantía en promedio, pero fuera del rango degenerado (Cor. 7): el radio deja de ser el máximo y varía menos. Es la recomendación del manuscrito.
    - **n = 149:** *otra* garantía. El radio concreto que se congela cubre ≥ 0,98 con probabilidad ≥ 0,95 (tolerancia de Wilks). Es la que responde a la pregunta operativa de si este radio congelado cubre lo que dice.
    - En IMS, con registros cada 10 min, son unas 8, 16,5 y 25 h de puesta en marcha.
+   - **El paper no elige una, propone las tres.** Es un compromiso entre tiempo de puesta en marcha y riesgo de falsas alarmas: quien tolere algunas al principio puede operar desde ~8 h; quien necesite garantía sobre el radio congelado espera ~25 h.
+   - **Variante natural (a discutir):** empezar a operar con n = 49 y refinar el radio a 99 y 149 a medida que llegan registros. El cuidado es que esos registros posteriores tienen que seguir siendo nominales: si la degradación empieza antes de completar la puesta en marcha, contamina el radio.
 
 ## Qué significa para el paper
 
