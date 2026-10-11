@@ -12,9 +12,9 @@
 1. **El cociente se implementa, no solo se declara.** La velocidad y la frecuencia de muestreo se eliminan con una sección explícita del mapa cociente: el remuestreo angular. Es una construcción, no una hipótesis sobre lo que aprende el autoencoder.
 2. **Lo que no está en el grupo queda en la escala local.** La carga cambia el nivel nominal (radios ×1,5 entre condiciones de CWRU) y el radio no se transfiere entre condiciones. Por eso la calibración es local, y esto ahora tiene una razón física, no solo empírica.
 3. **La calibración es distribution-free, pero marginal.** Con n = 49 la cobertura realizada es aleatoria: Beta(49, 1), con P(FAR > 5%) ≈ 8%. Para una garantía con confianza hace falta n ≥ 149 (contenido 0,98, confianza 0,95). El paper debe dar las dos versiones y decir cuál pide la monitorización con radio congelado.
-4. **La detección hay que demostrarla donde no sea trivial.** CWRU no sirve para eso porque el RMS ya saca AUROC 1,000. Hace falta IMS (detección temprana en run-to-failure) y el dominio nuevo.
+4. **La afirmación es de viabilidad, no de superioridad.** Un modelo estilo OEM, entrenado sin datos del activo y calibrado localmente sin etiquetas, alcanza el punto de operación de un modelo específico entrenado con el histórico del activo. CWRU lo muestra en un caso fácil; IMS (detección temprana en run-to-failure) y el dominio nuevo en casos exigentes. Los indicadores clásicos con calibración local no son rivales a batir: son otros modelos estilo OEM, y que funcionen refuerza que lo que hace viable el despliegue es el esquema.
 
-> **Propuesta de tesis en una frase:** *el problema de desplegar un detector de anomalías en un activo nuevo se separa en una sección del cociente (invariancias conocidas, implementadas) y un radio local (todo lo demás), y este último se certifica sin etiquetas con un número de observaciones que el paper calcula.*
+> **Propuesta de tesis en una frase:** *es posible desplegar en un activo nuevo un detector de anomalías estilo OEM, sin datos ni etiquetas de ese activo: las invariancias conocidas se implementan con una sección del cociente y todo lo demás queda en un radio local, que se certifica sin etiquetas con un número de observaciones que el paper calcula.*
 
 ## 2. Sección por sección
 
@@ -38,10 +38,11 @@
 
 Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usaría para lo que sí demuestra:
 
-1. **Tabla de AUROC** (autoencoder compartido, RMS, curtosis, cruces por cero) en la configuración corregida. Se dice abiertamente que la detección en CWRU es trivial: todos los detectores de energía llegan a 1,000. Esto vacuna contra el revisor que suspira al leer "CWRU".
-2. **Tabla de transferencia del radio entre condiciones.** Es la evidencia de que la escala es local y de que la carga no está en G.
-3. **Calibración con FAR en sanas no vistas e intervalos.** Se presenta como ilustración del procedimiento con la incertidumbre real. 1797 va aparte, como condición con datos insuficientes.
-4. **Una frase metodológica sobre el emparejamiento Normal/`DE48`,** citando a Smith & Randall. ¿Contamos que la versión anterior usaba `DE12`? Yo no lo contaría como historia. Bastaría con la nota metodológica y quizá con el control de cruces por cero como figura pequeña: "por qué hay que emparejar adquisiciones". Esto lo decidimos juntos.
+1. **Viabilidad frente a la referencia específica.** Modelo OEM + radio local frente a un modelo entrenado con el histórico de cada condición (Tabla 7 rehecha en la configuración corregida). El mensaje es "llega al mismo punto de operación", no "es mejor".
+2. **Tabla de AUROC** (autoencoder compartido, RMS, curtosis, cruces por cero) en la configuración corregida. Se dice abiertamente que la detección en CWRU es fácil: todos los modelos compartidos de energía llegan a 1,000. Esto vacuna contra el revisor que suspira al leer "CWRU" y deja la demostración exigente para IMS.
+3. **Tabla de transferencia del radio entre condiciones.** Es la evidencia de que la escala es local y de que la carga no está en G.
+4. **Calibración con FAR en sanas no vistas e intervalos.** Se presenta como ilustración del procedimiento con la incertidumbre real. 1797 va aparte, como condición con datos insuficientes.
+5. **Una frase metodológica sobre el emparejamiento Normal/`DE48`,** citando a Smith & Randall. ¿Contamos que la versión anterior usaba `DE12`? Yo no lo contaría como historia. Bastaría con la nota metodológica y quizá con el control de cruces por cero como figura pequeña: "por qué hay que emparejar adquisiciones". Esto lo decidimos juntos.
 
 ## 4. Decisiones abiertas
 
@@ -53,11 +54,12 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 | D4 | ¿Qué garantía es la "oficial"? | Marginal (49) / con confianza (149) | **Las dos.** 149 como recomendación operativa, 49 como mínimo absoluto |
 | D5 | ¿Qué dominio nuevo? | Point machines públicas (CRPM) / circuitos de vía (privado) / otro | CRPM, por ser público y no de rodamientos. Lo vemos |
 | D6 | ¿Contamos el error de `DE12`? | Nota metodológica / sección / nada | Nota metodológica + figura pequeña opcional |
-| D7 | ¿Los baselines entran en todas las tablas? | Sí / solo en CWRU | **En todas** (CWRU, IMS, dominio nuevo) con la misma calibración local |
+| D7 | ¿Qué papel tienen RMS, curtosis, etc.? | Rivales a batir / otros modelos estilo OEM | **Otros modelos estilo OEM** con la misma calibración local, en todas las tablas. No se compite con ellos: muestran que el esquema funciona con distintas representaciones |
 | D8 | ¿Semillas? | Una / cinco | Cinco para el operador compartido. La tabla de estabilidad ya existe para IMS |
 
 ## 5. Experimentos pendientes, por orden
 
+0. **Referencia específica por activo en CWRU corregido (B):** un modelo por condición entrenado con sus sanas. Es la comparación que sostiene la viabilidad. Es barato porque el código (`cwru_operator.py`) ya existe.
 1. **IMS con la proyección:**
    - solo el bearing 1 como fallo;
    - calibración certificada con n ≥ 99 y la versión con confianza (n ≥ 149, hay ~200 registros de vida temprana);

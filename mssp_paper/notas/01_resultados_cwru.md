@@ -9,7 +9,7 @@ Las tablas completas, generadas por script, están en
 
 1. **El problema estaba ahí.** En la configuración publicada (A), la Normal (48 kHz) se leía como si fuera de 12 kHz frente a fallos `DE12`. Un simple conteo de cruces por cero separa sanos y fallos con AUROC = 1,000 en las cuatro velocidades.
 2. **Con la corrección** (B: Normal + `DE48`, ambos con proyección angular), los cruces por cero dejan de separar en tres de las cuatro velocidades (AUROC 0,52–0,91). La confusión por frecuencia de muestreo desaparece.
-3. **Pero CWRU sigue siendo trivial para detectar.** Tras la corrección, el autoencoder compartido y el **RMS** dan AUROC = 1,000 en todas las velocidades y familias de fallo. Los ficheros de fallo tienen un RMS de 2 a 9 veces el de la Normal. CWRU no puede demostrar que la representación aporte algo frente a un indicador clásico.
+3. **La detección en CWRU es fácil, y para una afirmación de viabilidad eso basta.** Tras la corrección, el autoencoder compartido (estilo OEM, sin datos del activo) y el **RMS** dan AUROC = 1,000 en todas las velocidades y familias de fallo. Los ficheros de fallo tienen un RMS de 2 a 9 veces el de la Normal. El objetivo del paper no es ser mejor, sino mostrar que *es posible* llegar al punto de operación de un modelo específico del activo con un modelo compartido y calibración local. CWRU lo muestra, aunque en un problema fácil. El RMS con calibración local es otro modelo estilo OEM: el más simple.
 4. **La proyección angular elimina la velocidad, pero no la carga.** El radio calibrado en una condición no sirve para otra (1772 y 1797 rpm caen fuera en un 93–100%). La calibración local es necesaria, y eso sí lo apoya CWRU.
 5. **Con ~50 sanas por condición, la falsa alarma real es muy incierta.** El radio certificado con n = 49 da FAR del 0–8,5% en las sanas siguientes, con intervalos del 95% que llegan al 20%. A 1797 rpm solo hay 50 ventanas sanas: la regla online no converge y no queda nada para evaluar.
 
@@ -54,7 +54,7 @@ Mediana de cruces por cero en A: sanas 0,17–0,21 frente a fallos 0,43–0,50, 
 
 **C frente a B:** usar `DE12` con la Normal proyectada separa más que B (AUROC 0,83–0,97 frente a 0,52–0,91). Es la diferencia de cadena de adquisición que la proyección no elimina. Confirma que hay que emparejar la Normal con `DE48`.
 
-## 2. CWRU no discrimina entre métodos
+## 2. La detección en CWRU es fácil para cualquier modelo compartido
 
 AUROC del autoencoder compartido y del RMS en B: **1,000 en las 12 combinaciones** de velocidad y familia, para los dos detectores. Con calibración certificada (n = 49), el RMS detecta el 100% de los fallos en todas las velocidades, igual que el autoencoder.
 
@@ -65,7 +65,9 @@ AUROC del autoencoder compartido y del RMS en B: **1,000 en las 12 combinaciones
 | 1772 | 0,061 | 0,148 | 0,281 | 0,527 |
 | 1797 | 0,072 | 0,152 | 0,582 | 0,499 |
 
-**Consecuencia:** el 100% de detección en CWRU sigue siendo cierto tras la corrección, pero no es evidencia a favor del método. Lo conseguiría cualquier indicador de energía. Es la crítica conocida a CWRU (Smith & Randall, 2015, MSSP).
+**Consecuencia para un paper de viabilidad:** el 100% de detección en CWRU sigue siendo cierto tras la corrección. No sirve para decir que el método es *mejor* (lo conseguiría cualquier indicador de energía), y tampoco hace falta, porque esa no es la afirmación. Sirve para decir que el esquema OEM + radio local *llega* al punto de operación esperado. Conviene reconocer que CWRU es fácil (Smith & Randall, 2015, MSSP) y que la demostración exigente es IMS (detección temprana en run-to-failure).
+
+**Lo que falta para cerrar la comparación:** rehacer la referencia específica por activo (Tabla 7 publicada) en la configuración corregida B. Es el "modelo con datos del rodamiento" frente al que se mide la viabilidad.
 
 La curtosis es el único descriptor que no llega a 1,000 (bola 0,78–0,87). Es coherente con que los fallos de bola de CWRU son los menos impulsivos.
 
