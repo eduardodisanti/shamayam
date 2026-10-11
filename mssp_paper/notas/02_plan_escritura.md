@@ -18,6 +18,39 @@
 
 > **Propuesta de tesis en una frase:** *es posible desplegar en un activo nuevo un detector de anomalías estilo OEM, sin datos ni etiquetas de ese activo: las invariancias conocidas se implementan con una sección del cociente y todo lo demás queda en un radio local, que se certifica sin etiquetas con un número de observaciones que el paper calcula.*
 
+## 1b. Posicionamiento, tono y límites (acordado 11-oct)
+
+**Qué es el paper.** Proponemos un método nuevo (modelo estilo OEM + radio local certificado) y mostramos su viabilidad real, comparándolo con un modelo entrenado con los datos del activo. No resolvemos todo el problema: hay métodos con décadas de evolución que hacen cosas que este no hace.
+
+**Tono.**
+- Las afirmaciones son correctas y se mantienen. Lo que sobra son los intensificadores (*entirely*, *strictly*, *fundamentally*, *rigorously*, *non-negotiable*…). Ejemplo: "entirely circumvents the need for…" → "does not require…".
+- La fuerza va en lo que el revisor puede comprobar, no en los adjetivos. Que lo vean ellos es mejor que decirlo nosotros.
+- Nunca "mejor", "superior" ni "espectacular". Eso lo dirán los revisores y los ingenieros que lo adopten.
+
+**La práctica clásica, con respeto.**
+- El umbral sobre una línea base por máquina (familia ISO 20816 / 13373 / 13379) es la práctica establecida y funciona. Quitar "effective but unprincipled".
+- Nuestra contribución no la sustituye. La formaliza: le añade una afirmación con muestra finita sobre qué cobertura alcanza el umbral y cuántas observaciones hacen falta, y la hace compatible con un modelo compartido.
+- La proyección angular es *computed order tracking*, una técnica clásica. Se cita por su nombre y con sus referencias. Que la sección del cociente sea una herramienta en la que los ingenieros ya confían es un punto a favor: la teoría explica por qué funciona.
+
+**Dónde va la fuerza:**
+1. CWRU: el modelo que nunca vio el rodamiento llega al mismo punto de operación que el entrenado con sus datos.
+2. IMS: el único fallo real se anticipa ~74 h, igual con los cinco radios.
+3. El menú de puesta en marcha (8 / 16,5 / 25 h) con garantías explícitas.
+4. La teoría predice qué perturbaciones exigen radio local (la carga) y los datos lo confirman.
+
+**Límites y casos en que falla:** sección propia en el paper, con ensayos donde se pueda.
+
+| Límite / modo de fallo | Evidencia | Estado |
+|---|---|---|
+| Cambio de carga u operación: el radio no se transfiere, hay que recalibrar | CWRU, transferencia entre condiciones | medido |
+| Cambio de cadena de adquisición (sensor reemplazado): la proyección no lo corrige | CWRU configuración C | medido |
+| Pocas observaciones: la regla de parada no converge y la FAR no se puede medir | CWRU 1797 rpm | medido |
+| Puesta en marcha no intercambiable (rodaje, deriva) | IMS bearings 1 y 3 (dirección conservadora) | medido |
+| Puesta en marcha contaminada por un fallo ya presente: radio inflado, fallo no detectado | ensayo inyectando ventanas de fallo en la calibración | pendiente |
+| Velocidad variable dentro del registro: la proyección supone velocidad constante | ensayo con rampas simuladas | pendiente |
+| Simulador que no cubre la variabilidad nominal real: radio grande, menos sensibilidad | ensayo con fallos débiles frente al radio | pendiente |
+| Detecta, no diagnostica (tipo, ubicación, severidad, vida útil) | — | declarar |
+
 ## 2. Sección por sección
 
 | Sección actual | Qué hacer | Por qué |
