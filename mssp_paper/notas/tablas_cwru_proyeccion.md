@@ -88,6 +88,18 @@ Puesta en marcha: las 49 primeras ventanas en órdenes (147 vueltas) o los mismo
 Entrenamientos que no aprendieron: raw_local_full: 0, raw_local: 0, quot_local: 0.
 
 
+### Describir mejor el cociente: modelo local con subconjuntos crecientes del grupo
+
+Mismos ~5 s de puesta en marcha; solo cambia la descripción del grupo. Radio r_(k) sobre las 49 ventanas de puesta en marcha; FAR en las sanas posteriores (rango sobre semillas). G1–G3: 4000 ventanas aumentadas, semillas 0, 1. G0 y G4 vienen de experimentos anteriores con el mismo protocolo: G0: datos limitados (49 ventanas, sin aumento); G4: crudo frente a cociente (quot_local).
+
+| nivel | grupo | FAR 1730 rpm | FAR 1750 rpm | FAR 1772 rpm | semillas | DR mín. bola / int. / ext. (%) |
+|---|---|---|---|---|---|---|
+| G0 | solo proyección | 23.4–57.4% (de 47) | 2.0–26.5% (de 49) | 4.0–18.0% (de 50); 1 no aprende | 5 | 100.0 / 100.0 / 100.0 |
+| G1 | + fase | 0.0–4.3% (de 47) | 0.0% (de 49) | 0.0–2.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
+| G2 | + ganancia | 4.3% (de 47) | 0.0% (de 49) | 4.0–12.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
+| G3 | + offset | 2.1–12.8% (de 47) | 0.0% (de 49) | 2.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
+| G4 | + ruido (grupo completo) | 0.0–4.3% (de 47) | 0.0% (de 49) | 0.0–6.0% (de 50) | 3 | 100.0 / 100.0 / 100.0 |
+
 ### AUROC sano vs fallo (sin umbral)
 
 Valores por velocidad; 1,00 = separación perfecta. Los descriptores triviales se puntúan como |valor − mediana sana|.

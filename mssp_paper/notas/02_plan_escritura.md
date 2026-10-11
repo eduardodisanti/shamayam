@@ -60,7 +60,7 @@
 - **Si generalizan igual,** la contribución es el cociente en sí, y describirlo mejor (grupo más completo, mejores rangos) produce mejores modelos, se entrenen donde se entrenen.
 
 **Pruebas:**
-1. **CWRU, "describir mejor el cociente":** modelo local con subconjuntos crecientes del grupo (proyección → + fase → + ganancia → + offset → + ruido), mismo número de ventanas de entrenamiento. Si la FAR baja al describir mejor el grupo, es evidencia de la segunda contribución. *En curso (11-oct).*
+1. **CWRU, "describir mejor el cociente":** modelo local con subconjuntos crecientes del grupo (proyección → + fase → + ganancia → + offset → + ruido), mismo número de ventanas de entrenamiento. Si la FAR baja al describir mejor el grupo, es evidencia de la segunda contribución. *Hecho (12-oct): el salto está en la fase (2–57% → 0–4%); ganancia, offset y ruido no cambian nada medible en un único registro, porque ahí no varían. Ver 01_resultados.*
 2. **IMS a lo largo de la vida sana:** local en el cociente con las primeras ~8 h frente al OEM, durante días de operación con variaciones nominales que no estaban en la puesta en marcha (temperatura, deriva). Es donde la simulación podría marcar diferencia. *Necesita el archivo bruto de IMS.*
 3. **Variaciones fuera del grupo (carga):** ninguno las absorbe; van a límites y definen el borde de las dos hipótesis. *Medido.*
 

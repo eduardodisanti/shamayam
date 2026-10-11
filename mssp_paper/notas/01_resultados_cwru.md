@@ -67,6 +67,25 @@ La referencia que haría un ingeniero sin el método es un autoencoder entrenado
 - La referencia cruda con todo el historial solo tiene FAR medida sobre sus propios datos de entrenamiento (2,2–2,5% por construcción). No hay sanas no vistas para evaluarla.
 - Caso fácil (CWRU), unas 50 sanas evaluadas en el cociente y unas 200 en crudo por condición, y 3 semillas.
 
+## Describir mejor el cociente (ensayo de la pregunta central)
+
+El modelo local se entrena con los mismos ~5 s de puesta en marcha, describiendo el grupo cada vez con más elementos: solo proyección (G0), + fase (G1), + ganancia (G2), + offset (G3), + ruido (G4, grupo completo). Solo cambia la descripción del grupo.
+
+→ Tabla **"Describir mejor el cociente"** en [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md).
+
+**Lo que se ve (FAR en sanas posteriores; detección del 100% en todos los niveles):**
+- **El salto está en la fase:** sin ella (G0), 2–57% según condición y semilla; con ella (G1), 0–4%.
+- **De G1 a G4 no hay mejora medible:** todo queda entre el 0% y el 13%, dentro del ruido de unas 50 sanas y 2–3 semillas.
+
+**Lectura:**
+- Describir mejor el cociente mejora el modelo **cuando se añade la perturbación que realmente varía en los datos**. En un único registro de CWRU de 10 s, la que varía es la fase del eje al inicio de cada ventana; confirma la hipótesis de la sección anterior.
+- La ganancia, el offset y el ruido apenas varían dentro de un mismo registro: el sensor y el montaje no cambian. Por eso aquí no aportan ni restan. Donde deberían importar es entre activos, sensores o montajes distintos, que CWRU (un solo banco) no permite probar.
+- Para la pregunta central (¿simulación frente a cociente local?), CWRU sigue sin separar las dos hipótesis. Lo que sí muestra es que el beneficio viene de cubrir la perturbación relevante, la describa la simulación o el aumento local.
+
+**Matices:**
+- G0 no se construye igual que el resto: entrena directamente con las 49 ventanas (5 semillas), del experimento de datos limitados, en lugar de con 4000 ventanas remuestreadas. Remuestrear sin variación nueva no añade información, y con ventanas duplicadas el entrenamiento no se detiene.
+- Con 2 semillas por nivel intermedio y unas 50 sanas, diferencias de unas pocas ventanas no son interpretables.
+
 ## Resumen en cinco frases
 
 1. **El problema estaba ahí.** En la configuración publicada (A), la Normal (48 kHz) se leía como si fuera de 12 kHz frente a fallos `DE12`. Un simple conteo de cruces por cero separa sanos y fallos con AUROC = 1,000 en las cuatro velocidades.
