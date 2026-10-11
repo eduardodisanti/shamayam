@@ -31,7 +31,7 @@ import json
 from pathlib import Path
 
 import numpy as np
-from scipy.stats import spearmanr
+from scipy.stats import beta, spearmanr
 
 from mssp_repro.calibration import (certified_order_statistic,
                                     tolerance_order_statistic, tolerance_rank)
@@ -106,6 +106,16 @@ def run():
     return res
 
 
+def guarantee_rows():
+    """(n, k, guarantee) for the three commissioning levels discussed."""
+    return [(49, int(np.ceil(0.98 * 50)),
+             "en promedio (mínimo absoluto, rango degenerado: máximo)"),
+            (99, int(np.ceil(0.98 * 100)),
+             "en promedio, fuera del rango degenerado"),
+            (149, tolerance_rank(149),
+             "con confianza: cobertura ≥ 0,98 con prob. ≥ 0,95")]
+
+
 def fmt(x, nd=2):
     if x is None:
         return "—"
@@ -141,6 +151,18 @@ def to_markdown(res):
             L.append(f"| {tag} | {label} | {a['n']} | {a['rank']} | "
                      f"{fmt(a['tau'], 6)} | {far} | {a['departure'] if a['departure'] is not None else '—'} | "
                      f"{fmt(a['lead_hours'])} | {fmt(a['exceedance_post'])} |")
+    L += ["", "## Qué garantiza cada longitud de puesta en marcha", "",
+          "Cobertura objetivo 0,98. La cobertura real del radio congelado "
+          "r_(k) sigue una Beta(k, n − k + 1) bajo intercambiabilidad, "
+          "sea cual sea la distribución.", "",
+          "| n | rango k | garantía | E[cobertura] | P(cobertura < 0,98) | "
+          "P(cobertura < 0,95) | horas de puesta en marcha (IMS) |",
+          "|---|---|---|---|---|---|---|"]
+    for n, k, what in guarantee_rows():
+        b = beta(k, n - k + 1)
+        L.append(f"| {n} | {k} | {what} | {fmt(k / (n + 1), 4)} | "
+                 f"{fmt(b.cdf(0.98), 3)} | {fmt(b.cdf(0.95), 3)} | "
+                 f"{fmt(n * IMS_RECORDING_INTERVAL_HOURS, 1)} |")
     L += ["", "## Intercambiabilidad en la calibración", "",
           "Spearman entre el índice temporal y el residuo en los 149 primeros "
           "registros (prueba de deriva cronológica, en lugar de la ablación "

@@ -27,6 +27,16 @@ Operador compartido, residuos y regla de persistencia (8 de 10) idénticos a los
 | 4 | r_(k), n=149 | 149 | 147 | 0,009709 | 3,92 (2/51) | 667 | 52,50 | 95,24 |
 | 4 | tolerancia 0,98/0,95, n=149 | 149 | 149 | 0,009815 | 0,00 (0/51) | 705 | 46,17 | 99,28 |
 
+## Qué garantiza cada longitud de puesta en marcha
+
+Cobertura objetivo 0,98. La cobertura real del radio congelado r_(k) sigue una Beta(k, n − k + 1) bajo intercambiabilidad, sea cual sea la distribución.
+
+| n | rango k | garantía | E[cobertura] | P(cobertura < 0,98) | P(cobertura < 0,95) | horas de puesta en marcha (IMS) |
+|---|---|---|---|---|---|---|
+| 49 | 49 | en promedio (mínimo absoluto, rango degenerado: máximo) | 0,9800 | 0,372 | 0,081 | 8,2 |
+| 99 | 98 | en promedio, fuera del rango degenerado | 0,9800 | 0,409 | 0,039 | 16,5 |
+| 149 | 149 | con confianza: cobertura ≥ 0,98 con prob. ≥ 0,95 | 0,9933 | 0,049 | 0,000 | 24,8 |
+
 ## Intercambiabilidad en la calibración
 
 Spearman entre el índice temporal y el residuo en los 149 primeros registros (prueba de deriva cronológica, en lugar de la ablación por permutación).

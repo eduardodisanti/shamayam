@@ -33,7 +33,11 @@ del radio. Si alguna cifra del texto difiere de la tabla, manda la tabla.*
 5. **La vida temprana no es intercambiable, pero en la dirección conservadora.**
    - En los bearings 1 y 3 el residuo **baja** con el tiempo durante los primeros 149 registros (Spearman negativo y muy significativo). Parece un rodaje: el radio calculado al principio queda holgado, y por eso la FAR sale 0.
    - Hay que decirlo en el paper: el supuesto de intercambiabilidad no se cumple del todo, y la consecuencia es menos falsas alarmas, no más.
-6. **Coste de la garantía con confianza:** n = 149 registros a 10 min son unas 25 h de commissioning, frente a unas 8 h con n = 49. Es el precio operativo de pasar de "en esperanza" a "con confianza del 95%".
+6. **Tres longitudes, dos tipos de garantía** (tabla "Qué garantiza cada longitud de puesta en marcha" en [`tablas_ims_certificado.md`](tablas_ims_certificado.md)):
+   - **n = 49:** cobertura ≥ 0,98 *en promedio* sobre puestas en marcha (Prop. 7); es el mínimo absoluto y el radio es el máximo de la muestra.
+   - **n = 99:** la *misma* garantía en promedio, pero fuera del rango degenerado (Cor. 7): el radio deja de ser el máximo y varía menos. Es la recomendación del manuscrito.
+   - **n = 149:** *otra* garantía. El radio concreto que se congela cubre ≥ 0,98 con probabilidad ≥ 0,95 (tolerancia de Wilks). Es la que responde a la pregunta operativa de si este radio congelado cubre lo que dice.
+   - En IMS, con registros cada 10 min, son unas 8, 16,5 y 25 h de puesta en marcha.
 
 ## Qué significa para el paper
 
