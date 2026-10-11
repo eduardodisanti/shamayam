@@ -22,6 +22,28 @@
 | C | 1772 | 99 | 397 | 398 | 700 |
 | C | 1797 | 50 | 403 | 402 | 707 |
 
+### Viabilidad: modelo compartido (OEM) frente a modelo específico del activo — configuración B
+
+Referencia específica: un autoencoder por condición, entrenado y umbralizado (p98) con todas sus sanas, como la Tabla 7 publicada. OEM: un solo autoencoder entrenado solo con simulación, radio calibrado localmente sin etiquetas.
+
+| rpm | modelo | sanas usadas | FAR (%) | DR bola (%) | DR pista int. (%) | DR pista ext. (%) | AUROC mín. |
+|---|---|---|---|---|---|---|---|
+| 1730 | específico del activo (todas las sanas) | 96 | 2.08 | 100.00 | 100.00 | 100.00 | 1.000 |
+| 1730 | OEM + radio local (todas las sanas) | 96 | 2.08 | 100.00 | 100.00 | 100.00 | 1.000 |
+| 1730 | OEM + radio certificado (49 primeras sanas) | 49 | 8.51 (en 47) | 100.00 | 100.00 | 100.00 | — |
+| 1750 | específico del activo (todas las sanas) | 98 | 2.04 | 100.00 | 100.00 | 100.00 | 1.000 |
+| 1750 | OEM + radio local (todas las sanas) | 98 | 2.04 | 100.00 | 100.00 | 100.00 | 1.000 |
+| 1750 | OEM + radio certificado (49 primeras sanas) | 49 | 6.12 (en 49) | 100.00 | 100.00 | 100.00 | — |
+| 1772 | específico del activo (todas las sanas) | 99 | 2.02 | 100.00 | 100.00 | 100.00 | 1.000 |
+| 1772 | OEM + radio local (todas las sanas) | 99 | 2.02 | 100.00 | 100.00 | 100.00 | 1.000 |
+| 1772 | OEM + radio certificado (49 primeras sanas) | 49 | 0.00 (en 50) | 100.00 | 100.00 | 100.00 | — |
+| 1797 | específico del activo (todas las sanas) | 50 | 2.00 | 100.00 | 100.00 | 100.00 | 1.000 |
+| 1797 | OEM + radio local (todas las sanas) | 50 | 2.00 | 100.00 | 100.00 | 100.00 | 1.000 |
+| 1797 | OEM + radio certificado (49 primeras sanas) | 49 | 0.00 (en 1) | 100.00 | 100.00 | 100.00 | — |
+
+Generalización de la referencia (val_loss / train_loss): 1730: 2.34, 1750: 1.94, 1772: 2.08, 1797: 1.40.
+
+
 ### AUROC sano vs fallo (sin umbral)
 
 Valores por velocidad; 1,00 = separación perfecta. Los descriptores triviales se puntúan como |valor − mediana sana|.

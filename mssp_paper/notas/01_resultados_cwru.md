@@ -5,6 +5,25 @@
 Las tablas completas, generadas por script, están en
 [`tablas_cwru_proyeccion.md`](tablas_cwru_proyeccion.md).*
 
+> Los rodamientos son **solo validación**: el paper es de método (modelo estilo OEM + calibración local, sin datos ni etiquetas del activo) y CWRU/IMS son el banco donde se comprueba que es posible.
+
+## Resultado principal: viabilidad
+
+En la configuración corregida (B), el modelo compartido entrenado **solo con simulación** y con el radio calibrado localmente llega al **mismo punto de operación** que un autoencoder específico entrenado con las sanas de cada condición (la referencia de la Tabla 7 publicada, rehecha con los datos corregidos):
+
+| rpm | Específico del activo: FAR / DR (bola, int., ext.) / AUROC mín. | OEM + radio local: FAR / DR / AUROC mín. |
+|---|---|---|
+| 1730 | 2,08% / 100, 100, 100 / 1,000 | 2,08% / 100, 100, 100 / 1,000 |
+| 1750 | 2,04% / 100, 100, 100 / 1,000 | 2,04% / 100, 100, 100 / 1,000 |
+| 1772 | 2,02% / 100, 100, 100 / 1,000 | 2,02% / 100, 100, 100 / 1,000 |
+| 1797 | 2,00% / 100, 100, 100 / 1,000 | 2,00% / 100, 100, 100 / 1,000 |
+
+**Cómo leerlo honestamente:**
+- **La igualdad de FAR es aritmética.** Los dos fijan el umbral en el p98 de las mismas n sanas, así que dejan fuera el mismo número de ventanas. Lo que se compara de verdad es la detección (100% en ambos) y la separación sin umbral (AUROC 1,000 en ambos).
+- **La referencia está favorecida:** entrena y umbraliza con las mismas ventanas, con memorización (val/train = 1,40–2,34).
+- **Con el radio certificado sobre las 49 primeras sanas,** el modelo OEM mantiene el 100% de detección y da FAR del 0–8,5% en las sanas siguientes. La incertidumbre es grande (sección 5).
+- **CWRU es un caso fácil:** cualquier modelo de energía llega ahí (sección 2). Demuestra viabilidad, no dificultad. La viabilidad en un caso exigente queda para IMS.
+
 ## Resumen en cinco frases
 
 1. **El problema estaba ahí.** En la configuración publicada (A), la Normal (48 kHz) se leía como si fuera de 12 kHz frente a fallos `DE12`. Un simple conteo de cruces por cero separa sanos y fallos con AUROC = 1,000 en las cuatro velocidades.
@@ -67,7 +86,7 @@ AUROC del autoencoder compartido y del RMS en B: **1,000 en las 12 combinaciones
 
 **Consecuencia para un paper de viabilidad:** el 100% de detección en CWRU sigue siendo cierto tras la corrección. No sirve para decir que el método es *mejor* (lo conseguiría cualquier indicador de energía), y tampoco hace falta, porque esa no es la afirmación. Sirve para decir que el esquema OEM + radio local *llega* al punto de operación esperado. Conviene reconocer que CWRU es fácil (Smith & Randall, 2015, MSSP) y que la demostración exigente es IMS (detección temprana en run-to-failure).
 
-**Lo que falta para cerrar la comparación:** rehacer la referencia específica por activo (Tabla 7 publicada) en la configuración corregida B. Es el "modelo con datos del rodamiento" frente al que se mide la viabilidad.
+**La comparación de viabilidad** (modelo OEM frente a modelo específico del activo) está en la sección "Resultado principal" de arriba: mismo punto de operación en las cuatro condiciones.
 
 La curtosis es el único descriptor que no llega a 1,000 (bola 0,78–0,87). Es coherente con que los fallos de bola de CWRU son los menos impulsivos.
 
@@ -145,6 +164,8 @@ cd reproducibility_package
 python3 -m pytest tests/test_order_domain.py -q
 python3 cwru_projection_experiment.py --cwru-root PATH/CWRU_Bearing_NumPy/Data \
         --out results/cwru_projection          # ~35 min en CPU
+python3 cwru_asset_reference.py --cwru-root PATH/CWRU_Bearing_NumPy/Data \
+        --out results/cwru_projection          # ~2 min
 python3 cwru_projection_report.py results/cwru_projection > ../mssp_paper/notas/tablas_cwru_proyeccion.md
 ```
 

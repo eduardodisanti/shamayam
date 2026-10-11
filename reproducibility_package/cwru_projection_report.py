@@ -63,6 +63,40 @@ def main(d):
     md.append(table(["config", "rpm", "sanas", "bola", "pista int.",
                      "pista ext."], rows))
 
+    ref_path = d / "asset_reference.json"
+    if ref_path.exists() and "B" in R["configs"]:
+        A = json.loads(ref_path.read_text())["speeds"]
+        md.append("\n### Viabilidad: modelo compartido (OEM) frente a modelo "
+                  "específico del activo — configuración B\n")
+        md.append("Referencia específica: un autoencoder por condición, "
+                  "entrenado y umbralizado (p98) con todas sus sanas, como la "
+                  "Tabla 7 publicada. OEM: un solo autoencoder entrenado solo "
+                  "con simulación, radio calibrado localmente sin etiquetas.\n")
+        rows = []
+        for s in SPEEDS:
+            r = A[s]
+            rows.append([s, "específico del activo (todas las sanas)",
+                         r["n_healthy"], f(r["far"]),
+                         *[f(r[f"{fam}_dr"]) for fam in FAM],
+                         f(min(r[f"{fam}_auroc"] for fam in FAM), 3)])
+            a = R["configs"]["B"][s]["ae"]
+            o = a["oracle"]
+            rows.append([s, "OEM + radio local (todas las sanas)",
+                         R["configs"]["B"][s]["windows"]["healthy"],
+                         f(o["far"]), *[f(o[f"{fam}_dr"]) for fam in FAM],
+                         f(min(a["auroc"].values()), 3)])
+            c = a["certified"]
+            rows.append([s, "OEM + radio certificado (49 primeras sanas)",
+                         c["n_cal"],
+                         f(c["far_heldout"]) + f" (en {c['n_heldout']})",
+                         *[f(c[f"{fam}_dr"]) for fam in FAM], "—"])
+        md.append(table(["rpm", "modelo", "sanas usadas", "FAR (%)"] +
+                        [f"DR {FAM_ES[x]} (%)" for x in FAM] +
+                        ["AUROC mín."], rows))
+        md.append("\nGeneralización de la referencia (val_loss / train_loss): " +
+                  ", ".join(f"{s}: {A[s]['generalisation_gap']:.2f}"
+                            for s in SPEEDS) + ".\n")
+
     md.append("\n### AUROC sano vs fallo (sin umbral)\n")
     md.append("Valores por velocidad; 1,00 = separación perfecta. "
               "Los descriptores triviales se puntúan como |valor − mediana sana|.\n")

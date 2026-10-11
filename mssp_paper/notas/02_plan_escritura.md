@@ -14,6 +14,8 @@
 3. **La calibración es distribution-free, pero marginal.** Con n = 49 la cobertura realizada es aleatoria: Beta(49, 1), con P(FAR > 5%) ≈ 8%. Para una garantía con confianza hace falta n ≥ 149 (contenido 0,98, confianza 0,95). El paper debe dar las dos versiones y decir cuál pide la monitorización con radio congelado.
 4. **La afirmación es de viabilidad, no de superioridad.** Un modelo estilo OEM, entrenado sin datos del activo y calibrado localmente sin etiquetas, alcanza el punto de operación de un modelo específico entrenado con el histórico del activo. CWRU lo muestra en un caso fácil; IMS (detección temprana en run-to-failure) y el dominio nuevo en casos exigentes. Los indicadores clásicos con calibración local no son rivales a batir: son otros modelos estilo OEM, y que funcionen refuerza que lo que hace viable el despliegue es el esquema.
 
+> **Alcance:** los rodamientos son *solo* validación. El paper es de método para cualquier activo; CWRU e IMS se usan porque son públicos y conocidos, no porque el paper sea de rodamientos. Hay que decirlo en la introducción y en el título del §9 ("Validation on bearing data").
+
 > **Propuesta de tesis en una frase:** *es posible desplegar en un activo nuevo un detector de anomalías estilo OEM, sin datos ni etiquetas de ese activo: las invariancias conocidas se implementan con una sección del cociente y todo lo demás queda en un radio local, que se certifica sin etiquetas con un número de observaciones que el paper calcula.*
 
 ## 2. Sección por sección
@@ -59,7 +61,7 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 
 ## 5. Experimentos pendientes, por orden
 
-0. **Referencia específica por activo en CWRU corregido (B):** un modelo por condición entrenado con sus sanas. Es la comparación que sostiene la viabilidad. Es barato porque el código (`cwru_operator.py`) ya existe.
+0. ~~**Referencia específica por activo en CWRU corregido (B).**~~ **Hecho** (11-oct): mismo punto de operación que el modelo OEM en las cuatro condiciones. Ver 01_resultados, "Resultado principal".
 1. **IMS con la proyección:**
    - solo el bearing 1 como fallo;
    - calibración certificada con n ≥ 99 y la versión con confianza (n ≥ 149, hay ~200 registros de vida temprana);
