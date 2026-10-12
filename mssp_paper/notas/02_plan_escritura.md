@@ -136,3 +136,15 @@ Son de la revisión del 9-oct y siguen pendientes:
 - Tú escribes en LaTeX; yo propongo **ediciones puntuales** por sección, no reescrituras completas.
 - **Orden:** §7 (calibración, que es lo más sólido) → §5 (sección del cociente) → §8–9 (protocolo y resultados, cuando estén IMS y el dominio nuevo) → introducción y abstract al final.
 - **Ninguna cifra a mano:** cada tabla sale de un script, como ya hace `make_tables.py`. `cwru_projection_report.py` sigue ese patrón.
+
+## 8. Trabajos futuros (fuera de este paper; decidido 12-oct)
+
+En el paper, como mucho una o dos frases en la discusión (ver 1c, "Límite del radio local"). Nada de esto se experimenta ni se desarrolla aquí.
+
+1. **Estructura común a toda la clase de máquinas.** Reducir o eliminar la calibración local apoyándose en propiedades de la señal sana que comparten todas las máquinas. Es otro paper. *No detallar en el repositorio (es público).*
+2. **Ampliar G con la vía de transmisión.** El camino del rodamiento al sensor es aproximadamente un filtro lineal, así que se puede cocientar; su sección es el preblanqueo cepstral o espectral de la práctica clásica (seguimiento de órdenes más preblanqueo).
+   - **Pregunta:** tras el cociente, ¿son intercambiables los residuos sanos de máquinas distintas? Si lo son, el radio se transfiere.
+   - **Prueba posible:** en los 4 bearings de IMS (radios de 0,0097 a 0,0218 con el mismo modelo) y en CWRU entre cargas, medir la dispersión de radios y la FAR al transferir el radio, con y sin preblanqueo.
+   - **Variante intermedia:** calibrar solo una escala (un parámetro) en lugar del cuantil 0,98. Es más barato, pero exige que los residuos estandarizados tengan la misma forma en todas las máquinas, y se pierde la garantía libre de distribución.
+   - **Coste en identificabilidad:** lo que entra en G se vuelve invisible. Con la vía de transmisión en G no se detectan los fallos que la cambian (aflojamiento, soporte, precarga). Habría que acompañarlo de una prueba de modo de fallo con un fallo sintético que solo altere la vía.
+   - **La carga** no es un grupo: condicionar el radio a la carga parece más natural que cocientar.
