@@ -46,7 +46,7 @@ del radio. Si alguna cifra del texto difiere de la tabla, manda la tabla.*
 - **La afirmación de viabilidad en un caso exigente ya está demostrada** y queda más fuerte. Con la garantía certificada, incluso en su versión con confianza, el modelo OEM anticipa unas 74 h el único fallo documentado, sin falsas alarmas en la vida sana.
 - **Bearings 2–4** se presentan como salidas de su vecindad nominal hacia el final del ensayo, no como "antelación a fallo". Son útiles para mostrar que el radio es individual (radios distintos con la misma representación) y para ver la sensibilidad al estimador (bearing 4).
 - **La Tabla 10 del manuscrito** puede pasar a tener las columnas del radio certificado (n = 99 o n = 149) y una fila de tolerancia. La calibración A1 queda como referencia histórica o desaparece.
-- **Pendiente para cerrar del todo la comparación de viabilidad en IMS:** un modelo específico entrenado con la vida temprana del bearing 1, el equivalente a la referencia de CWRU. Necesita el archivo bruto de IMS. También aplicar la proyección angular, por coherencia, si se adopta como parte del método (D1).
+- **Comparación con un modelo específico de la máquina en IMS:** hecha. Ver la curva de aprendizaje y el estudio con 5 semillas más abajo (por máquina en crudo y en el cociente, con proyección angular, frente al OEM).
 - **Conviene contrastar el registro 539** con el inicio de degradación que reporta la literatura para el bearing 1 de este ensayo, citando la fuente concreta.
 
 
@@ -76,10 +76,10 @@ del radio. Si alguna cifra del texto difiere de la tabla, manda la tabla.*
 
 **Respuesta a las dos preguntas:**
 1. **¿Un modelo por máquina normal iguala al OEM con 99 registros?** No. Ni con 200 (33 h): sigue con más falsas alarmas en los bearings 1 y 4. El OEM da su punto de operación desde 8 h.
-2. **¿El cociente con simulación generaliza mejor que el cociente local?** A lo largo de días de vida sana, **generalizan igual** (0–2% frente a 0–3%, una semilla), igual que en CWRU. La contribución es el cociente; el simulador aporta no tener que entrenar nada en la máquina.
+2. **¿El cociente con simulación generaliza mejor que el cociente local?** A lo largo de días de vida sana, **generalizan igual** (0–2% frente a 0–3%; se mantiene con 5 semillas, ver más abajo), igual que en CWRU. La contribución es el cociente; el simulador aporta no tener que entrenar nada en la máquina.
 
 **Matices:**
-- Una semilla por modelo local.
+- Esta sección usa una semilla por modelo local; la variabilidad con 5 semillas está en la sección siguiente.
 - La ventana de FAR (200–499) es una elección: empieza tras la puesta en marcha más larga y acaba antes de la degradación documentada del bearing 1.
 - Bearings 2–4 no tienen fallo documentado, así que sus salidas (que difieren entre modelos: el 2 sale en 709 con todos los nuevos y en 720–794 con el publicado) indican sensibilidad, no aciertos.
 - La vibración real de IMS es casi ruido: los autoencoders por máquina reconstruyen solo el 16–45% de la varianza. Para ellos se ha sustituido el control publicado ("reconstruye al menos la mitad") por uno que solo rechaza el colapso; está documentado en el script y en la tabla.
