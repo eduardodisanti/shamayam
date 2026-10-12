@@ -94,3 +94,15 @@ def test_tolerance_radius_covers_with_stated_confidence():
                      for _ in range(reps)])
     # for U(0,1) the coverage of a radius tau is tau itself
     assert np.mean(taus >= 0.98) >= 0.95 - 3 * np.sqrt(0.95 * 0.05 / reps)
+
+
+# ------------------------------------------------------------- IMS learning curve
+
+def test_ims_learning_curve_table_is_regenerated_exactly():
+    import ims_learning_curve_report as lc
+    res = HERE / "results" / "ims_quotient" / "learning_curve.json"
+    if not res.exists():
+        pytest.skip("learning-curve results not committed yet")
+    import json
+    committed = (NOTES / "tablas_ims_cociente.md").read_text()
+    assert lc.to_markdown(json.loads(res.read_text())) == committed

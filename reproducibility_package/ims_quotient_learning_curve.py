@@ -124,6 +124,7 @@ def main():
            "seed": SEED, "shaft_hz": SHAFT_HZ, "bearings": {}}
     kw = {} if args.epochs is None else {"epochs": args.epochs}
     ns = NS if args.ns is None else tuple(int(v) for v in args.ns.split(","))
+    rep["ns"] = list(ns)
     oem = OrderDomainNasaOperator(archive="nasa", seed=42, **kw).fit()
     rep["oem_q_training"] = {k: v for k, v in oem.history_.items()
                              if k not in ("loss", "val_loss")}
