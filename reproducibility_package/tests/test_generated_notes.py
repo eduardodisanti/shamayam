@@ -105,4 +105,9 @@ def test_ims_learning_curve_table_is_regenerated_exactly():
         pytest.skip("learning-curve results not committed yet")
     import json
     committed = (NOTES / "tablas_ims_cociente.md").read_text()
-    assert lc.to_markdown(json.loads(res.read_text())) == committed
+    md = lc.to_markdown(json.loads(res.read_text()))
+    seeds = res.parent / "seeds.json"
+    if seeds.exists():
+        md = md.rstrip("\n") + "\n" + lc.seeds_markdown(
+            json.loads(res.read_text()), json.loads(seeds.read_text()))
+    assert md == committed

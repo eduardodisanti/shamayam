@@ -254,6 +254,41 @@ def main(d):
                         + ["semillas", "DR mín. bola / int. / ext. (%)"],
                         rows))
 
+    seeds_path = d / "oem_seeds.json"
+    if seeds_path.exists() and "B" in R["configs"]:
+        Sd = json.loads(seeds_path.read_text())
+        runs = {"42": {"speeds": R["configs"]["B"]}}
+        runs.update(Sd["seeds"])
+        md.append("\n### OEM en el cociente: variabilidad entre semillas "
+                  "(configuración B)\n")
+        md.append("Mismo protocolo que la tabla de calibraciones; el "
+                  "operador se reentrena con cada semilla. Rango sobre "
+                  f"semillas ({', '.join(runs)}). FAR certificada: radio "
+                  "r_(k) sobre las 49 primeras sanas, FAR en las "
+                  "posteriores.\n")
+        rows = []
+        for s in SPEEDS:
+            def get(seed, path):
+                x = runs[seed]["speeds"][s]
+                x = x["ae"] if "ae" in x else x
+                for k in path:
+                    x = x[k]
+                return x
+            au = [min(get(k, ["auroc"]).values()) for k in runs]
+            far = [get(k, ["certified", "far_heldout"]) for k in runs]
+            n_h = get("42", ["certified", "n_heldout"])
+            dr = [min(get(k, ["certified", f"{x}_dr"]) for x in FAM)
+                  for k in runs]
+            tau = [get(k, ["oracle", "tau"]) for k in runs]
+            far_txt = (f"{f(min(far), 1)}–{f(max(far), 1)}% (de {n_h})"
+                       if n_h >= 10 else "n/d")
+            rows.append([s, f"{f(min(au), 3)}–{f(max(au), 3)}", far_txt,
+                         f"{f(min(dr), 1)}–{f(max(dr), 1)}",
+                         f"{f(min(tau), 4)}–{f(max(tau), 4)}"])
+        md.append(table(["rpm", "AUROC mín. por semilla",
+                         "FAR certificada n=49", "DR mín. (%)",
+                         "τ oráculo"], rows))
+
     md.append("\n### AUROC sano vs fallo (sin umbral)\n")
     md.append("Valores por velocidad; 1,00 = separación perfecta. "
               "Los descriptores triviales se puntúan como |valor − mediana sana|.\n")
