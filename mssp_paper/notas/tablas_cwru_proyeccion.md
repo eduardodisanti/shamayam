@@ -100,6 +100,17 @@ Mismos ~5 s de puesta en marcha; solo cambia la descripción del grupo. Radio r_
 | G3 | + offset | 2.1–12.8% (de 47) | 0.0% (de 49) | 2.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
 | G4 | + ruido (grupo completo) | 0.0–4.3% (de 47) | 0.0% (de 49) | 0.0–6.0% (de 50) | 3 | 100.0 / 100.0 / 100.0 |
 
+### OEM en el cociente: variabilidad entre semillas (configuración B)
+
+Mismo protocolo que la tabla de calibraciones; el operador se reentrena con cada semilla. Rango sobre semillas (42, 0, 1, 2, 3). FAR certificada: radio r_(k) sobre las 49 primeras sanas, FAR en las posteriores.
+
+| rpm | AUROC mín. por semilla | FAR certificada n=49 | DR mín. (%) | τ oráculo |
+|---|---|---|---|---|
+| 1730 | 1.000–1.000 | 2.1–8.5% (de 47) | 100.0–100.0 | 0.0558–0.0649 |
+| 1750 | 1.000–1.000 | 0.0–8.2% (de 49) | 100.0–100.0 | 0.0580–0.0671 |
+| 1772 | 1.000–1.000 | 0.0–0.0% (de 50) | 100.0–100.0 | 0.0680–0.0810 |
+| 1797 | 1.000–1.000 | n/d | 100.0–100.0 | 0.0871–0.0944 |
+
 ### AUROC sano vs fallo (sin umbral)
 
 Valores por velocidad; 1,00 = separación perfecta. Los descriptores triviales se puntúan como |valor − mediana sana|.

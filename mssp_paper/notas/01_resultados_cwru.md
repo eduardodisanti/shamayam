@@ -53,6 +53,7 @@ La referencia que haría un ingeniero sin el método es un autoencoder entrenado
   - cociente completo, local (proyección + aumento sobre el grupo): 0–4% / 0% / 0–6%;
   - cociente, OEM: 8,5% / 6,1% / 0%.
 - **Lectura:** con poco tiempo de puesta en marcha, lo que hace viable el detector es **trabajar en el espacio cociente**. Da igual que el modelo se entrene en el sitio (local, aumentado sobre el grupo) o de fábrica con simulación (OEM): los dos funcionan, y el crudo no. El autoencoder es solo el vehículo.
+- **Con 5 semillas del OEM** (tabla "OEM en el cociente: variabilidad entre semillas"): FAR certificada 2,1–8,5% / 0–8,2% / 0% en 1730 / 1750 / 1772, AUROC 1,000 y detección del 100% en todas. Se solapa con el local en el cociente (0–4% / 0% / 0–6%): la conclusión "generalizan igual" se mantiene con la variación entre entrenamientos.
 - **Qué añade el OEM sobre el local en el cociente:** no requiere entrenar nada en el sitio, solo calcular un radio, y el modelo existe antes de instalar el activo. Aquí el local en el cociente da incluso algo menos de FAR.
 
 **Por qué falla el crudo (comprobado y con hipótesis):**
