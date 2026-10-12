@@ -83,3 +83,24 @@ del radio. Si alguna cifra del texto difiere de la tabla, manda la tabla.*
 - La ventana de FAR (200–499) es una elección: empieza tras la puesta en marcha más larga y acaba antes de la degradación documentada del bearing 1.
 - Bearings 2–4 no tienen fallo documentado, así que sus salidas (que difieren entre modelos: el 2 sale en 709 con todos los nuevos y en 720–794 con el publicado) indican sensibilidad, no aciertos.
 - La vibración real de IMS es casi ruido: los autoencoders por máquina reconstruyen solo el 16–45% de la varianza. Para ellos se ha sustituido el control publicado ("reconstruye al menos la mitad") por uno que solo rechaza el colapso; está documentado en el script y en la tabla.
+
+
+
+## Con 5 semillas (12–13 oct)
+
+*Tabla "Variabilidad entre semillas" en [`tablas_ims_cociente.md`](tablas_ims_cociente.md), generada desde `results/ims_quotient/seeds.json` (`ims_seed_study.py`) y comprobada por el test.*
+
+**Qué se ha añadido:** cuatro semillas más para los modelos por máquina (bearings 1 y 4, donde había diferencias) y cuatro más para el OEM en el cociente (los cuatro bearings). Son cinco semillas por modelo en total.
+
+**Lo que se mantiene (media sobre 5 semillas, FAR en los registros 200–499):**
+- **Por máquina en crudo:** 2,4–17,5% en el bearing 1 y 5,7–8,0% en el bearing 4, según la longitud de puesta en marcha. Sigue sin alcanzar al OEM con 33 h.
+- **Por máquina en el cociente:** 0,7–1,5% (bearing 1) y 1,6–2,0% (bearing 4).
+- **OEM en el cociente:** 0,1–1,2% (bearing 1), 1,3–2,3% (bearing 4) y 0% en los bearings 2 y 3.
+- **Los rangos del cociente local y del OEM se solapan** en todas las longitudes. "Generalizan igual" se sostiene con la variación entre entrenamientos.
+- **Salida del bearing 1:** entre los registros 527 y 539 en todas las semillas y modelos; con el cociente, 538–539 siempre.
+
+**Lo que aclaran las semillas:**
+- **La curva cruda no monótona del bearing 1 no es ruido de semilla:** con 99 registros da 10,3–21,7% en las cinco semillas, peor que con 49 (1,7–3,3%). Hipótesis, sin verificar: la vida temprana del bearing 1 no es estacionaria (el residuo baja en los primeros registros, ver la prueba de Spearman). Un modelo crudo calibrado con 99 registros fija un radio que no representa la vida sana posterior. En el cociente esto no aparece.
+- **No hay colapsos** en las semillas nuevas. El único sigue siendo el del bearing 3, cociente local, 8 h, semilla 0.
+
+**Para el paper:** las tablas de IMS pueden darse como media [rango] sobre 5 semillas, que es lo mismo que la Tabla 11 publicada.

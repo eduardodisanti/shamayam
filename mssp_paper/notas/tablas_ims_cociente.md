@@ -75,3 +75,39 @@ La vibración de IMS es casi ruido de banda ancha: un autoencoder por máquina r
 | por máquina, en el cociente | 99 | 1,11 | 1,15 | 1,10 | 1,20 |
 | por máquina, en el cociente | 149 | 1,12 | 1,15 | 1,11 | 1,15 |
 | por máquina, en el cociente | 200 | 1,12 | 1,14 | 1,08 | 1,13 |
+
+## Variabilidad entre semillas
+
+Misma configuración; cada modelo se reentrena con cada semilla. Por máquina: semillas 0 (tabla anterior) y 1, 2, 3, 4, bearings 1, 4. OEM en el cociente: semillas 42 (tabla anterior) y 0, 1, 2, 3, los cuatro bearings. Media y rango de la FAR en los registros 200–499; entre paréntesis, entrenamientos que colapsaron.
+
+| modelo | n | bearing 1 | bearing 2 | bearing 3 | bearing 4 |
+|---|---|---|---|---|---|
+| por máquina, señal cruda | 49 | 2,4% [1,7–3,3] | — | — | 8,0% [5,3–11,3] |
+| por máquina, señal cruda | 99 | 17,5% [10,3–21,7] | — | — | 7,7% [6,0–9,0] |
+| por máquina, señal cruda | 149 | 10,3% [8,3–12,7] | — | — | 7,0% [5,3–8,0] |
+| por máquina, señal cruda | 200 | 8,3% [3,7–11,7] | — | — | 5,7% [4,3–6,7] |
+| por máquina, en el cociente | 49 | 0,7% [0,3–1,0] | — | — | 1,7% [1,0–2,3] |
+| por máquina, en el cociente | 99 | 1,0% [0,7–1,7] | — | — | 2,0% [1,0–3,0] |
+| por máquina, en el cociente | 149 | 1,5% [1,0–2,0] | — | — | 1,7% [1,3–2,0] |
+| por máquina, en el cociente | 200 | 1,5% [0,7–2,0] | — | — | 1,6% [1,3–2,0] |
+| OEM en el cociente (simulación) | 49 | 0,1% [0,0–0,3] | 0,0% [0,0–0,0] | 0,0% [0,0–0,0] | 1,3% [0,7–2,7] |
+| OEM en el cociente (simulación) | 99 | 0,5% [0,0–1,0] | 0,0% [0,0–0,0] | 0,0% [0,0–0,0] | 1,5% [0,7–2,7] |
+| OEM en el cociente (simulación) | 149 | 0,9% [0,0–1,7] | 0,0% [0,0–0,0] | 0,0% [0,0–0,0] | 2,3% [1,3–3,0] |
+| OEM en el cociente (simulación) | 200 | 1,2% [0,7–1,7] | 0,0% [0,0–0,0] | 0,0% [0,0–0,0] | 2,2% [1,3–2,7] |
+
+### Salida del bearing 1 (fallo) por semilla
+
+| modelo | n | registro de salida (rango) | semillas |
+|---|---|---|---|
+| por máquina, señal cruda | 49 | 538–538 | 5 |
+| por máquina, señal cruda | 99 | 527–538 | 5 |
+| por máquina, señal cruda | 149 | 532–538 | 5 |
+| por máquina, señal cruda | 200 | 536–538 | 5 |
+| por máquina, en el cociente | 49 | 538–539 | 5 |
+| por máquina, en el cociente | 99 | 538–538 | 5 |
+| por máquina, en el cociente | 149 | 538–538 | 5 |
+| por máquina, en el cociente | 200 | 538–538 | 5 |
+| OEM en el cociente (simulación) | 49 | 539–539 | 5 |
+| OEM en el cociente (simulación) | 99 | 538–539 | 5 |
+| OEM en el cociente (simulación) | 149 | 538–539 | 5 |
+| OEM en el cociente (simulación) | 200 | 538–539 | 5 |
