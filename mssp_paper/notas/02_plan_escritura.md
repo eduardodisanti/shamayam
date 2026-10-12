@@ -67,6 +67,7 @@
 **Conexiones para la discusión** (sin afirmar más de lo que muestran los datos):
 - **Blueprints (autocita):** declarado el cociente, la clase nominal es compacta y se cubre con pocos ejemplares; sin él hay que verlo todo. Aquí es literal: 49 ventanas en el cociente bastan y ~200 en crudo no.
 - **JEPA:** invariancia *aprendida* (aumentos, predicción en el espacio latente) frente a invariancia *declarada* desde la física e implementada antes del modelo. Sitúa el trabajo en un debate actual sin competir con él.
+- **Límite del radio local (trabajo futuro, una o dos frases):** el radio local mide lo que el cociente no absorbe; reducirlo queda como trabajo futuro. Sin concretar cómo: está fuera del alcance de este paper.
 
 ## 2. Sección por sección
 
@@ -104,7 +105,7 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 | D2 | ¿Aplicamos la proyección también a IMS? | Sí / no | **Sí,** por coherencia. IMS va a velocidad constante, así que el cambio debería ser pequeño |
 | D3 | ¿1797 rpm dentro o fuera? | Dentro con etiqueta / fuera de calibración | Dentro en AUROC, fuera en la tabla de calibración |
 | D4 | ¿Qué garantía es la "oficial"? | — | **Decidido (11-oct): ninguna.** Se proponen las tres (49 / 99 / 149) como menú: el operador elige según cuántas falsas alarmas tolere al principio. Con 49 opera desde ~8 h aceptando más riesgo de FAR alta; con 99, ~16,5 h y un radio más estable; con 149, ~25 h y garantía con confianza |
-| D5 | ¿Qué dominio nuevo? | Point machines públicas (CRPM) / circuitos de vía (privado) / otro | CRPM, por ser público y no de rodamientos. Lo vemos |
+| D5 | ¿Qué dominio nuevo? | Público y fuera del ámbito ferroviario (point machines y circuitos de vía descartados: solo dentro de Alstom). Candidatos por verificar: MIMII / MIMII DG (bombas, válvulas, ventiladores, guías; varias máquinas por tipo), MAFAULDA, cajas de engranajes (PHM 2009), Wafer (UCR) | Por decidir. Lo vemos |
 | D6 | ¿Contamos el error de `DE12`? | Nota metodológica / sección / nada | Nota metodológica + figura pequeña opcional |
 | D7 | ¿Qué papel tienen RMS, curtosis, etc.? | Rivales a batir / otros modelos estilo OEM | **Otros modelos estilo OEM** con la misma calibración local, en todas las tablas. No se compite con ellos: muestran que el esquema funciona con distintas representaciones |
 | D8 | ¿Semillas? | Una / cinco | Cinco para el operador compartido. La tabla de estabilidad ya existe para IMS |
@@ -112,10 +113,8 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 ## 5. Experimentos pendientes, por orden
 
 0. ~~**Referencia específica por activo en CWRU corregido (B).**~~ **Hecho** (11-oct): mismo punto de operación que el modelo OEM en las cuatro condiciones. Ver 01_resultados, "Resultado principal".
-1. **IMS.** ✔ Recalibración certificada desde la caché (11-oct, ver 03_resultados_ims): el bearing 1 sale en el registro 539 con todos los radios. Pendiente, con el archivo bruto:
-   - referencia específica: un modelo entrenado con la vida temprana del bearing 1 (comparación de viabilidad, como en CWRU);
-   - otros modelos estilo OEM (RMS, curtosis, envolvente) con la misma calibración;
-   - proyección angular, si se adopta D1.
+1. **IMS.** ✔ Recalibración certificada desde la caché (11-oct, ver 03_resultados_ims): el bearing 1 sale en el registro 539 con todos los radios. ✔ Modelos por máquina (crudo y en el cociente, con proyección angular) frente al OEM, 5 semillas (12-oct). Pendiente:
+   - otros modelos estilo OEM (RMS, curtosis, envolvente) con la misma calibración.
 2. **Dominio nuevo,** con el mismo protocolo.
 3. **Corolario β-contenido** (un test en `tests/test_coverage_exact.py`, además de la prueba en el `.tex`).
 4. **Cinco semillas** del operador en órdenes, para ver cuánto cambian los radios de CWRU.
