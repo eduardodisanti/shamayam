@@ -86,6 +86,19 @@ def to_markdown(R):
             rows.append(row)
     L.append(table(["modelo", "n"] + [f"bearing {bb}" for bb in bs], rows))
 
+    L += ["", "## Modelos por máquina: varianza no reconstruida en "
+          "entrenamiento", "",
+          "La vibración de IMS es casi ruido de banda ancha: un autoencoder "
+          "por máquina reconstruye solo parte de la varianza. Se rechaza solo "
+          "el colapso (> 0,98, equivalente a predecir una constante).", ""]
+    rows = []
+    for key, name in ARMS[:2]:
+        for i, n in enumerate(R["ns"]):
+            rows.append([name, str(n)] + [
+                fmt(R["bearings"][bb][key][i].get("unexplained"), 2)
+                if R["bearings"][bb][key][i].get("learned") else "—"
+                for bb in bs])
+    L.append(table(["modelo", "n"] + [f"bearing {bb}" for bb in bs], rows))
     L += ["", "## Generalización de los modelos por máquina "
           "(val_loss / train_loss)", ""]
     rows = []
