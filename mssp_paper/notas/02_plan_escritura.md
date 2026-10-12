@@ -61,7 +61,7 @@
 
 **Pruebas:**
 1. **CWRU, "describir mejor el cociente":** modelo local con subconjuntos crecientes del grupo (proyección → + fase → + ganancia → + offset → + ruido), mismo número de ventanas de entrenamiento. Si la FAR baja al describir mejor el grupo, es evidencia de la segunda contribución. *Hecho (12-oct): el salto está en la fase (2–57% → 0–4%); ganancia, offset y ruido no cambian nada medible en un único registro, porque ahí no varían. Ver 01_resultados.*
-2. **IMS a lo largo de la vida sana:** local en el cociente con las primeras ~8 h frente al OEM, durante días de operación con variaciones nominales que no estaban en la puesta en marcha (temperatura, deriva). Es donde la simulación podría marcar diferencia. *Necesita el archivo bruto de IMS.*
+2. **IMS a lo largo de la vida sana:** local en el cociente con las primeras ~8 h frente al OEM, durante días de operación con variaciones nominales que no estaban en la puesta en marcha (temperatura, deriva). Es donde la simulación podría marcar diferencia. *Hecho (12-oct): a lo largo de ~50 h de vida sana generalizan igual (OEM 0–2%, local en el cociente 0–3%); el por máquina en crudo no alcanza al OEM ni con 33 h de datos. Ver 03_resultados_ims.*
 3. **Variaciones fuera del grupo (carga):** ninguno las absorbe; van a límites y definen el borde de las dos hipótesis. *Medido.*
 
 **Conexiones para la discusión** (sin afirmar más de lo que muestran los datos):

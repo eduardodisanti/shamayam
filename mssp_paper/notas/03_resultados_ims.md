@@ -48,3 +48,38 @@ del radio. Si alguna cifra del texto difiere de la tabla, manda la tabla.*
 - **La Tabla 10 del manuscrito** puede pasar a tener las columnas del radio certificado (n = 99 o n = 149) y una fila de tolerancia. La calibración A1 queda como referencia histórica o desaparece.
 - **Pendiente para cerrar del todo la comparación de viabilidad en IMS:** un modelo específico entrenado con la vida temprana del bearing 1, el equivalente a la referencia de CWRU. Necesita el archivo bruto de IMS. También aplicar la proyección angular, por coherencia, si se adopta como parte del método (D1).
 - **Conviene contrastar el registro 539** con el inicio de degradación que reporta la literatura para el bearing 1 de este ensayo, citando la fuente concreta.
+
+
+## Curva de aprendizaje: por máquina frente a OEM, en crudo y en el cociente (12-oct)
+
+*Tablas en [`tablas_ims_cociente.md`](tablas_ims_cociente.md), generadas por `ims_learning_curve_report.py` desde `results/ims_quotient/learning_curve.json` y comprobadas por `tests/test_generated_notes.py`.*
+
+**Pregunta:** ¿cuánto tiempo de datos de la propia máquina necesita un modelo por máquina para igualar al OEM, y qué cambia si trabaja en el cociente?
+
+**Montaje:**
+- Puesta en marcha con 49, 99, 149 y 200 registros (~8, 16,5, 25 y 33 h).
+- Radio r₍ₖ₎ sobre esos registros.
+- FAR sobre los registros 200–499: ~50 h de vida sana, días después de la puesta en marcha.
+- Salida con la regla 8 de 10.
+- Cuatro modelos: por máquina en crudo, por máquina en el cociente (proyección + aumento sobre el grupo), OEM en el cociente y OEM publicado.
+- Velocidad nominal (2000 rpm): con registros de 1 s, la estimación por registro tiene un ±2% de ruido y metería una perturbación artificial.
+
+**Lo que se ve:**
+- **Fallo del bearing 1:** todos los modelos salen entre los registros 527 y 539 (~74 h antes del final). Con este fallo, la detección no distingue modelos.
+- **Falsas alarmas en la vida sana:**
+  - por máquina en crudo: 1,7–19% en el bearing 1 y 6–8% en el bearing 4, y **no mejora con más datos** (ni con 200 registros, 33 h);
+  - por máquina en el cociente: 0–3%, desde 49 registros;
+  - OEM en el cociente: 0–2%;
+  - OEM publicado: 0–1%.
+- **El OEM publicado, en dominio temporal, también funciona.** IMS va a velocidad y frecuencia de muestreo constantes, así que la proyección cambia poco. El simulador publicado ya varía la fase, y con eso el OEM tenía el cociente relevante aprendido de la simulación.
+- **Un caso de colapso:** el modelo por máquina en el cociente del bearing 3 con n = 49 no aprendió (más del 98% de varianza sin reconstruir) y se reporta así.
+
+**Respuesta a las dos preguntas:**
+1. **¿Un modelo por máquina normal iguala al OEM con 99 registros?** No. Ni con 200 (33 h): sigue con más falsas alarmas en los bearings 1 y 4. El OEM da su punto de operación desde 8 h.
+2. **¿El cociente con simulación generaliza mejor que el cociente local?** A lo largo de días de vida sana, **generalizan igual** (0–2% frente a 0–3%, una semilla), igual que en CWRU. La contribución es el cociente; el simulador aporta no tener que entrenar nada en la máquina.
+
+**Matices:**
+- Una semilla por modelo local.
+- La ventana de FAR (200–499) es una elección: empieza tras la puesta en marcha más larga y acaba antes de la degradación documentada del bearing 1.
+- Bearings 2–4 no tienen fallo documentado, así que sus salidas (que difieren entre modelos: el 2 sale en 709 con todos los nuevos y en 720–794 con el publicado) indican sensibilidad, no aciertos.
+- La vibración real de IMS es casi ruido: los autoencoders por máquina reconstruyen solo el 16–45% de la varianza. Para ellos se ha sustituido el control publicado ("reconstruye al menos la mitad") por uno que solo rechaza el colapso; está documentado en el script y en la tabla.
