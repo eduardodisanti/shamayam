@@ -74,7 +74,7 @@
 | Sección actual | Qué hacer | Por qué |
 |---|---|---|
 | **Título** | Quitar "Classification" y "Functional Manifolds". Propuesta: *"Label-free commissioning of shared anomaly detectors: quotient sections and distribution-free local radii"* | No hay experimentos de clasificación, y la Remark 3 dice que no son variedades |
-| **Abstract / highlights** | Quitar "49 observations suffice to certify". Poner: "49 for coverage in expectation, 149 for 95% confidence"; detección demostrada en IMS y en el dominio nuevo; CWRU como ilustración | Lo pide la sección 5 de 01_resultados |
+| **Abstract / highlights** | Quitar "49 observations suffice to certify". Poner: "49 for coverage in expectation, 149 for 95% confidence"; detección demostrada en IMS, velocidad variable en Ottawa; CWRU como ilustración; alcance: maquinaria rotativa | Lo pide la sección 5 de 01_resultados |
 | **§1 Introducción** | Mantener el planteamiento como problema inverso. Añadir el párrafo "sección explícita frente a invariancia aprendida" | Es el aporte conceptual nuevo |
 | **§4–5 Cociente** | Recortar. Dejar: (a) grupo declarado = {fase, ganancia, velocidad, frecuencia de muestreo}; (b) **sección** = remuestreo angular + normalización; (c) qué no está en G (carga, cadena de adquisición, resonancias fijas en Hz) y por qué va al radio local. Pasar Arzelà–Ascoli y la topología del cociente a un apéndice | Es lo que decide el pipeline. La topología fina no |
 | **§6 Clasificación** | Pasar a la discusión o eliminar | No hay experimentos |
@@ -83,7 +83,7 @@
 | **§8 Protocolo** | Nuevo §8.x "Proyección angular" (estimación de velocidad, 400 muestras/vuelta, 3 vueltas, simulador proyectado igual). Decir explícitamente: Normal CWRU a 48 kHz, emparejada con `DE48` | Reproducibilidad, y Smith & Randall |
 | **§9.3 CWRU** | Reescribir entera (ver punto 3) | |
 | **§9.4 IMS** | Solo el bearing 1 es fallo. Recalcular con proyección, r₍ₖ₎ y n ≥ 99. Corregir "clearing the degenerate range" | Revisión, punto 1 |
-| **§9.x Dominio nuevo** | Añadir | Ver punto 5 |
+| **§9.x Velocidad variable (Ottawa)** | Añadir | Ver punto 5 (D5) |
 | **§10 Discusión** | Añadir "qué no está en el grupo" y la lectura de CWRU como benchmark trivial para detección | |
 | **§11 Limitaciones** | Añadir: proyección aproximada para resonancias; garantía marginal; CWRU con pocas sanas | |
 
@@ -105,7 +105,7 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 | D2 | ¿Aplicamos la proyección también a IMS? | Sí / no | **Sí,** por coherencia. IMS va a velocidad constante, así que el cambio debería ser pequeño |
 | D3 | ¿1797 rpm dentro o fuera? | Dentro con etiqueta / fuera de calibración | Dentro en AUROC, fuera en la tabla de calibración |
 | D4 | ¿Qué garantía es la "oficial"? | — | **Decidido (11-oct): ninguna.** Se proponen las tres (49 / 99 / 149) como menú: el operador elige según cuántas falsas alarmas tolere al principio. Con 49 opera desde ~8 h aceptando más riesgo de FAR alta; con 99, ~16,5 h y un radio más estable; con 149, ~25 h y garantía con confianza |
-| D5 | ¿Qué dominio nuevo? | Público y fuera del ámbito ferroviario (point machines y circuitos de vía descartados: solo dentro de Alstom). Candidatos por verificar: MIMII / MIMII DG (bombas, válvulas, ventiladores, guías; varias máquinas por tipo), MAFAULDA, cajas de engranajes (PHM 2009), Wafer (UCR) | Por decidir. Lo vemos |
+| D5 | ¿Qué dominio nuevo? | — | **Decidido (12-oct): ninguno.** Se cierra con rodamientos y el alcance se acota a maquinaria rotativa. La tercera validación es velocidad variable dentro del registro (Ottawa), el flanco de G que CWRU e IMS no ejercitan. Otros dominios: trabajo futuro, vía Blueprints (sección 8). Point machines y circuitos de vía solo se pueden publicar dentro de Alstom |
 | D6 | ¿Contamos el error de `DE12`? | Nota metodológica / sección / nada | Nota metodológica + figura pequeña opcional |
 | D7 | ¿Qué papel tienen RMS, curtosis, etc.? | Rivales a batir / otros modelos estilo OEM | **Otros modelos estilo OEM** con la misma calibración local, en todas las tablas. No se compite con ellos: muestran que el esquema funciona con distintas representaciones |
 | D8 | ¿Semillas? | Una / cinco | Cinco para el operador compartido. La tabla de estabilidad ya existe para IMS |
@@ -115,7 +115,10 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 0. ~~**Referencia específica por activo en CWRU corregido (B).**~~ **Hecho** (11-oct): mismo punto de operación que el modelo OEM en las cuatro condiciones. Ver 01_resultados, "Resultado principal".
 1. **IMS.** ✔ Recalibración certificada desde la caché (11-oct, ver 03_resultados_ims): el bearing 1 sale en el registro 539 con todos los radios. ✔ Modelos por máquina (crudo y en el cociente, con proyección angular) frente al OEM, 5 semillas (12-oct). Pendiente:
    - otros modelos estilo OEM (RMS, curtosis, envolvente) con la misma calibración.
-2. **Dominio nuevo,** con el mismo protocolo.
+2. **Velocidad variable dentro del registro** (D5), con el mismo protocolo. Datos: Huang y Baddour (2018), Universidad de Ottawa, Mendeley `v43hmbwxpm` v2. 200 kHz, 10 s por registro, encoder de 1024 CPR. Perfiles creciente, decreciente y sus combinaciones; sano, pista interior, pista exterior, bola y combinado; 3 ensayos por caso. Licencia por confirmar. Hace falta:
+   - proyección angular con velocidad instantánea desde el encoder (y, como variante sin encoder, estimada de la señal);
+   - rampas de velocidad en el simulador;
+   - de paso, cubre el modo de fallo "velocidad variable dentro de un registro".
 3. **Corolario β-contenido** (un test en `tests/test_coverage_exact.py`, además de la prueba en el `.tex`).
 4. **Cinco semillas** del operador en órdenes, para ver cuánto cambian los radios de CWRU.
 5. **Unificar cifras:** todas las tablas generadas desde una sola ejecución (como ya hace el paquete).
@@ -148,3 +151,4 @@ En el paper, como mucho una o dos frases en la discusión (ver 1c, "Límite del 
    - **Variante intermedia:** calibrar solo una escala (un parámetro) en lugar del cuantil 0,98. Es más barato, pero exige que los residuos estandarizados tengan la misma forma en todas las máquinas, y se pierde la garantía libre de distribución.
    - **Coste en identificabilidad:** lo que entra en G se vuelve invisible. Con la vía de transmisión en G no se detectan los fallos que la cambian (aflojamiento, soporte, precarga). Habría que acompañarlo de una prueba de modo de fallo con un fallo sintético que solo altere la vía.
    - **La carga** no es un grupo: condicionar el radio a la carga parece más natural que cocientar.
+3. **Otros dominios** (no rotativos): extender basándose en Blueprints. Cada dominio exige su G declarado y su simulador.
