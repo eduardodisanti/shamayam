@@ -18,8 +18,16 @@ import tarfile
 import urllib.request
 from pathlib import Path
 
-from mssp_repro.datasets import (REGISTRY_DIR, data_root, read_manifest,
-                                 registry, verify)
+import importlib.util
+
+# Loaded by path: fetching and checking data must work in a bare Python,
+# without the numerical stack that importing the `mssp_repro` package pulls in.
+_spec = importlib.util.spec_from_file_location(
+    "mssp_datasets", Path(__file__).resolve().parent / "mssp_repro" / "datasets.py")
+_ds = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_ds)
+REGISTRY_DIR, data_root, read_manifest, registry, verify = (
+    _ds.REGISTRY_DIR, _ds.data_root, _ds.read_manifest, _ds.registry, _ds.verify)
 
 
 def cmd_status(names, deep=False):
