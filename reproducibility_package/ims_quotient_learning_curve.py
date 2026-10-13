@@ -26,7 +26,7 @@ estimation from 1 s records is too noisy here (+-2%), so the nominal speed is
 used for the projection, which is then a fixed resampling to 400 samples per
 revolution.
 
-Usage: python3 ims_quotient_learning_curve.py --ims-root PATH/2nd_test_files
+Usage: python3 ims_quotient_learning_curve.py [--ims-root PATH]
 """
 
 import argparse
@@ -36,6 +36,7 @@ from pathlib import Path
 
 import numpy as np
 
+from mssp_repro.datasets import dataset_arg
 from mssp_repro.bearing_simulator import NASA_PARAMS
 from mssp_repro.calibration import certified_order_statistic
 from mssp_repro.dynamics import first_persistent_departure
@@ -123,7 +124,7 @@ def augment(rec_proj, n, rng):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--ims-root", required=True, type=Path)
+    ap.add_argument("--ims-root", **dataset_arg("NASA_IMS_Bearings"))
     ap.add_argument("--cache-dir", type=Path, default=None)
     ap.add_argument("--out", type=Path, default=OUT)
     ap.add_argument("--bearings", default="1,2,3,4")

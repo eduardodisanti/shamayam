@@ -21,7 +21,7 @@ Ranges are the simulator's 'wide' coverage. Radius r_(k) on the 49
 commissioning windows; FAR on the healthy windows that follow; detection on
 all DE48 faults. 1797 rpm is skipped: only one healthy window follows.
 
-Usage: python3 cwru_quotient_ablation.py --cwru-root PATH/Data
+Usage: python3 cwru_quotient_ablation.py [--cwru-root PATH]
 """
 
 import argparse
@@ -31,6 +31,7 @@ from pathlib import Path
 
 import numpy as np
 
+from mssp_repro.datasets import dataset_arg
 from cwru_projection_experiment import FAMILIES, FS, load_config
 from mssp_repro.calibration import certified_order_statistic
 from mssp_repro.field.cwru_operator import AssetSpecificOperator
@@ -68,7 +69,7 @@ def make_training_set(level, segment, cal_windows, n, rng):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--cwru-root", required=True, type=Path)
+    ap.add_argument("--cwru-root", **dataset_arg("CWRU_Bearing_NumPy"))
     ap.add_argument("--out", type=Path, default=RESULTS)
     args = ap.parse_args()
     t0 = time.time()

@@ -29,7 +29,7 @@ For every configuration and speed:
     each scored as |feature - healthy median|;
   * threshold-free separability: AUROC healthy vs each fault family.
 
-Usage:  python3 cwru_projection_experiment.py --cwru-root PATH/Data [--out DIR]
+Usage:  python3 cwru_projection_experiment.py [--cwru-root PATH] [--out DIR]
 """
 
 import argparse
@@ -41,6 +41,7 @@ import numpy as np
 from scipy.stats import kurtosis
 from sklearn.metrics import roc_auc_score
 
+from mssp_repro.datasets import dataset_arg
 from mssp_repro.bearing_simulator import CWRU_PARAMS
 from mssp_repro.calibration import (AdaptiveOperationalRadius,
                                     certified_order_statistic,
@@ -242,7 +243,7 @@ def feature_score(name):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawTextHelpFormatter)
-    ap.add_argument("--cwru-root", required=True, type=Path)
+    ap.add_argument("--cwru-root", **dataset_arg("CWRU_Bearing_NumPy"))
     ap.add_argument("--out", type=Path,
                     default=Path("results/cwru_projection"))
     ap.add_argument("--configs", default="A,B,C")

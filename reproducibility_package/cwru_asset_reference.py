@@ -14,7 +14,7 @@ It is deliberately favourable to the reference (no held-out data, as
 published). The shared-model numbers to compare against are in results.json
 of cwru_projection_experiment.py.
 
-Usage: python3 cwru_asset_reference.py --cwru-root PATH/Data --out DIR
+Usage: python3 cwru_asset_reference.py [--cwru-root PATH] --out DIR
 """
 
 import argparse
@@ -25,6 +25,7 @@ from pathlib import Path
 import numpy as np
 from sklearn.metrics import roc_auc_score
 
+from mssp_repro.datasets import dataset_arg
 from cwru_projection_experiment import FAMILIES, load_config
 from mssp_repro.field.cwru import CWRU_SPEEDS
 from mssp_repro.field.cwru_operator import AssetSpecificOperator
@@ -32,7 +33,7 @@ from mssp_repro.field.cwru_operator import AssetSpecificOperator
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--cwru-root", required=True, type=Path)
+    ap.add_argument("--cwru-root", **dataset_arg("CWRU_Bearing_NumPy"))
     ap.add_argument("--out", type=Path, default=Path("results/cwru_projection"))
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()

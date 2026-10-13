@@ -21,6 +21,10 @@ from pathlib import Path
 
 __all__ = ["resolve_ci", "find_archive"]
 
+# Historical archive names -> registered dataset (datasets/registry.json).
+_REGISTERED = {"nasa_bearing": "NASA_IMS_Bearings",
+               "cwru_bearing_numpy-main": "CWRU_Bearing_NumPy"}
+
 
 def resolve_ci(root, *parts):
     """
@@ -71,12 +75,24 @@ def find_archive(name, *, explicit=None, search_from=None):
     archives beside the paper repository) works without configuration while an
     explicit path or the corresponding environment variable always wins.
 
+    Without an explicit path and without `search_from`, the registered
+    dataset (`mssp_repro.datasets`, MSSP_DATA_ROOT or MyDrive/datasets) is
+    preferred over the upward search, so every run reads the same pinned copy.
+
     Returns None rather than raising: an absent archive is a reason to skip
     Layer B, not an error. The caller decides.
     """
     if explicit is not None:
         p = Path(explicit).expanduser()
         return p if p.exists() else None
+
+    if search_from is None:
+        from ..datasets import dataset_dir
+        registered = _REGISTERED.get(str(name).lower())
+        if registered is not None:
+            d = dataset_dir(registered, required=False)
+            if d is not None:
+                return d
 
     start = Path(search_from) if search_from else Path(__file__).resolve()
     if not start.is_dir():

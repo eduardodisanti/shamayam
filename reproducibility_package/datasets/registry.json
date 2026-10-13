@@ -1,0 +1,43 @@
+{
+  "about": "Every dataset the experiments read. Each lives in its own folder under the data root (MSSP_DATA_ROOT, or the author's Google Drive folder MyDrive/datasets), and its manifest pins every file by SHA-256. Check with: python3 datasets_tool.py verify --deep",
+  "default_roots": [
+    "~/Library/CloudStorage/GoogleDrive-*/My Drive/datasets",
+    "~/Library/CloudStorage/GoogleDrive-*/Mi unidad/datasets",
+    "~/datasets"
+  ],
+  "datasets": {
+    "CWRU_Bearing_NumPy": {
+      "title": "Case Western Reserve University bearing data, NumPy conversion",
+      "source": "https://github.com/srigas/CWRU_Bearing_NumPy",
+      "version": "commit b1179d28761048530daa4f04a5c1659eff529499 (2025-02-04)",
+      "original": "https://engineering.case.edu/bearingdatacenter",
+      "license": "not stated by either the conversion or the CWRU Bearing Data Center; cite the Data Center",
+      "fetch": {
+        "kind": "github_tarball",
+        "repo": "srigas/CWRU_Bearing_NumPy",
+        "commit": "b1179d28761048530daa4f04a5c1659eff529499"
+      },
+      "loader_subdir": "Data",
+      "manifest": "manifests/CWRU_Bearing_NumPy.sha256",
+      "manifest_sha256": "45f93f24478ada2dcbe573b1e0034d5424d484b3df6142e7a1c9e62fb9380df8",
+      "files": 163,
+      "bytes": 660981519
+    },
+    "NASA_IMS_Bearings": {
+      "title": "IMS bearing run-to-failure data, test 2 (NASA PCoE Prognostics Data Repository)",
+      "source": "https://data.nasa.gov/dataset/ims-bearings",
+      "version": "test 2 only: the 984 one-second recordings 2004.02.12.10.32.39 to 2004.02.19.06.22.39, as used by the paper",
+      "original": "J. Lee, H. Qiu, G. Yu, J. Lin and Rexnord Technical Services (2007). IMS, University of Cincinnati. Bearing Data Set, NASA Prognostics Data Repository",
+      "license": "public NASA data repository; cite as given in 'original'",
+      "fetch": {
+        "kind": "manual",
+        "instructions": "Download the IMS bearing archive from the NASA Prognostics Data Repository and place the folder of test 2 recordings at NASA_IMS_Bearings/2nd_test/. The manifest identifies the exact files."
+      },
+      "loader_subdir": "",
+      "manifest": "manifests/NASA_IMS_Bearings.sha256",
+      "manifest_sha256": "f358421971520d0f245fe949bf452b60436403ca73212b7c7b2fe2d4b04d8eb5",
+      "files": 984,
+      "bytes": 544618480
+    }
+  }
+}

@@ -8,7 +8,7 @@ before on the corrected data: AUROC healthy vs each fault family, the oracle
 radius, and the certified r_(k) radius on the first 49 healthy windows with
 false alarms on the windows that follow.
 
-Usage: python3 cwru_oem_seeds.py --cwru-root PATH/Data
+Usage: python3 cwru_oem_seeds.py [--cwru-root PATH]
 """
 
 import argparse
@@ -16,6 +16,7 @@ import json
 import time
 from pathlib import Path
 
+from mssp_repro.datasets import dataset_arg
 from cwru_projection_experiment import (OrderDomainSharedOperator,
                                         evaluate_scores, load_config,
                                         window_scores)
@@ -28,7 +29,7 @@ OUT = HERE / "results" / "cwru_projection" / "oem_seeds.json"
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--cwru-root", required=True, type=Path)
+    ap.add_argument("--cwru-root", **dataset_arg("CWRU_Bearing_NumPy"))
     ap.add_argument("--out", type=Path, default=OUT)
     args = ap.parse_args()
     t0 = time.time()

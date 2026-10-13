@@ -241,11 +241,22 @@ for completeness; none of the mathematical claims depend on it.
 
 Requirements beyond Layer A: `tensorflow`, plus
 
-- **CWRU**: the `CWRU_Bearing_NumPy` archive, expected at
-  `<repo>/CWRU_Bearing_NumPy-main/Data`, loaded as `{bearing_id}_Normal.npz`
-  and the corresponding fault files.
-- **NASA IMS**: the run-to-failure archive extracted so that `data_root`
-  contains `1st_test/`, `2nd_test/`, `3rd_test/`. Experiment 2 is used.
+- the datasets registered in `datasets/registry.json`, each in its own folder
+  under one data root (`MSSP_DATA_ROOT`; by default the author's Google Drive
+  folder `MyDrive/datasets`):
+  - **`CWRU_Bearing_NumPy/`**: the NumPy conversion of the CWRU data, pinned
+    to commit `b1179d2`, loaded as `Data/{speed} RPM/{speed}_Normal.npz` and
+    the corresponding fault files;
+  - **`NASA_IMS_Bearings/2nd_test/`**: the 984 recordings of IMS test 2.
+
+  Every file is pinned by SHA-256 in `datasets/manifests/`. The experiment
+  scripts default to these locations, so no path needs passing.
+
+```bash
+python3 datasets_tool.py status            # where each dataset is
+python3 datasets_tool.py fetch CWRU_Bearing_NumPy   # pinned download
+python3 datasets_tool.py verify --deep     # byte-identical to what the paper used
+```
 
 Source notebooks (in the `inverse_problem` repository, branch `TRB2027`):
 

@@ -35,7 +35,8 @@ OPTIONAL = {"tensorflow", "keras"}
 
 # The package's own modules, which are not third-party.
 LOCAL = {"mssp_repro", "run_all", "make_figures", "make_tables", "make_macros",
-         "conftest"}
+         "conftest"} | {p.stem for p in Path(__file__).resolve().parents[1]
+                        .glob("*.py")}
 
 
 def _declared():

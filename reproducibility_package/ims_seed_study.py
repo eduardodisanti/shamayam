@@ -16,7 +16,7 @@ Bearings 2 and 3 are left out of the per-machine arms: every arm gives about
 0% false alarms on them in the seed-0 run, so further seeds there would add
 time without information.
 
-Usage: python3 ims_seed_study.py --ims-root PATH/2nd_test_files
+Usage: python3 ims_seed_study.py [--ims-root PATH]
 """
 
 import argparse
@@ -26,6 +26,7 @@ from pathlib import Path
 
 import numpy as np
 
+from mssp_repro.datasets import dataset_arg
 import ims_quotient_learning_curve as lc
 from mssp_repro.field.cwru_operator import AssetSpecificOperator
 from mssp_repro.field.ims import (IMS_CHANNELS, IMS_SAMPLE_RATE_HZ,
@@ -58,7 +59,7 @@ def bearing_views(signals, pub, b):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--ims-root", required=True, type=Path)
+    ap.add_argument("--ims-root", **dataset_arg("NASA_IMS_Bearings"))
     ap.add_argument("--cache-dir", type=Path, default=None)
     ap.add_argument("--out", type=Path, default=OUT)
     args = ap.parse_args()

@@ -21,7 +21,7 @@ False alarms are measured on the healthy windows that FOLLOW the n used
 seeds because 49 windows make its training noisy; the OEM arm has no
 per-asset training and therefore no seed to vary here.
 
-Usage: python3 cwru_limited_data_reference.py --cwru-root PATH/Data
+Usage: python3 cwru_limited_data_reference.py [--cwru-root PATH]
 """
 
 import argparse
@@ -32,6 +32,7 @@ from pathlib import Path
 import numpy as np
 from sklearn.metrics import roc_auc_score
 
+from mssp_repro.datasets import dataset_arg
 from cwru_projection_experiment import FAMILIES, load_config
 from mssp_repro.calibration import certified_order_statistic
 from mssp_repro.field.cwru import CWRU_SPEEDS
@@ -57,7 +58,7 @@ def arm_metrics(s_cal, s_rest, s_faults):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--cwru-root", required=True, type=Path)
+    ap.add_argument("--cwru-root", **dataset_arg("CWRU_Bearing_NumPy"))
     ap.add_argument("--out", type=Path, default=RESULTS)
     args = ap.parse_args()
     S = np.load(RESULTS / "scores.npz")

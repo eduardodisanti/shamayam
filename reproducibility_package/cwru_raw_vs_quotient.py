@@ -23,7 +23,7 @@ about 5 s); for the raw arms, the same seconds of signal. False alarms are
 measured on the healthy signal AFTER that period; detection on all DE48 fault
 windows (configuration B data).
 
-Usage: python3 cwru_raw_vs_quotient.py --cwru-root PATH/Data
+Usage: python3 cwru_raw_vs_quotient.py [--cwru-root PATH]
 """
 
 import argparse
@@ -33,6 +33,7 @@ from pathlib import Path
 
 import numpy as np
 
+from mssp_repro.datasets import dataset_arg
 from cwru_projection_experiment import FAMILIES, FS, _files
 from mssp_repro.calibration import certified_order_statistic, interpolated_quantile
 from mssp_repro.field.cwru import CWRU_SPEEDS
@@ -85,7 +86,7 @@ def fit_local(windows, seed):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--cwru-root", required=True, type=Path)
+    ap.add_argument("--cwru-root", **dataset_arg("CWRU_Bearing_NumPy"))
     ap.add_argument("--out", type=Path, default=RESULTS)
     args = ap.parse_args()
     S = np.load(RESULTS / "scores.npz")
