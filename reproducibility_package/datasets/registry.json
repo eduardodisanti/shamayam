@@ -38,6 +38,22 @@
       "manifest_sha256": "f358421971520d0f245fe949bf452b60436403ca73212b7c7b2fe2d4b04d8eb5",
       "files": 984,
       "bytes": 544618480
+    },
+    "Ottawa_Bearing_TimeVaryingSpeed": {
+      "title": "Bearing vibration under time-varying rotational speed (University of Ottawa)",
+      "source": "https://data.mendeley.com/datasets/v43hmbwxpm/2",
+      "version": "Mendeley Data version 2, DOI 10.17632/v43hmbwxpm.2 (published 2019-02-06); 'Download All' archive v43hmbwxpm-2.zip, sha256 4e5538e71692c83e9f5a4338808983f2a9bb00bfdc4a4e4a9627b616f5794eb1",
+      "original": "H. Huang and N. Baddour, Bearing vibration data collected under time-varying rotational speed conditions, Data in Brief 21 (2018), doi:10.1016/j.dib.2018.11.019",
+      "license": "CC BY 4.0",
+      "fetch": {
+        "kind": "manual",
+        "instructions": "Download 'Download All' from the Mendeley page (v43hmbwxpm-2.zip, 762 MB) and extract it into Ottawa_Bearing_TimeVaryingSpeed/, keeping the five folders as they are in the archive. 200 kHz, 10 s per file; Channel_1 accelerometer, Channel_2 encoder (1024 CPR)."
+      },
+      "loader_subdir": "",
+      "manifest": "manifests/Ottawa_Bearing_TimeVaryingSpeed.sha256",
+      "manifest_sha256": "a93306413a384d3cd87cb412889b1c59fb3549643824af986d8420f71ef48f6f",
+      "files": 60,
+      "bytes": 800604570
     }
   }
 }
