@@ -86,7 +86,7 @@
 | **§9.x Velocidad variable (Ottawa)** | Añadir el resultado tal cual, con una sola frase de límite: la sección angular elimina la parte cinemática de la velocidad, no la dinámica (Apéndice X) | 04_resultados_ottawa, "Cómo va en el paper" |
 | **§10 Discusión** | Añadir "qué no está en el grupo" y la lectura de CWRU como benchmark trivial para detección. Con Ottawa: el cociente es tan completo como la acción de G que se declara; lo que no está en G (carga, parte dinámica de la velocidad) va al radio, y el radio solo certifica lo que estaba en la puesta en marcha, que debe cubrir el rango de operación. Rasgos clásicos (curtosis) dentro del mismo esquema: D7 | 04_resultados_ottawa |
 | **§11 Limitaciones** | Añadir: proyección aproximada para resonancias; garantía marginal; CWRU con pocas sanas; parte dinámica de la velocidad fuera de G; la sección de ganancia completa sacrifica identificabilidad | |
-| **Apéndice X (nuevo): la velocidad más allá del cambio de escala temporal** | Análisis, no método: amplitud frente a velocidad; FAR por banda sobre semillas; coste de identificabilidad de la sección de ganancia; radio condicionado a la velocidad (no crea cobertura donde no hay ventanas; mínimo de 49 por banda); trabajo futuro | Acordado 13-oct; tablas generadas en tablas_ottawa.md, sección "Apéndice" |
+| **Apéndice X (nuevo): la velocidad más allá del cambio de escala temporal** | Análisis, no método: amplitud frente a velocidad; FAR por banda sobre semillas; coste de identificabilidad de la sección de ganancia; radio condicionado a la velocidad (no crea cobertura donde no hay ventanas, mínimo de 49 por banda, y no corrige que ensayos distintos a la misma velocidad no sean intercambiables); trabajo futuro. Cifras de modelos entrenados: siempre sobre 5 semillas | Acordado 13-oct; tablas generadas en tablas_ottawa.md, sección "Apéndice" |
 
 ## 3. Cómo contar CWRU (propuesta)
 
@@ -117,7 +117,7 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 1. **IMS.** ✔ Recalibración certificada desde la caché (11-oct, ver 03_resultados_ims): el bearing 1 sale en el registro 539 con todos los radios. ✔ Modelos por máquina (crudo y en el cociente, con proyección angular) frente al OEM, 5 semillas (12-oct). Pendiente:
    - otros modelos estilo OEM (RMS, curtosis, envolvente) con la misma calibración.
 2. **Velocidad variable dentro del registro** (D5, Ottawa). ✔ Hecho (13-oct, ver 04_resultados_ottawa): proyección angular con el encoder (tests de invariancia), cinco escenarios de puesta en marcha, una semilla. Lectura acordada: el cociente está incompleto (falta la parte dinámica de la velocidad); no se modifican ahora ni el emulador ni el cocientador. Pendiente:
-   - semillas 0–4 de A-1 y los cuatro ensayos 1, con puntuaciones por ventana, y el apéndice (`ottawa_speed_appendix.py`);
+   - ~~semillas 0–4 de A-1 y los cuatro ensayos 1, y el apéndice~~: hecho (13-oct);
    - variante sin encoder: fuera de este paper salvo decisión contraria.
 3. **Corolario β-contenido** (un test en `tests/test_coverage_exact.py`, además de la prueba en el `.tex`).
 4. **Cinco semillas** del operador en órdenes, para ver cuánto cambian los radios de CWRU.
