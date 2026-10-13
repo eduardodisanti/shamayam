@@ -37,6 +37,10 @@
 2. IMS: el único fallo real se anticipa ~74 h, igual con los cinco radios.
 3. El menú de puesta en marcha (8 / 16,5 / 25 h) con garantías explícitas.
 4. La teoría predice qué perturbaciones exigen radio local (la carga) y los datos lo confirman.
+5. Con los mismos datos de la máquina, solo el cociente hace viable una puesta en marcha corta con un modelo aprendido (IMS, 5 semillas). *Propuesto 13-oct, pendiente de tu visto bueno.*
+6. El menú de puesta en marcha también fija cuánta contaminación se tolera, exactamente n − k (IMS). *Propuesto 13-oct.*
+
+**Aviso para la introducción (13-oct):** en IMS y Ottawa el residuo del autoencoder se comporta como un indicador de energía (detecta lo mismo que el RMS). No se vende el autoencoder; debe quedar claro desde la introducción y en las tablas, con los indicadores clásicos como otros modelos estilo OEM.
 
 **Límites y casos en que falla:** sección propia en el paper, con ensayos donde se pueda.
 
@@ -46,9 +50,9 @@
 | Cambio de cadena de adquisición (sensor reemplazado): la proyección no lo corrige | CWRU configuración C | medido |
 | Pocas observaciones: la regla de parada no converge y la FAR no se puede medir | CWRU 1797 rpm | medido |
 | Puesta en marcha no intercambiable (rodaje, deriva) | IMS bearings 1 y 3 (dirección conservadora) | medido |
-| Puesta en marcha contaminada por un fallo ya presente: radio inflado, fallo no detectado | ensayo inyectando ventanas de fallo en la calibración | pendiente |
+| Puesta en marcha contaminada por un fallo ya presente: radio inflado, fallo no detectado. r₍ₖ₎ tolera exactamente n − k contaminaciones (0 / 1 / 2 con n = 49 / 99 / 149; 0 con tolerancia de Wilks) | IMS bearing 1, registros de fallo inyectados (05_clasicos_y_contaminacion, tablas_contaminacion) | medido |
 | Velocidad variable dentro del registro: la sección angular quita la parte cinemática (escala temporal) pero no la dinámica (amplitud y resonancias que cambian con la velocidad); las velocidades no vistas en la puesta en marcha dan falsas alarmas, también a un modelo por máquina | Ottawa (04_resultados_ottawa, tablas_ottawa) | medido; apéndice |
-| Simulador que no cubre la variabilidad nominal real: radio grande, menos sensibilidad | ensayo con fallos débiles frente al radio | pendiente |
+| Simulador que no cubre la variabilidad nominal real: radio grande, menos sensibilidad | Ottawa, OEM con normalización de ganancia: el simulador normalizado no se parece al banco y el residuo mide el desajuste (AUROC 0,40–0,62) | medido en parte; declarar |
 | Detecta, no diagnostica (tipo, ubicación, severidad, vida útil) | — | declarar |
 
 ## 1c. Pregunta central: ¿qué aporta el cociente y qué aporta la simulación? (acordado 11-oct)
@@ -115,7 +119,7 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 
 0. ~~**Referencia específica por activo en CWRU corregido (B).**~~ **Hecho** (11-oct): mismo punto de operación que el modelo OEM en las cuatro condiciones. Ver 01_resultados, "Resultado principal".
 1. **IMS.** ✔ Recalibración certificada desde la caché (11-oct, ver 03_resultados_ims): el bearing 1 sale en el registro 539 con todos los radios. ✔ Modelos por máquina (crudo y en el cociente, con proyección angular) frente al OEM, 5 semillas (12-oct). Pendiente:
-   - otros modelos estilo OEM (RMS, curtosis, envolvente) con la misma calibración.
+   - ~~otros modelos estilo OEM (RMS, curtosis, envolvente) con la misma calibración~~: hecho (13-oct, 05_clasicos_y_contaminacion). RMS y envolvente salen en el registro 539, como el autoencoder.
 2. **Velocidad variable dentro del registro** (D5, Ottawa). ✔ Hecho (13-oct, ver 04_resultados_ottawa): proyección angular con el encoder (tests de invariancia), cinco escenarios de puesta en marcha, una semilla. Lectura acordada: el cociente está incompleto (falta la parte dinámica de la velocidad); no se modifican ahora ni el emulador ni el cocientador. Pendiente:
    - ~~semillas 0–4 de A-1 y los cuatro ensayos 1, y el apéndice~~: hecho (13-oct);
    - variante sin encoder: fuera de este paper salvo decisión contraria.

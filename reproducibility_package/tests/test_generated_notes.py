@@ -137,3 +137,33 @@ def test_ottawa_training_free_arms_reproduce_across_runs():
     for sc in B["scenarios"]:
         for arm in ("rms_t", "kurt_q"):
             assert A["scenarios"][sc][arm] == B["scenarios"][sc][arm], (sc, arm)
+
+
+# ------------------------------------------------------------- IMS classical, contamination
+
+@pytest.mark.parametrize("res,note,fn", [
+    ("ims_classical/results.json", "tablas_ims_clasicos.md", "classical_markdown"),
+    ("contamination/results.json", "tablas_contaminacion.md", "contamination_markdown")])
+def test_extra_tables_are_regenerated_exactly(res, note, fn):
+    import json
+    import extra_reports
+    path = HERE / "results" / res
+    if not path.exists():
+        pytest.skip(f"{res} not committed yet")
+    md = getattr(extra_reports, fn)(json.loads(path.read_text()))
+    assert md == (NOTES / note).read_text()
+
+
+def test_contamination_tolerance_is_exactly_n_minus_k():
+    """Up to n - k contaminated recordings the radius does not move and the
+    fault is found with the clean lead time; one more and it moves."""
+    import json
+    path = HERE / "results" / "contamination" / "results.json"
+    if not path.exists():
+        pytest.skip("contamination results not committed yet")
+    for rows in json.loads(path.read_text())["scores"].values():
+        for r in rows:
+            if r["m"] <= r["tolerates"]:
+                assert r["lost"] == 0 and abs(r["inflation_median"] - 1) < 0.05
+            if r["m"] == r["tolerates"] + 1:
+                assert r["inflation_median"] > 1.5
