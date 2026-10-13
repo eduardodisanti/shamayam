@@ -1,6 +1,6 @@
 # Ottawa: velocidad variable dentro del registro (13-oct)
 
-*Sin tablas a mano: todas están en [`tablas_ottawa.md`](tablas_ottawa.md), generadas por `ottawa_report.py` desde `results/ottawa/results.json` (`ottawa_variable_speed.py`) y comprobadas byte a byte por `tests/test_generated_notes.py`. La tabla principal es de una semilla (0 para los modelos por máquina, 42 para el OEM) y los cinco escenarios de puesta en marcha. La variabilidad entre semillas (0–4) y el apéndice de velocidad se hacen para los dos escenarios clave (A-1 y los cuatro ensayos 1) y salen en la misma tabla generada cuando terminan. Si alguna cifra del texto difiere de la tabla, manda la tabla.*
+*Sin tablas a mano: todas están en [`tablas_ottawa.md`](tablas_ottawa.md), generadas por `ottawa_report.py` desde `results/ottawa/results.json` (`ottawa_variable_speed.py`) y comprobadas byte a byte por `tests/test_generated_notes.py`. La tabla principal es de una semilla (0 para los modelos por máquina, 42 para el OEM) y los cinco escenarios de puesta en marcha. La variabilidad entre semillas (0–4) y el apéndice de velocidad están hechos para los dos escenarios clave (A-1 y los cuatro ensayos 1), en la misma tabla generada. Para citar cifras de modelos entrenados, usar las de semillas. Si alguna cifra del texto difiere de la tabla, manda la tabla.*
 
 > Los rodamientos son solo validación. Ottawa cubre el flanco que CWRU e IMS no tocaban: la velocidad cambiando *dentro* de cada registro (factor ~2, 10–29 Hz), que es la parte de G que más distingue el método.
 
@@ -40,6 +40,28 @@
    - Con los cuatro ensayos, la curtosis en el cociente da 4,8% de FAR, 0 de 8 registros sanos con alarma y detecta interior, exterior y combinado en 12 de 12. El OEM en q da 4,3% de FAR, 1 de 8 registros, e interior y combinado en 12 de 12.
 5. **Entrenamiento.** Como en IMS, la vibración es casi ruido: los autoencoders por máquina dejan sin reconstruir entre el 69% y el 90% de la varianza. Hubo tres colapsos de 20 (A-1 crudo + aumento; B-1 crudo; B-1 cociente), que se reportan como tales; las semillas dirán si es inestabilidad del entrenamiento.
 
+## Con 5 semillas y el apéndice (13-oct)
+
+*Tablas "Variabilidad entre semillas" y "Apéndice" de [`tablas_ottawa.md`](tablas_ottawa.md). Escenarios A-1 y los cuatro ensayos 1; semillas 0–4 de los modelos por máquina y 42, 0, 1, 2, 3 del OEM.*
+
+- **Se mantiene la lectura de una semilla.**
+  - Con A-1, todos los modelos sensibles a la energía dan falsas alarmas masivas: OEM en el cociente 41,1% de media (29,4–47,0), por máquina en el cociente 42,8%, en crudo 46,6%, RMS 38,3%.
+  - Con los cuatro ensayos bajan a entre 3,7% y 12,1% de media: OEM en el cociente 8,4% (5,8–10,6), por máquina en el cociente 7,6%, en crudo 12,1%, curtosis 4,8%.
+  - Por máquina y OEM se solapan, como en IMS y CWRU.
+- **La dependencia de la velocidad, medida.** La dispersión de la FAR entre bandas de velocidad con A-1 es de 97–100 puntos en los modelos sensibles a la energía, y de 1,7 en el OEM en qg. Con los cuatro ensayos, 18–32 puntos frente a 5,5.
+- **El coste de identificabilidad se confirma.** El OEM en qg tiene la FAR más baja y más plana (2,0% con A-1, 3,7% con los cuatro ensayos, ningún registro sano con alarma en ninguna semilla), pero su AUROC queda en 0,40–0,62 para todos los fallos.
+- **El radio condicionado a la velocidad no es un arreglo.**
+  - Con A-1 ninguna banda llega a 49 ventanas (3, 25, 38 y 0), así que ninguna ventana de prueba queda cubierta.
+  - Con los cuatro ensayos se cubren dos bandas (15–20 Hz con 102 ventanas, 20–25 Hz con 132) y un 17–18% de las ventanas de prueba queda sin cubrir.
+  - En las bandas cubiertas la FAR condicionada es *mayor* que la global en casi todos los modelos (OEM en el cociente 12,7% frente a 8,4%). El radio global lo fijan las ventanas rápidas, de más energía, y eso enmascaraba la variación entre ensayos dentro de cada banda; la excepción es el OEM en qg (2,9% frente a 3,7%).
+  - Para el apéndice: condicionar a una variable medida exige ventanas suficientes en cada condición y no corrige que ensayos distintos a la misma velocidad no sean intercambiables.
+- **Colapsos.** Se concentran en el modelo en crudo con aumento (4 de 5 semillas con A-1, 3 de 5 con los cuatro ensayos) y, menos, en el del cociente (1 y 2 de 5); se reportan como tales.
+- **Un detalle del modelo en crudo con A-1.** Con 52 ventanas de entrenamiento apenas aprende: deja sin reconstruir el 86% de la varianza, y su puntuación es casi la energía de la ventana. Por eso da exactamente la misma FAR en las 5 semillas.
+- **Reproducibilidad.**
+  - La semilla 0 se repitió. Los modelos sin entrenamiento (RMS, curtosis) dan exactamente lo mismo, y lo comprueba un test.
+  - Los modelos entrenados no son reproducibles bit a bit en CPU: por ejemplo, el OEM en el cociente con A-1 da 157 frente a 236 falsas alarmas de 538.
+  - Por eso las cifras de los modelos entrenados se dan sobre semillas. La tabla de una semilla sirve para ver los cinco escenarios, no para citar cifras puntuales.
+
 ## Cómo lo leemos (acordado 13-oct)
 
 - **El método no falla; el espacio cociente está incompleto.** La sección angular elimina la parte *cinemática* de la velocidad (el cambio de escala temporal): lo prueban los tests sintéticos y lo confirma que el contenido ligado al eje cae en órdenes fijos. No elimina la parte *dinámica*: más velocidad, más vibración, y otra excitación de las resonancias. Hemos declarado una acción de G más pobre que la real. El cociente es tan completo como la acción de G que se declara.
@@ -50,7 +72,7 @@
 ## Cómo va en el paper (acordado 13-oct)
 
 - **Resultados (§9.x Ottawa):** el resultado tal cual, con una sola frase de límite: *la sección angular elimina la parte cinemática de la velocidad, no la dinámica (Apéndice X)*.
-- **Discusión (§10):** el cociente es tan completo como la acción de G que se declara; Ottawa es el caso en que la declarada se queda corta. Junto a la carga: lo que no está en G va al radio, y el radio solo certifica lo que estaba en la puesta en marcha. Consecuencia operativa: la puesta en marcha debe cubrir el rango de velocidad de operación (con los cuatro ensayos, la FAR baja al 3–12%).
+- **Discusión (§10):** el cociente es tan completo como la acción de G que se declara; Ottawa es el caso en que la declarada se queda corta. Junto a la carga: lo que no está en G va al radio, y el radio solo certifica lo que estaba en la puesta en marcha. Consecuencia operativa: la puesta en marcha debe cubrir el rango de velocidad de operación (con los cuatro ensayos, la FAR media sobre 5 semillas queda entre 3,7% y 12,1% según el modelo).
 - **Limitaciones (§11):** la parte dinámica de la velocidad no está en G; la sección de ganancia completa sacrifica identificabilidad.
 - **Apéndice X, "La velocidad más allá del cambio de escala temporal".** *No se propone como método*: es análisis del fallo. Contenido, todo generado (sección "Apéndice" de [`tablas_ottawa.md`](tablas_ottawa.md)):
   1. La amplitud sigue a la velocidad: correlación y exponente por registro sano.
@@ -62,5 +84,5 @@
 
 ## Pendiente
 
-- Semillas 0–4 de los escenarios A-1 y los cuatro ensayos 1, con las puntuaciones por ventana guardadas (la semilla 0 se repite para guardarlas y, de paso, comprobar que el resultado se reproduce). Al terminar: `ottawa_speed_appendix.py` y `ottawa_report.py`, y comprobar si los colapsos se repiten.
+- ~~Semillas 0–4 y apéndice~~: hecho (13-oct), ver arriba.
 - Variante sin encoder (velocidad estimada de la propia vibración): no entra en este paper salvo que se decida lo contrario.

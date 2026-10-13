@@ -122,3 +122,18 @@ def test_ottawa_table_is_regenerated_exactly():
         pytest.skip("Ottawa results not committed yet")
     committed = (NOTES / "tablas_ottawa.md").read_text()
     assert ottawa_report.full_markdown() == committed
+
+
+def test_ottawa_training_free_arms_reproduce_across_runs():
+    """The seed-0 run was repeated. Arms without training (RMS, kurtosis)
+    must agree exactly; trained arms are not bit-reproducible on CPU and are
+    reported over seeds instead."""
+    import json
+    a = HERE / "results" / "ottawa" / "results.json"
+    b = HERE / "results" / "ottawa" / "results_seed0.json"
+    if not (a.exists() and b.exists()):
+        pytest.skip("Ottawa runs not committed yet")
+    A, B = json.loads(a.read_text()), json.loads(b.read_text())
+    for sc in B["scenarios"]:
+        for arm in ("rms_t", "kurt_q"):
+            assert A["scenarios"][sc][arm] == B["scenarios"][sc][arm], (sc, arm)

@@ -216,3 +216,120 @@ Ventanas de entrenamiento; varianza no reconstruida (se rechaza solo el colapso,
 | los cuatro ensayos 1 | por máquina, crudo + aumento | 4000 | 0,77 | 1,12 |
 | los cuatro ensayos 1 | por máquina, cociente | 4000 | 0,82 | 1,12 |
 | los cuatro ensayos 1 | por máquina, cociente + ganancia | 4000 | 0,82 | 1,09 |
+
+## Variabilidad entre semillas
+
+Semillas 0, 1, 2, 3, 4 (modelos por máquina; el OEM con semillas 42, 0, 1, 2, 3). Media [mínimo–máximo]; entre paréntesis, entrenamientos que colapsaron. Escenarios de puesta en marcha: A-1 (creciente), los cuatro ensayos 1.
+
+### Puesta en marcha: A-1 (creciente)
+
+| modelo | FAR ventanas | registros sanos con alarma (de 8) | AUROC pista interior | AUROC pista exterior | AUROC bola | AUROC combinado |
+|---|---|---|---|---|---|---|
+| RMS, tiempo (clásico) | 38,3% [38,3–38,3] | 8,0 [8,0–8,0] | 0,998 [0,998–0,998] | 0,529 [0,529–0,529] | 0,830 [0,830–0,830] | 0,996 [0,996–0,996] |
+| curtosis, cociente (clásico) | 6,3% [6,3–6,3] | 0,0 [0,0–0,0] | 0,991 [0,991–0,991] | 0,988 [0,988–0,988] | 0,507 [0,507–0,507] | 1,000 [1,000–1,000] |
+| por máquina, crudo | 46,6% [46,6–46,6] | 8,0 [8,0–8,0] | 0,998 [0,998–0,998] | 0,510 [0,509–0,510] | 0,833 [0,833–0,833] | 0,996 [0,996–0,996] |
+| por máquina, crudo + aumento | 43,8% (4) | 8,0 | 0,998 | 0,479 | 0,833 | 0,996 |
+| por máquina, cociente | 42,8% [41,1–43,7] (1) | 8,0 [8,0–8,0] | 0,998 [0,998–0,998] | 0,460 [0,457–0,462] | 0,810 [0,809–0,811] | 0,996 [0,996–0,996] |
+| por máquina, cociente + ganancia | 27,7% [22,3–34,4] | 3,8 [3,0–5,0] | 0,995 [0,990–0,999] | 0,294 [0,284–0,307] | 0,838 [0,833–0,843] | 0,993 [0,988–0,996] |
+| OEM, cociente | 41,1% [29,4–47,0] | 6,8 [4,0–8,0] | 0,997 [0,997–0,998] | 0,445 [0,429–0,465] | 0,781 [0,766–0,794] | 0,994 [0,994–0,995] |
+| OEM, cociente + ganancia | 2,0% [0,6–3,3] | 0,0 [0,0–0,0] | 0,605 [0,596–0,615] | 0,447 [0,430–0,462] | 0,479 [0,441–0,506] | 0,405 [0,401–0,411] |
+
+### Puesta en marcha: los cuatro ensayos 1
+
+| modelo | FAR ventanas | registros sanos con alarma (de 8) | AUROC pista interior | AUROC pista exterior | AUROC bola | AUROC combinado |
+|---|---|---|---|---|---|---|
+| RMS, tiempo (clásico) | 9,1% [9,1–9,1] | 1,0 [1,0–1,0] | 0,998 [0,998–0,998] | 0,529 [0,529–0,529] | 0,830 [0,830–0,830] | 0,996 [0,996–0,996] |
+| curtosis, cociente (clásico) | 4,8% [4,8–4,8] | 0,0 [0,0–0,0] | 0,991 [0,991–0,991] | 0,988 [0,988–0,988] | 0,507 [0,507–0,507] | 1,000 [1,000–1,000] |
+| por máquina, crudo | 12,1% [11,0–13,8] | 1,8 [1,0–2,0] | 0,998 [0,998–0,998] | 0,538 [0,528–0,545] | 0,844 [0,842–0,845] | 0,996 [0,996–0,996] |
+| por máquina, crudo + aumento | 9,7% [9,3–10,0] (3) | 1,0 [1,0–1,0] | 0,998 [0,998–0,998] | 0,526 [0,517–0,535] | 0,846 [0,845–0,847] | 0,996 [0,996–0,996] |
+| por máquina, cociente | 7,6% [7,1–8,4] (2) | 1,0 [1,0–1,0] | 0,998 [0,998–0,998] | 0,460 [0,456–0,464] | 0,811 [0,811–0,811] | 0,996 [0,996–0,996] |
+| por máquina, cociente + ganancia | 4,8% [2,0–6,5] | 0,4 [0,0–1,0] | 0,998 [0,990–1,000] | 0,297 [0,282–0,319] | 0,850 [0,835–0,856] | 0,994 [0,988–0,997] |
+| OEM, cociente | 8,4% [5,8–10,6] | 1,6 [1,0–2,0] | 0,997 [0,997–0,998] | 0,445 [0,429–0,465] | 0,781 [0,766–0,794] | 0,994 [0,994–0,995] |
+| OEM, cociente + ganancia | 3,7% [3,0–4,8] | 0,0 [0,0–0,0] | 0,605 [0,596–0,615] | 0,447 [0,430–0,462] | 0,479 [0,441–0,506] | 0,405 [0,401–0,411] |
+
+## Apéndice: la velocidad más allá del cambio de escala temporal
+
+*Análisis, no método: nada se entrena aquí. Generado por `ottawa_speed_appendix.py` → `results/ottawa/appendix.json`.*
+
+### La amplitud sigue a la velocidad (registros sanos)
+
+Correlación ventana a ventana entre el RMS (ventanas de tiempo) y la velocidad, y exponente α de RMS ∝ velocidad^α.
+
+| registro | correlación | α | velocidad (Hz) |
+|---|---|---|---|
+| H-A-1 | 0,956 | 1,05 | 14,3–23,7 |
+| H-A-2 | 0,982 | 1,17 | 14,2–28,8 |
+| H-A-3 | 0,968 | 1,12 | 15,2–26,4 |
+| H-B-1 | 0,958 | 1,15 | 14,2–28,7 |
+| H-B-2 | 0,985 | 1,28 | 11,8–25,7 |
+| H-B-3 | 0,971 | 1,16 | 14,1–28,6 |
+| H-C-1 | 0,978 | 1,26 | 14,9–25,2 |
+| H-C-2 | 0,977 | 1,37 | 14,4–24,0 |
+| H-C-3 | 0,946 | 1,11 | 15,5–24,7 |
+| H-D-1 | 0,931 | 1,07 | 14,9–24,1 |
+| H-D-2 | 0,975 | 1,20 | 14,1–24,4 |
+| H-D-3 | 0,917 | 1,53 | 17,1–25,8 |
+
+### Falsas alarmas por banda de velocidad, todas las semillas
+
+Ventanas sanas de prueba sobre el radio global, sumadas sobre semillas. La dispersión entre bandas mide cuánto depende la puntuación de la velocidad.
+
+#### A-1 (creciente)
+
+| modelo | 10–15 Hz | 15–20 Hz | 20–25 Hz | 25–30 Hz | dispersión (puntos) |
+|---|---|---|---|---|---|
+| RMS, tiempo (clásico) | 0,0% | 12,8% | 53,3% | 100,0% | 100,0 |
+| curtosis, cociente (clásico) | 0,0% | 3,2% | 9,4% | 5,6% | 9,4 |
+| por máquina, crudo | 0,0% | 13,3% | 72,2% | 100,0% | 100,0 |
+| por máquina, crudo + aumento | 0,0% | 12,8% | 66,1% | 100,0% | 100,0 |
+| por máquina, cociente | 0,0% | 11,1% | 54,2% | 100,0% | 100,0 |
+| por máquina, cociente + ganancia | 66,9% | 14,6% | 24,1% | 60,6% | 52,3 |
+| OEM, cociente | 0,0% | 10,5% | 51,8% | 97,2% | 97,2 |
+| OEM, cociente + ganancia | 3,1% | 2,5% | 1,6% | 1,4% | 1,7 |
+
+#### los cuatro ensayos 1
+
+| modelo | 10–15 Hz | 15–20 Hz | 20–25 Hz | 25–30 Hz | dispersión (puntos) |
+|---|---|---|---|---|---|
+| RMS, tiempo (clásico) | 0,0% | 2,4% | 14,5% | 18,5% | 18,5 |
+| curtosis, cociente (clásico) | 0,0% | 2,2% | 7,8% | 2,8% | 7,8 |
+| por máquina, crudo | 0,0% | 5,3% | 15,8% | 31,5% | 31,5 |
+| por máquina, crudo + aumento | 0,0% | 3,6% | 15,0% | 17,6% | 17,6 |
+| por máquina, cociente | 0,0% | 0,0% | 10,4% | 20,2% | 20,2 |
+| por máquina, cociente + ganancia | 12,3% | 7,6% | 1,9% | 5,1% | 10,4 |
+| OEM, cociente | 0,0% | 0,2% | 9,8% | 27,6% | 27,6 |
+| OEM, cociente + ganancia | 6,9% | 4,0% | 3,8% | 1,4% | 5,5 |
+
+### Radio condicionado a la velocidad (análisis)
+
+Cada banda recibe su propio r_(k) solo si la puesta en marcha tiene al menos 49 ventanas en ella; si no, no existe radio libre de distribución al 0,98 y sus ventanas de prueba quedan sin cubrir. FAR global frente a condicionada (solo en bandas cubiertas), sumadas sobre semillas.
+
+#### A-1 (creciente)
+
+Ventanas de puesta en marcha por banda (cociente): 10–15 Hz: 3, 15–20 Hz: 25, 20–25 Hz: 38, 25–30 Hz: 0.
+
+| modelo | FAR, radio global | FAR, radio por banda (bandas cubiertas) | ventanas de prueba sin cubrir |
+|---|---|---|---|
+| RMS, tiempo (clásico) | 38,3% | — | 100,0% (2640/2640) |
+| curtosis, cociente (clásico) | 6,3% | — | 100,0% (2690/2690) |
+| por máquina, crudo | 46,6% | — | 100,0% (2640/2640) |
+| por máquina, crudo + aumento | 43,8% | — | 100,0% (528/528) |
+| por máquina, cociente | 42,8% | — | 100,0% (2152/2152) |
+| por máquina, cociente + ganancia | 27,7% | — | 100,0% (2690/2690) |
+| OEM, cociente | 41,1% | — | 100,0% (2690/2690) |
+| OEM, cociente + ganancia | 2,0% | — | 100,0% (2690/2690) |
+
+#### los cuatro ensayos 1
+
+Ventanas de puesta en marcha por banda (cociente): 10–15 Hz: 8, 15–20 Hz: 102, 20–25 Hz: 132, 25–30 Hz: 26.
+
+| modelo | FAR, radio global | FAR, radio por banda (bandas cubiertas) | ventanas de prueba sin cubrir |
+|---|---|---|---|
+| RMS, tiempo (clásico) | 9,1% | 14,6% | 17,0% (450/2640) |
+| curtosis, cociente (clásico) | 4,8% | 10,4% | 18,0% (485/2690) |
+| por máquina, crudo | 12,1% | 15,8% | 17,0% (450/2640) |
+| por máquina, crudo + aumento | 9,7% | 14,6% | 17,0% (180/1056) |
+| por máquina, cociente | 7,6% | 15,2% | 18,0% (291/1614) |
+| por máquina, cociente + ganancia | 4,8% | 6,3% | 18,0% (485/2690) |
+| OEM, cociente | 8,4% | 12,7% | 18,0% (485/2690) |
+| OEM, cociente + ganancia | 3,7% | 2,9% | 18,0% (485/2690) |
