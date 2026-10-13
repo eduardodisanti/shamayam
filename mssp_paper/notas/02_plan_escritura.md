@@ -114,6 +114,7 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 | D6 | ¿Contamos el error de `DE12`? | Nota metodológica / sección / nada | Nota metodológica + figura pequeña opcional |
 | D7 | ¿Qué papel tienen RMS, curtosis, etc.? | Rivales a batir / otros modelos estilo OEM | **Otros modelos estilo OEM** con la misma calibración local, en todas las tablas. No se compite con ellos: muestran que el esquema funciona con distintas representaciones |
 | D8 | ¿Semillas? | Una / cinco | Cinco para el operador compartido. La tabla de estabilidad ya existe para IMS |
+| D9 | ¿Qué es la contribución y cómo se estructura? | Autoencoder OEM / esquema de despliegue | **Decidido (14-oct):** la contribución es el esquema de despliegue (puntuación fijada sin datos del activo + sección del cociente + radio local certificado), independiente de la representación. El origen de la puntuación de fábrica es un eje con tres escalones: sin aprendizaje (cocientes gruesos: RMS, curtosis, envolvente), simulador simple y banco de pruebas real (CWRU → IMS y Ottawa; protocolo en 06_protocolo_banco). La estructura final se fija con el resultado del banco. Se reescribe la metodología. Pendiente de tu visto bueno: presentar los indicadores clásicos como cocientes gruesos (energía, impulsividad) y el autoencoder como cociente fino (forma) |
 
 ## 5. Experimentos pendientes, por orden
 
