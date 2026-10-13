@@ -111,3 +111,15 @@ def test_ims_learning_curve_table_is_regenerated_exactly():
         md = md.rstrip("\n") + "\n" + lc.seeds_markdown(
             json.loads(res.read_text()), json.loads(seeds.read_text()))
     assert md == committed
+
+
+# ------------------------------------------------------------- Ottawa
+
+def test_ottawa_table_is_regenerated_exactly():
+    import json
+    import ottawa_report
+    res = HERE / "results" / "ottawa" / "results.json"
+    if not res.exists():
+        pytest.skip("Ottawa results not committed yet")
+    committed = (NOTES / "tablas_ottawa.md").read_text()
+    assert ottawa_report.to_markdown(json.loads(res.read_text())) == committed

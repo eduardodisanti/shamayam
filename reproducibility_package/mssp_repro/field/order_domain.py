@@ -46,6 +46,7 @@ from ..bearing_simulator import BearingSignalSimulator
 
 __all__ = ["SAMPLES_PER_REV", "REVS_PER_WINDOW", "ORDER_WINDOW",
            "estimate_shaft_frequency", "angular_resample", "project_signal",
+           "angular_resample_varying",
            "order_windows", "OrderDomainSimulator"]
 
 SAMPLES_PER_REV = 400
@@ -110,6 +111,57 @@ def project_signal(x, fs, nominal_hz, *, spr=SAMPLES_PER_REV, shaft_hz=None):
     if shaft_hz is None:
         shaft_hz = estimate_shaft_frequency(x, fs, nominal_hz)
     return angular_resample(x, fs, shaft_hz, spr=spr), float(shaft_hz)
+
+
+FINE_SPR_FACTOR = 8             # intermediate angular rate: 8 x 400 = 3200/rev
+SPEED_LAG = 64                  # encoder references per speed estimate
+
+
+def angular_resample_varying(x, fs, t_ref, theta_ref, *, spr=SAMPLES_PER_REV,
+                             fine_factor=FINE_SPR_FACTOR):
+    """
+    Resample a record whose speed varies, given the shaft angle at known times.
+
+    `t_ref` (s, increasing) and `theta_ref` (revolutions, increasing) sample the
+    shaft angle, e.g. at the rising edges of an encoder. Returns
+    `(y, speed)`: `y` at `spr` samples per revolution over the angular span
+    covered by the references, and `speed` the shaft speed (Hz) at each
+    output sample.
+
+    Two-stage anti-aliasing (computed order tracking):
+      1. a fixed low-pass in time at 0.4 * fine_spr * f_min, where f_min is the
+         lowest speed in the record, then linear interpolation onto a fine
+         uniform angle grid of `fine_factor * spr` samples per revolution;
+      2. polyphase decimation by `fine_factor` IN THE ANGLE DOMAIN, whose filter
+         is therefore fixed in orders and identical at every speed.
+    Stage 2 sets the usable band (spr/2 orders) independently of speed; stage
+    1 only has to keep the fine grid free of aliasing, which its cutoff does
+    with a wide margin at every speed in the record.
+    """
+    from scipy.signal import butter, sosfiltfilt
+
+    x = np.asarray(x, dtype=np.float64).reshape(-1)
+    t_ref = np.asarray(t_ref, dtype=np.float64)
+    theta_ref = np.asarray(theta_ref, dtype=np.float64)
+    fine = int(fine_factor) * int(spr)
+    # Speed over SPEED_LAG references: a single encoder period is a few
+    # samples long, so per-edge speed is dominated by timing quantisation.
+    lag = min(SPEED_LAG, len(t_ref) - 1)
+    dtheta = (theta_ref[lag:] - theta_ref[:-lag]) / (t_ref[lag:] - t_ref[:-lag])
+    t_mid = 0.5 * (t_ref[lag:] + t_ref[:-lag])
+    f_min = float(dtheta.min())
+    cutoff = 0.4 * fine * f_min
+    if cutoff < 0.5 * fs:
+        sos = butter(8, cutoff, fs=fs, output="sos")
+        x = sosfiltfilt(sos, x)
+    t = np.arange(len(x)) / fs
+    grid = np.arange(np.ceil(theta_ref[0] * fine), np.floor(theta_ref[-1] * fine)) / fine
+    t_grid = np.interp(grid, theta_ref, t_ref)
+    y_fine = np.interp(t_grid, t, x)
+    y = resample_poly(y_fine, 1, int(fine_factor))
+    speed_fine = np.interp(t_grid, t_mid, dtheta)
+    speed = speed_fine[::int(fine_factor)][:len(y)]
+    return y, speed
 
 
 def order_windows(y, *, revs=REVS_PER_WINDOW, spr=SAMPLES_PER_REV):
