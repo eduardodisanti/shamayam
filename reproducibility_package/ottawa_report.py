@@ -169,11 +169,145 @@ def to_markdown(R):
     return "\n".join(L)
 
 
+def _pct(k, n):
+    return f"{fmt(100 * k / n)}%" if n else "—"
+
+
+def _mr(vals, nd=1, pct=False):
+    """mean [min–max] of a list, or the single value."""
+    import numpy as np
+    if not vals:
+        return "—"
+    f = (lambda v: fmt(v, nd) + ("%" if pct else ""))
+    if len(vals) == 1:
+        return f(vals[0])
+    return f"{f(float(np.mean(vals)))} [{fmt(min(vals), nd)}–{fmt(max(vals), nd)}]"
+
+
+def seeds_markdown(runs):
+    """runs: {seed: results json} from the --tag _seedN runs."""
+    seeds = sorted(runs)
+    scen = [s for s in SCEN_NAMES if all(s in runs[k]["scenarios"] for k in seeds)]
+    L = ["", "## Variabilidad entre semillas", "",
+         f"Semillas {', '.join(str(s) for s in seeds)} (modelos por máquina; "
+         "el OEM con semillas " + ", ".join(str(runs[s]["oem_seed"]) for s in seeds)
+         + "). Media [mínimo–máximo]; entre paréntesis, entrenamientos que "
+         "colapsaron. Escenarios de puesta en marcha: "
+         + ", ".join(SCEN_NAMES[s] for s in scen) + ".", ""]
+    for s in scen:
+        L += [f"### Puesta en marcha: {SCEN_NAMES[s]}", ""]
+        rows = []
+        for a, name in ARMS:
+            es = [runs[k]["scenarios"][s].get(a) for k in seeds]
+            es = [e for e in es if e is not None]
+            ok = [e for e in es if e.get("learned", True)]
+            col = len(es) - len(ok)
+            tag = f" ({col})" if col else ""
+            if not ok:
+                rows.append([name] + [f"colapso ({col})"] * 6)
+                continue
+            rows.append([name,
+                         _mr([100 * e["far_k"] / e["far_n"] for e in ok], pct=True) + tag,
+                         _mr([e["rec_false"] for e in ok])]
+                        + [_mr([e["detection"][c]["auroc"] for e in ok], 3)
+                           for c in FAULT_NAMES])
+        L.append(table(["modelo", "FAR ventanas", "registros sanos con alarma (de 8)"]
+                       + [f"AUROC {v}" for v in FAULT_NAMES.values()], rows))
+        L.append("")
+    return "\n".join(L)
+
+
+def appendix_markdown(A, runs):
+    seeds = sorted(runs)
+    L = ["", "## Apéndice: la velocidad más allá del cambio de escala temporal",
+         "", "*Análisis, no método: nada se entrena aquí. Generado por "
+         "`ottawa_speed_appendix.py` → `results/ottawa/appendix.json`.*", "",
+         "### La amplitud sigue a la velocidad (registros sanos)", "",
+         "Correlación ventana a ventana entre el RMS (ventanas de tiempo) y la "
+         "velocidad, y exponente α de RMS ∝ velocidad^α.", ""]
+    rows = [[k, fmt(v["corr"], 3), fmt(v["alpha"], 2),
+             f"{fmt(v['speed_min'])}–{fmt(v['speed_max'])}"]
+            for k, v in A["amplitude_speed"].items()]
+    L.append(table(["registro", "correlación", "α", "velocidad (Hz)"], rows))
+
+    scen = [s for s in SCEN_NAMES if s in A["conditioned"]]
+    bands = A["bands"]
+    L += ["", "### Falsas alarmas por banda de velocidad, todas las semillas", "",
+          "Ventanas sanas de prueba sobre el radio global, sumadas sobre "
+          "semillas. La dispersión entre bandas mide cuánto depende la "
+          "puntuación de la velocidad.", ""]
+    for s in scen:
+        L += [f"#### {SCEN_NAMES[s]}", ""]
+        rows = []
+        for a, name in ARMS:
+            es = [runs[k]["scenarios"][s].get(a) for k in seeds]
+            ok = [e for e in es if e is not None and e.get("learned", True)]
+            if not ok:
+                continue
+            ks = [sum(e["bands"][i]["k"] for e in ok) for i in range(len(bands))]
+            ns = [sum(e["bands"][i]["n"] for e in ok) for i in range(len(bands))]
+            pc = [100 * k / n for k, n in zip(ks, ns) if n]
+            rows.append([name] + [_pct(k, n) for k, n in zip(ks, ns)]
+                        + [fmt(max(pc) - min(pc))])
+        L.append(table(["modelo"] + [f"{b[0]}–{b[1]} Hz" for b in bands]
+                       + ["dispersión (puntos)"], rows))
+        L.append("")
+
+    L += ["### Radio condicionado a la velocidad (análisis)", "",
+          f"Cada banda recibe su propio r_(k) solo si la puesta en marcha tiene "
+          f"al menos {A['min_n']} ventanas en ella; si no, no existe radio "
+          "libre de distribución al 0,98 y sus ventanas de prueba quedan sin "
+          "cubrir. FAR global frente a condicionada (solo en bandas cubiertas), "
+          "sumadas sobre semillas.", ""]
+    for s in scen:
+        C = A["conditioned"][s]
+        ref = C.get("oem_q") or next(iter(C.values()))
+        ref_bands = next(iter(ref.values()))["bands"]
+        L += [f"#### {SCEN_NAMES[s]}", "",
+              "Ventanas de puesta en marcha por banda (cociente): "
+              + ", ".join(f"{b['band'][0]}–{b['band'][1]} Hz: {b['n_comm']}"
+                          for b in ref_bands) + ".", ""]
+        rows = []
+        for a, name in ARMS:
+            if a not in C:
+                continue
+            runs_a = list(C[a].values())
+            gk = sum(r["far_global_k"] for r in runs_a)
+            gn = sum(r["far_global_n"] for r in runs_a)
+            ck = sum(r["far_cond_k"] for r in runs_a)
+            cn = sum(r["far_cond_n"] for r in runs_a)
+            nc = sum(r["not_covered"] for r in runs_a)
+            rows.append([name, _pct(gk, gn), _pct(ck, cn),
+                         f"{_pct(nc, gn)} ({nc}/{gn})"])
+        L.append(table(["modelo", "FAR, radio global",
+                        "FAR, radio por banda (bandas cubiertas)",
+                        "ventanas de prueba sin cubrir"], rows))
+        L.append("")
+    return "\n".join(L)
+
+
+def full_markdown():
+    md = to_markdown(json.loads((RES / "results.json").read_text()))
+    runs = {}
+    for s in range(5):
+        f = RES / f"results_seed{s}.json"
+        if f.exists():
+            runs[s] = json.loads(f.read_text())
+    if len(runs) > 1:
+        md = md.rstrip("\n") + "\n" + seeds_markdown(runs)
+    app = RES / "appendix.json"
+    if app.exists() and runs:
+        A = json.loads(app.read_text())
+        if A["conditioned"]:
+            md = md.rstrip("\n") + "\n" + appendix_markdown(A, runs)
+    return md.rstrip("\n") + "\n"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--print", action="store_true")
     args = ap.parse_args()
-    md = to_markdown(json.loads((RES / "results.json").read_text()))
+    md = full_markdown()
     if args.print:
         print(md)
     else:

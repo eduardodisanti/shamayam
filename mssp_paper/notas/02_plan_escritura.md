@@ -47,7 +47,7 @@
 | Pocas observaciones: la regla de parada no converge y la FAR no se puede medir | CWRU 1797 rpm | medido |
 | Puesta en marcha no intercambiable (rodaje, deriva) | IMS bearings 1 y 3 (dirección conservadora) | medido |
 | Puesta en marcha contaminada por un fallo ya presente: radio inflado, fallo no detectado | ensayo inyectando ventanas de fallo en la calibración | pendiente |
-| Velocidad variable dentro del registro: la proyección supone velocidad constante | ensayo con rampas simuladas | pendiente |
+| Velocidad variable dentro del registro: la sección angular quita la parte cinemática (escala temporal) pero no la dinámica (amplitud y resonancias que cambian con la velocidad); las velocidades no vistas en la puesta en marcha dan falsas alarmas, también a un modelo por máquina | Ottawa (04_resultados_ottawa, tablas_ottawa) | medido; apéndice |
 | Simulador que no cubre la variabilidad nominal real: radio grande, menos sensibilidad | ensayo con fallos débiles frente al radio | pendiente |
 | Detecta, no diagnostica (tipo, ubicación, severidad, vida útil) | — | declarar |
 
@@ -83,9 +83,10 @@
 | **§8 Protocolo** | Nuevo §8.x "Proyección angular" (estimación de velocidad, 400 muestras/vuelta, 3 vueltas, simulador proyectado igual). Decir explícitamente: Normal CWRU a 48 kHz, emparejada con `DE48` | Reproducibilidad, y Smith & Randall |
 | **§9.3 CWRU** | Reescribir entera (ver punto 3) | |
 | **§9.4 IMS** | Solo el bearing 1 es fallo. Recalcular con proyección, r₍ₖ₎ y n ≥ 99. Corregir "clearing the degenerate range" | Revisión, punto 1 |
-| **§9.x Velocidad variable (Ottawa)** | Añadir | Ver punto 5 (D5) |
-| **§10 Discusión** | Añadir "qué no está en el grupo" y la lectura de CWRU como benchmark trivial para detección | |
-| **§11 Limitaciones** | Añadir: proyección aproximada para resonancias; garantía marginal; CWRU con pocas sanas | |
+| **§9.x Velocidad variable (Ottawa)** | Añadir el resultado tal cual, con una sola frase de límite: la sección angular elimina la parte cinemática de la velocidad, no la dinámica (Apéndice X) | 04_resultados_ottawa, "Cómo va en el paper" |
+| **§10 Discusión** | Añadir "qué no está en el grupo" y la lectura de CWRU como benchmark trivial para detección. Con Ottawa: el cociente es tan completo como la acción de G que se declara; lo que no está en G (carga, parte dinámica de la velocidad) va al radio, y el radio solo certifica lo que estaba en la puesta en marcha, que debe cubrir el rango de operación. Rasgos clásicos (curtosis) dentro del mismo esquema: D7 | 04_resultados_ottawa |
+| **§11 Limitaciones** | Añadir: proyección aproximada para resonancias; garantía marginal; CWRU con pocas sanas; parte dinámica de la velocidad fuera de G; la sección de ganancia completa sacrifica identificabilidad | |
+| **Apéndice X (nuevo): la velocidad más allá del cambio de escala temporal** | Análisis, no método: amplitud frente a velocidad; FAR por banda sobre semillas; coste de identificabilidad de la sección de ganancia; radio condicionado a la velocidad (no crea cobertura donde no hay ventanas; mínimo de 49 por banda); trabajo futuro | Acordado 13-oct; tablas generadas en tablas_ottawa.md, sección "Apéndice" |
 
 ## 3. Cómo contar CWRU (propuesta)
 
@@ -115,10 +116,9 @@ Que CWRU sea trivial para detectar no es un problema si se cuenta bien. Lo usar�
 0. ~~**Referencia específica por activo en CWRU corregido (B).**~~ **Hecho** (11-oct): mismo punto de operación que el modelo OEM en las cuatro condiciones. Ver 01_resultados, "Resultado principal".
 1. **IMS.** ✔ Recalibración certificada desde la caché (11-oct, ver 03_resultados_ims): el bearing 1 sale en el registro 539 con todos los radios. ✔ Modelos por máquina (crudo y en el cociente, con proyección angular) frente al OEM, 5 semillas (12-oct). Pendiente:
    - otros modelos estilo OEM (RMS, curtosis, envolvente) con la misma calibración.
-2. **Velocidad variable dentro del registro** (D5), con el mismo protocolo. Datos: Huang y Baddour (2018), Universidad de Ottawa, Mendeley `v43hmbwxpm` v2. 200 kHz, 10 s por registro, encoder de 1024 CPR. Perfiles creciente, decreciente y sus combinaciones; sano, pista interior, pista exterior, bola y combinado; 3 ensayos por caso. Licencia por confirmar. Hace falta:
-   - proyección angular con velocidad instantánea desde el encoder (y, como variante sin encoder, estimada de la señal);
-   - rampas de velocidad en el simulador;
-   - de paso, cubre el modo de fallo "velocidad variable dentro de un registro".
+2. **Velocidad variable dentro del registro** (D5, Ottawa). ✔ Hecho (13-oct, ver 04_resultados_ottawa): proyección angular con el encoder (tests de invariancia), cinco escenarios de puesta en marcha, una semilla. Lectura acordada: el cociente está incompleto (falta la parte dinámica de la velocidad); no se modifican ahora ni el emulador ni el cocientador. Pendiente:
+   - semillas 0–4 de A-1 y los cuatro ensayos 1, con puntuaciones por ventana, y el apéndice (`ottawa_speed_appendix.py`);
+   - variante sin encoder: fuera de este paper salvo decisión contraria.
 3. **Corolario β-contenido** (un test en `tests/test_coverage_exact.py`, además de la prueba en el `.tex`).
 4. **Cinco semillas** del operador en órdenes, para ver cuánto cambian los radios de CWRU.
 5. **Unificar cifras:** todas las tablas generadas desde una sola ejecución (como ya hace el paquete).
@@ -152,3 +152,4 @@ En el paper, como mucho una o dos frases en la discusión (ver 1c, "Límite del 
    - **Coste en identificabilidad:** lo que entra en G se vuelve invisible. Con la vía de transmisión en G no se detectan los fallos que la cambian (aflojamiento, soporte, precarga). Habría que acompañarlo de una prueba de modo de fallo con un fallo sintético que solo altere la vía.
    - **La carga** no es un grupo: condicionar el radio a la carga parece más natural que cocientar.
 3. **Otros dominios** (no rotativos): extender basándose en Blueprints. Cada dominio exige su G declarado y su simulador.
+4. **Completar la acción de la velocidad en G** (Ottawa, 13-oct). Añadir la parte dinámica: la ganancia que impone la velocidad (una ley de amplitud nominal con la velocidad medida, un subgrupo ligado a ella, no toda la ganancia libre) y el desplazamiento de las resonancias fijas en Hz. Ni el emulador ni el cocientador se tocan en este paper.
