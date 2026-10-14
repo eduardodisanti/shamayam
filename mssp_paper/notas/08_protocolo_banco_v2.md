@@ -77,3 +77,13 @@ Unos 25 entrenamientos: banco w y wg, C-ruido wg y C-simulador wg con 5 semillas
 - **Se transfiere:** la definición del cociente queda validada en su punto central. El cociente completo hace transferible la firma del fenómeno, y v1 muestra qué pasa cuando falta la vía. Pasaría a ser un resultado principal.
 - **Evidencia parcial o no se detecta:** se informa con v1 como límite medido del método. La definición del cociente se mantiene como marco y la transferencia de la firma queda como trabajo futuro.
 - **No evaluable con este autoencoder:** se informa como límite de la representación, no del cociente. Las referencias clásicas en el dominio de la firma dicen si la firma está ahí.
+
+## Registro de ejecución
+
+- **14–15-oct, etapa 1 (solo entrenamiento, antes de puntuar ningún destino).**
+  - **Banco w y banco wg:** 0 de 5 modelos aprenden cada uno; la fracción no reconstruida en la validación del banco es 1,000 en los diez.
+  - **Techo por máquina en Ottawa (wg):** 0 de 5 aprenden.
+  - **C-simulador wg:** 2 de 5 aprenden, y apenas (0,97).
+  - **C-ruido:** 1,000, como se esperaba.
+
+  Se aplica la condición fijada antes de ejecutar: **H1v2 queda no evaluable con este autoencoder**. El autoencoder de error cuadrático sobre la forma de onda no logra representar la vibración blanqueada, venga del banco, de la propia máquina o del simulador. Es un límite de la representación, no del cociente. Se pasa a la etapa 2 sin cambios para obtener las referencias clásicas y la tabla de IMS.
