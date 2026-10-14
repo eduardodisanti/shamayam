@@ -93,3 +93,10 @@ Tres variantes (banco q, banco qg, C-ruido qg) por 5 semillas, unos 15 min por e
 - **Transfiere:** el banco pasa a ser la instancia principal (banco del fabricante → campo) y el simulador queda como ablación.
 - **Parcial o no transfiere:** se mantiene el eje de tres escalones. El banco es un límite medido; la vía de transmisión en G y la fidelidad del modelo de fábrica quedan como trabajo futuro.
 - En cualquier caso, la columna del paper (regla de puesta en marcha certificada, cociente, modos de fallo) no cambia.
+
+## Registro de ejecución
+
+- **14-oct, etapa 1 (solo banco, antes de puntuar ningún destino).** Las 15 ejecuciones terminan.
+  - El banco en q y en qg deja sin reconstruir el 50–52% de la varianza en la validación del banco, con generalización 1,17–1,29 y 14–22 épocas. Aprende: la fracción está por debajo de 0,95, y mucho por debajo del 70–90% de los modelos por máquina en IMS y Ottawa. Se mira la estructura del banco, no el ruido.
+  - El control C-ruido deja sin reconstruir el 100%, como se esperaba: no hay nada que aprender.
+  - Diagnósticos en `results/bench/training.json`. Se pasa a la etapa 2 sin cambios.
