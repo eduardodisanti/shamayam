@@ -197,3 +197,32 @@ def test_bench_analysis_recomputes_exactly():
     _, _, W, ott = br.load(res)
     fresh = json.loads(json.dumps(br.analyse(W, ott)))
     assert fresh == json.loads((res / "analysis.json").read_text())
+
+
+# ---------------------------------------------- bench v2 (full quotient, prewhitened)
+
+def _bench_v2():
+    import bench_report_v2
+    res = HERE / "results" / "bench_v2"
+    if not (res / "analysis_v2.json").exists():
+        pytest.skip("bench v2 results not committed yet")
+    return bench_report_v2, res
+
+
+def test_bench_v2_table_is_regenerated_exactly():
+    import json
+    br, res = _bench_v2()
+    T, E, _ = br.load(res)
+    A = json.loads((res / "analysis_v2.json").read_text())
+    assert br.to_markdown(T, E, A) == (NOTES / "tablas_banco_v2.md").read_text()
+
+
+@pytest.mark.slow
+def test_bench_v2_analysis_recomputes_exactly():
+    """The v2 analysis (bootstrap and evaluability) reproduces exactly from
+    the committed window scores."""
+    import json
+    br, res = _bench_v2()
+    _, _, W = br.load(res)
+    fresh = json.loads(json.dumps(br.analyse(W)))
+    assert fresh == json.loads((res / "analysis_v2.json").read_text())

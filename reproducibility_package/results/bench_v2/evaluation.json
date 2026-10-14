@@ -1,0 +1,2637 @@
+{
+ "protocol": "08_protocolo_banco_v2.md (14-oct)",
+ "ims_ns": [
+  49,
+  99,
+  149,
+  200
+ ],
+ "far_window": [
+  200,
+  500
+ ],
+ "runs": {
+  "bench_w/42": {
+   "learned": false
+  },
+  "bench_w/0": {
+   "learned": false
+  },
+  "bench_w/1": {
+   "learned": false
+  },
+  "bench_w/2": {
+   "learned": false
+  },
+  "bench_w/3": {
+   "learned": false
+  },
+  "bench_wg/42": {
+   "learned": false
+  },
+  "bench_wg/0": {
+   "learned": false
+  },
+  "bench_wg/1": {
+   "learned": false
+  },
+  "bench_wg/2": {
+   "learned": false
+  },
+  "bench_wg/3": {
+   "learned": false
+  },
+  "noise_wg/42": {
+   "learned": true,
+   "ims": {
+    "1": [
+     {
+      "n": 49,
+      "tau": 1.0016273260116577,
+      "far_k": 17,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0016592741012573,
+      "far_k": 16,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0018965005874634,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0018901824951172,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "2": [
+     {
+      "n": 49,
+      "tau": 1.0020042657852173,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0019139051437378,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0019139051437378,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0019139051437378,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "3": [
+     {
+      "n": 49,
+      "tau": 1.001724123954773,
+      "far_k": 15,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0017114877700806,
+      "far_k": 15,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.001724123954773,
+      "far_k": 15,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.001724123954773,
+      "far_k": 15,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "4": [
+     {
+      "n": 49,
+      "tau": 1.0019866228103638,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0019278526306152,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0019382238388062,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0019278526306152,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ]
+   },
+   "ottawa": {
+    "ABCD1": {
+     "n_comm": 268,
+     "tau": 1.0040156841278076,
+     "far_k": 8,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 3,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 5,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 0,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 26,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.48744382540499087
+      },
+      "O": {
+       "k": 73,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4963905092839741
+      },
+      "B": {
+       "k": 20,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5097626163228612
+      },
+      "C": {
+       "k": 87,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4820354876362174
+      }
+     }
+    },
+    "A1": {
+     "n_comm": 66,
+     "tau": 1.0058683156967163,
+     "far_k": 0,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 0,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 0,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 0,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 2,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.48744382540499087
+      },
+      "O": {
+       "k": 18,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4963905092839741
+      },
+      "B": {
+       "k": 3,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5097626163228612
+      },
+      "C": {
+       "k": 23,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4820354876362174
+      }
+     }
+    }
+   }
+  },
+  "noise_wg/0": {
+   "learned": true,
+   "ims": {
+    "1": [
+     {
+      "n": 49,
+      "tau": 1.0017439126968384,
+      "far_k": 7,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.001849889755249,
+      "far_k": 4,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0019499063491821,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0019184350967407,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "2": [
+     {
+      "n": 49,
+      "tau": 1.0020891427993774,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0018023252487183,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.00178062915802,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0018737316131592,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "3": [
+     {
+      "n": 49,
+      "tau": 1.002100944519043,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0020273923873901,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0019330978393555,
+      "far_k": 4,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0019330978393555,
+      "far_k": 4,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "4": [
+     {
+      "n": 49,
+      "tau": 1.0018616914749146,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0017462968826294,
+      "far_k": 11,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0017117261886597,
+      "far_k": 12,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0017462968826294,
+      "far_k": 11,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ]
+   },
+   "ottawa": {
+    "ABCD1": {
+     "n_comm": 268,
+     "tau": 1.0037513971328735,
+     "far_k": 10,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 2,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 7,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 1,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 32,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.47274500858998125
+      },
+      "O": {
+       "k": 71,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.44235855649489936
+      },
+      "B": {
+       "k": 21,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.45850766576767016
+      },
+      "C": {
+       "k": 97,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.47387470451491404
+      }
+     }
+    },
+    "A1": {
+     "n_comm": 66,
+     "tau": 1.0038212537765503,
+     "far_k": 8,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 2,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 5,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 1,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 30,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.47274500858998125
+      },
+      "O": {
+       "k": 69,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.44235855649489936
+      },
+      "B": {
+       "k": 18,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.45850766576767016
+      },
+      "C": {
+       "k": 92,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.47387470451491404
+      }
+     }
+    }
+   }
+  },
+  "noise_wg/1": {
+   "learned": true,
+   "ims": {
+    "1": [
+     {
+      "n": 49,
+      "tau": 1.0020166635513306,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0019279718399048,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0019279718399048,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0018635988235474,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "2": [
+     {
+      "n": 49,
+      "tau": 1.001531958580017,
+      "far_k": 35,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.001732349395752,
+      "far_k": 11,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.001732349395752,
+      "far_k": 11,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.001768946647644,
+      "far_k": 10,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "3": [
+     {
+      "n": 49,
+      "tau": 1.0018055438995361,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0018055438995361,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0017828941345215,
+      "far_k": 7,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0017783641815186,
+      "far_k": 7,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "4": [
+     {
+      "n": 49,
+      "tau": 1.002159595489502,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0019439458847046,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0018510818481445,
+      "far_k": 4,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0018510818481445,
+      "far_k": 4,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ]
+   },
+   "ottawa": {
+    "ABCD1": {
+     "n_comm": 268,
+     "tau": 1.0033587217330933,
+     "far_k": 14,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 7,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 5,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 2,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 53,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5266131693633709
+      },
+      "O": {
+       "k": 111,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5096224776029585
+      },
+      "B": {
+       "k": 43,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.533528925820638
+      },
+      "C": {
+       "k": 115,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5074766309305451
+      }
+     }
+    },
+    "A1": {
+     "n_comm": 66,
+     "tau": 1.003147840499878,
+     "far_k": 19,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 8,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 8,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 3,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 67,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5266131693633709
+      },
+      "O": {
+       "k": 125,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5096224776029585
+      },
+      "B": {
+       "k": 51,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.533528925820638
+      },
+      "C": {
+       "k": 131,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5074766309305451
+      }
+     }
+    }
+   }
+  },
+  "noise_wg/2": {
+   "learned": true,
+   "ims": {
+    "1": [
+     {
+      "n": 49,
+      "tau": 1.0019993782043457,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0019036531448364,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0019036531448364,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0019062757492065,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "2": [
+     {
+      "n": 49,
+      "tau": 1.0018807649612427,
+      "far_k": 4,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0018177032470703,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0018177032470703,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0018177032470703,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "3": [
+     {
+      "n": 49,
+      "tau": 1.0023566484451294,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0020644664764404,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0019952058792114,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0019645690917969,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "4": [
+     {
+      "n": 49,
+      "tau": 1.0021522045135498,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.001897931098938,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0018839836120605,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0018481016159058,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ]
+   },
+   "ottawa": {
+    "ABCD1": {
+     "n_comm": 268,
+     "tau": 1.0037013292312622,
+     "far_k": 14,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 3,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 10,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 1,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 41,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5172818775660749
+      },
+      "O": {
+       "k": 90,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5076509070437847
+      },
+      "B": {
+       "k": 24,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5085878465388634
+      },
+      "C": {
+       "k": 94,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.49994360035703433
+      }
+     }
+    },
+    "A1": {
+     "n_comm": 66,
+     "tau": 1.0037946701049805,
+     "far_k": 9,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 2,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 6,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 1,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 35,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5172818775660749
+      },
+      "O": {
+       "k": 84,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5076509070437847
+      },
+      "B": {
+       "k": 23,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5085878465388634
+      },
+      "C": {
+       "k": 90,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.49994360035703433
+      }
+     }
+    }
+   }
+  },
+  "noise_wg/3": {
+   "learned": true,
+   "ims": {
+    "1": [
+     {
+      "n": 49,
+      "tau": 1.0023521184921265,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0022175312042236,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0019173622131348,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.001908779144287,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "2": [
+     {
+      "n": 49,
+      "tau": 1.0019288063049316,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0018891096115112,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0018891096115112,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0018891096115112,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "3": [
+     {
+      "n": 49,
+      "tau": 1.0018693208694458,
+      "far_k": 7,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0019580125808716,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0019772052764893,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0019772052764893,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "4": [
+     {
+      "n": 49,
+      "tau": 1.0018346309661865,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0018807649612427,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0018346309661865,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0018346309661865,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ]
+   },
+   "ottawa": {
+    "ABCD1": {
+     "n_comm": 268,
+     "tau": 1.0040549039840698,
+     "far_k": 4,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 0,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 2,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 2,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 17,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.516505382084308
+      },
+      "O": {
+       "k": 64,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5420508701602493
+      },
+      "B": {
+       "k": 10,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5172072794421362
+      },
+      "C": {
+       "k": 73,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.49089636197781283
+      }
+     }
+    },
+    "A1": {
+     "n_comm": 66,
+     "tau": 1.0040549039840698,
+     "far_k": 4,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 0,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 2,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 2,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 17,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.516505382084308
+      },
+      "O": {
+       "k": 64,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5420508701602493
+      },
+      "B": {
+       "k": 10,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5172072794421362
+      },
+      "C": {
+       "k": 73,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.49089636197781283
+      }
+     }
+    }
+   }
+  },
+  "sim_wg/42": {
+   "learned": false
+  },
+  "sim_wg/0": {
+   "learned": false
+  },
+  "sim_wg/1": {
+   "learned": false
+  },
+  "sim_wg/2": {
+   "learned": true,
+   "ims": {
+    "1": [
+     {
+      "n": 49,
+      "tau": 1.0263499021530151,
+      "far_k": 28,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0278645753860474,
+      "far_k": 14,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0280205011367798,
+      "far_k": 14,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0278645753860474,
+      "far_k": 14,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "2": [
+     {
+      "n": 49,
+      "tau": 1.0302790403366089,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.027906060218811,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0288777351379395,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0281116962432861,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "3": [
+     {
+      "n": 49,
+      "tau": 1.0300999879837036,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0291768312454224,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.028873324394226,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0281926393508911,
+      "far_k": 9,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "4": [
+     {
+      "n": 49,
+      "tau": 1.027074933052063,
+      "far_k": 18,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0272951126098633,
+      "far_k": 14,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0279667377471924,
+      "far_k": 12,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0277949571609497,
+      "far_k": 12,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ]
+   },
+   "ottawa": {
+    "ABCD1": {
+     "n_comm": 268,
+     "tau": 1.041296362876892,
+     "far_k": 14,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 2,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 4,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 6,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 2,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 9,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.38814582585147583
+      },
+      "O": {
+       "k": 34,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4808169217777864
+      },
+      "B": {
+       "k": 15,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4327502004519279
+      },
+      "C": {
+       "k": 69,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4973994860276015
+      }
+     }
+    },
+    "A1": {
+     "n_comm": 66,
+     "tau": 1.0419856309890747,
+     "far_k": 14,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 2,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 4,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 6,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 2,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 8,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.38814582585147583
+      },
+      "O": {
+       "k": 29,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4808169217777864
+      },
+      "B": {
+       "k": 12,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4327502004519279
+      },
+      "C": {
+       "k": 62,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4973994860276015
+      }
+     }
+    }
+   }
+  },
+  "sim_wg/3": {
+   "learned": true,
+   "ims": {
+    "1": [
+     {
+      "n": 49,
+      "tau": 1.028069019317627,
+      "far_k": 10,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0288885831832886,
+      "far_k": 5,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0286167860031128,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0285544395446777,
+      "far_k": 7,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "2": [
+     {
+      "n": 49,
+      "tau": 1.0298181772232056,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0286903381347656,
+      "far_k": 7,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.028632640838623,
+      "far_k": 7,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0286903381347656,
+      "far_k": 7,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "3": [
+     {
+      "n": 49,
+      "tau": 1.031652569770813,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0300325155258179,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0307179689407349,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0307071208953857,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "4": [
+     {
+      "n": 49,
+      "tau": 1.0301789045333862,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.0297507047653198,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.0305410623550415,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.0301789045333862,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ]
+   },
+   "ottawa": {
+    "ABCD1": {
+     "n_comm": 268,
+     "tau": 1.0429649353027344,
+     "far_k": 22,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 1,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 10,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 10,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 1,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 15,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.3639713376105293
+      },
+      "O": {
+       "k": 50,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.46838086132761314
+      },
+      "B": {
+       "k": 20,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4293838229219817
+      },
+      "C": {
+       "k": 81,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.47628517621210187
+      }
+     }
+    },
+    "A1": {
+     "n_comm": 66,
+     "tau": 1.0429649353027344,
+     "far_k": 22,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 1,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 10,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 10,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 1,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 15,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.3639713376105293
+      },
+      "O": {
+       "k": 50,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.46838086132761314
+      },
+      "B": {
+       "k": 20,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.4293838229219817
+      },
+      "C": {
+       "k": 81,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.47628517621210187
+      }
+     }
+    }
+   }
+  },
+  "kurt_w/-": {
+   "learned": true,
+   "ims": {
+    "1": [
+     {
+      "n": 49,
+      "tau": 1.1174583435058594,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": 710,
+      "lead_hours": 45.33333333333333
+     },
+     {
+      "n": 99,
+      "tau": 0.7737815380096436,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": 709,
+      "lead_hours": 45.5
+     },
+     {
+      "n": 149,
+      "tau": 0.7737815380096436,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": 709,
+      "lead_hours": 45.5
+     },
+     {
+      "n": 200,
+      "tau": 0.7737815380096436,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": 709,
+      "lead_hours": 45.5
+     }
+    ],
+    "2": [
+     {
+      "n": 49,
+      "tau": 0.7815490365028381,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 0.36871397495269775,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 0.36871397495269775,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 0.3572423756122589,
+      "far_k": 2,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "3": [
+     {
+      "n": 49,
+      "tau": 1.3487414121627808,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 1.3487414121627808,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 1.4845589399337769,
+      "far_k": 1,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 1.3487414121627808,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "4": [
+     {
+      "n": 49,
+      "tau": 1.2214759588241577,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 0.5079241394996643,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 0.45010340213775635,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 0.5079241394996643,
+      "far_k": 0,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ]
+   },
+   "ottawa": {
+    "ABCD1": {
+     "n_comm": 268,
+     "tau": 1.1074180603027344,
+     "far_k": 29,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 2,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 22,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 5,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 584,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12,
+       "auroc": 0.9627621885525154
+      },
+      "O": {
+       "k": 736,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12,
+       "auroc": 0.99348714414668
+      },
+      "B": {
+       "k": 91,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12,
+       "auroc": 0.4656024491581019
+      },
+      "C": {
+       "k": 742,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12,
+       "auroc": 0.994997596884778
+      }
+     }
+    },
+    "A1": {
+     "n_comm": 66,
+     "tau": 0.5709741115570068,
+     "far_k": 71,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 9,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 53,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 9,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 739,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12,
+       "auroc": 0.9627621885525154
+      },
+      "O": {
+       "k": 759,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12,
+       "auroc": 0.99348714414668
+      },
+      "B": {
+       "k": 97,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12,
+       "auroc": 0.4656024491581019
+      },
+      "C": {
+       "k": 752,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12,
+       "auroc": 0.994997596884778
+      }
+     }
+    }
+   }
+  },
+  "env_w/-": {
+   "learned": true,
+   "ims": {
+    "1": [
+     {
+      "n": 49,
+      "tau": 2.698108185503086,
+      "far_k": 12,
+      "far_n": 300,
+      "departure": 704,
+      "lead_hours": 46.33333333333333
+     },
+     {
+      "n": 99,
+      "tau": 2.7053159417029065,
+      "far_k": 11,
+      "far_n": 300,
+      "departure": 704,
+      "lead_hours": 46.33333333333333
+     },
+     {
+      "n": 149,
+      "tau": 2.7470012841698024,
+      "far_k": 4,
+      "far_n": 300,
+      "departure": 705,
+      "lead_hours": 46.166666666666664
+     },
+     {
+      "n": 200,
+      "tau": 2.7442505519205236,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": 705,
+      "lead_hours": 46.166666666666664
+     }
+    ],
+    "2": [
+     {
+      "n": 49,
+      "tau": 2.793817621025139,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 2.793817621025139,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 2.783424388512985,
+      "far_k": 4,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 2.76800549507602,
+      "far_k": 4,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "3": [
+     {
+      "n": 49,
+      "tau": 2.93645305355454,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 2.93645305355454,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 2.8609662606789175,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 200,
+      "tau": 2.8436463211167986,
+      "far_k": 3,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ],
+    "4": [
+     {
+      "n": 49,
+      "tau": 2.737160742717493,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 99,
+      "tau": 2.737160742717493,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     },
+     {
+      "n": 149,
+      "tau": 2.725907922616369,
+      "far_k": 8,
+      "far_n": 300,
+      "departure": 979,
+      "lead_hours": 0.5
+     },
+     {
+      "n": 200,
+      "tau": 2.737160742717493,
+      "far_k": 6,
+      "far_n": 300,
+      "departure": null,
+      "lead_hours": null
+     }
+    ]
+   },
+   "ottawa": {
+    "ABCD1": {
+     "n_comm": 268,
+     "tau": 3.4572729339306663,
+     "far_k": 14,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 6,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 7,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 1,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 213,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.7919404622089355
+      },
+      "O": {
+       "k": 9,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.23102924476108203
+      },
+      "B": {
+       "k": 48,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5577520227421824
+      },
+      "C": {
+       "k": 13,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.30472481878549496
+      }
+     }
+    },
+    "A1": {
+     "n_comm": 66,
+     "tau": 3.4572729339306663,
+     "far_k": 14,
+     "far_n": 538,
+     "rec_false": 0,
+     "rec_n": 8,
+     "bands": [
+      {
+       "band": [
+        10,
+        15
+       ],
+       "k": 0,
+       "n": 26
+      },
+      {
+       "band": [
+        15,
+        20
+       ],
+       "k": 6,
+       "n": 185
+      },
+      {
+       "band": [
+        20,
+        25
+       ],
+       "k": 7,
+       "n": 256
+      },
+      {
+       "band": [
+        25,
+        30
+       ],
+       "k": 1,
+       "n": 71
+      }
+     ],
+     "detection": {
+      "I": {
+       "k": 213,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.7919404622089355
+      },
+      "O": {
+       "k": 9,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.23102924476108203
+      },
+      "B": {
+       "k": 48,
+       "n": 765,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.5577520227421824
+      },
+      "C": {
+       "k": 13,
+       "n": 758,
+       "rec": 0,
+       "rec_n": 12,
+       "auroc": 0.30472481878549496
+      }
+     }
+    }
+   }
+  }
+ }
+}

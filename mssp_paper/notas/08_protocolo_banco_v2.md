@@ -87,3 +87,17 @@ Unos 25 entrenamientos: banco w y wg, C-ruido wg y C-simulador wg con 5 semillas
   - **C-ruido:** 1,000, como se esperaba.
 
   Se aplica la condición fijada antes de ejecutar: **H1v2 queda no evaluable con este autoencoder**. El autoencoder de error cuadrático sobre la forma de onda no logra representar la vibración blanqueada, venga del banco, de la propia máquina o del simulador. Es un límite de la representación, no del cociente. Se pasa a la etapa 2 sin cambios para obtener las referencias clásicas y la tabla de IMS.
+
+- **14-oct, etapa 2 (evaluación, sin cambios respecto a lo registrado).** Tablas en [`tablas_banco_v2.md`](tablas_banco_v2.md), generadas por `bench_report_v2.py` y comprobadas byte a byte; el análisis se recalcula exactamente con un test.
+  - **H1v2: no evaluable con este autoencoder** (0 de 5 modelos del banco wg aprenden). Es lo que fija la condición previa; no se dice "no se detecta transferencia".
+  - **H2v2: no cumple.** El banco w no aprende en ninguna semilla, así que no hay salida del bearing 1. No dice nada sobre si el fallo de IMS se ve en el dominio blanqueado; eso lo dicen las referencias clásicas.
+  - **Controles:** C-ruido en azar (AUROC 0,49–0,51 en Ottawa; FAR en IMS 1–2%). C-simulador wg (2 semillas que aprenden) por debajo del azar en Ottawa (0,38–0,49) y sin salida en IMS.
+  - **Referencias clásicas en el dominio de la firma (sin aprendizaje, misma regla certificada):**
+    - **Ottawa, los cuatro ensayos 1:** la curtosis de la ventana blanqueada separa pista interior 0,963, combinado 0,995 y pista exterior 0,993, pero no la bola (0,466); FAR 5,4%. El indicador de envolvente separa pista interior (0,792) y queda por debajo del azar en combinado (0,305) y pista exterior (0,231); FAR 2,6%. Los valores en la banda de 15–25 Hz son prácticamente iguales.
+    - **IMS, bearing 1, n = 99:** curtosis sale en el registro 709 (FAR 0,3%) y envolvente en 704 (FAR 3,7%), frente al 539 de RMS o del autoencoder en q. Es el coste declarado de antemano: el preblanqueo quita la energía, y el primer síntoma de IMS es energético.
+
+  **Lectura (para discutir, no es veredicto del protocolo):**
+  - El autoencoder de error cuadrático sobre la forma de onda no representa la vibración blanqueada, ni del banco, ni de la propia máquina, ni del simulador. Es un límite de la representación, no del cociente.
+  - En el cociente completo la firma sí está y es detectable sin aprendizaje y con la regla certificada: la curtosis blanqueada separa tres de los cuatro fallos de Ottawa con una puesta en marcha local. Esto apoya la definición del cociente sin decir nada sobre la transferencia de un modelo aprendido.
+  - La envolvente por debajo del azar en combinado y pista exterior indica que, en ventanas blanqueadas de 3 vueltas, el pico sobre mediana no es el indicador adecuado para esos fallos. Se informa tal cual; no se ajusta (bandas u órdenes) después de verlo.
+  - Probar la transferencia de la firma con un modelo aprendido exigiría otra representación (por ejemplo, un autoencoder sobre el espectro de la envolvente, o sobre otra representación que el modelo pueda reconstruir), bajo un protocolo v3 registrado antes. Decisión pendiente del autor.
