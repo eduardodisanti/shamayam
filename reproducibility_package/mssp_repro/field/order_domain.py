@@ -46,7 +46,7 @@ from ..bearing_simulator import BearingSignalSimulator
 
 __all__ = ["SAMPLES_PER_REV", "REVS_PER_WINDOW", "ORDER_WINDOW",
            "estimate_shaft_frequency", "angular_resample", "project_signal",
-           "angular_resample_varying",
+           "angular_resample_varying", "prewhiten",
            "order_windows", "OrderDomainSimulator"]
 
 SAMPLES_PER_REV = 400
@@ -111,6 +111,23 @@ def project_signal(x, fs, nominal_hz, *, spr=SAMPLES_PER_REV, shaft_hz=None):
     if shaft_hz is None:
         shaft_hz = estimate_shaft_frequency(x, fs, nominal_hz)
     return angular_resample(x, fs, shaft_hz, spr=spr), float(shaft_hz)
+
+
+def prewhiten(x):
+    """
+    Cepstral prewhitening (Borghesani et al., 2013): x -> IFFT(X / |X|).
+
+    Unit spectral magnitude, original phase. It removes the magnitude of any
+    linear time-invariant transfer path (resonances, sensor, mounting) and the
+    gain, and keeps the phase structure, where impulsive fault signatures
+    live. No parameters. Applied to a whole record, in the Hz domain, before
+    any angular resampling (resonances are fixed in Hz).
+    """
+    x = np.asarray(x, dtype=np.float64).reshape(-1)
+    X = np.fft.rfft(x - x.mean())
+    mag = np.abs(X)
+    mag[mag == 0] = 1.0
+    return np.fft.irfft(X / mag, n=len(x))
 
 
 FINE_SPR_FACTOR = 8             # intermediate angular rate: 8 x 400 = 3200/rev

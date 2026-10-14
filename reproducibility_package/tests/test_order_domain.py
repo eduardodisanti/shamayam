@@ -141,3 +141,41 @@ def test_varying_speed_projection_matches_the_angle_domain_signal():
     coef, *_ = np.linalg.lstsq(basis, y[sl], rcond=None)
     fit = basis @ coef
     assert np.sqrt(np.mean((fit - ref[sl]) ** 2)) / np.sqrt(np.mean(ref[sl] ** 2)) < 0.02
+
+
+# ------------------------------------------------- prewhitening (section of the transfer path)
+
+from scipy.signal import lfilter                                      # noqa: E402
+from scipy.stats import kurtosis as _kurt                             # noqa: E402
+
+from mssp_repro.field.order_domain import prewhiten                   # noqa: E402
+
+
+def _impacts(fs=20000, seconds=1.0, rate=107.0, seed=0):
+    rng = np.random.default_rng(seed)
+    x = 0.05 * rng.standard_normal(int(fs * seconds))
+    x[(np.arange(0, seconds, 1 / rate) * fs).astype(int)] += 1.0
+    return x
+
+
+def _resonance(fc, fs=20000, r=0.995):
+    w = 2 * np.pi * fc / fs
+    return [1.0], [1.0, -2 * r * np.cos(w), r * r]
+
+
+def test_prewhitening_is_gain_invariant_and_flat():
+    x = _impacts()
+    assert np.allclose(prewhiten(3.7 * x + 0.2), prewhiten(x))
+    mag = np.abs(np.fft.rfft(prewhiten(x)))
+    assert np.allclose(mag[1:-1], mag[1:-1].mean(), rtol=1e-6)
+
+
+def test_prewhitening_removes_the_resonance_and_recovers_the_impacts():
+    """The same impacts seen through two different structures: filtered, the
+    waveforms are dominated by each resonance; prewhitened, the impulsive
+    signature comes back in both (high kurtosis)."""
+    s = _impacts()
+    a = lfilter(*_resonance(3000.0), s)
+    b = lfilter(*_resonance(5200.0), s)
+    for y in (a, b):
+        assert _kurt(prewhiten(y)) > 5 * max(_kurt(y), 1.0)
