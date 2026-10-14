@@ -24,7 +24,7 @@ import json
 from pathlib import Path
 
 import numpy as np
-from sklearn.metrics import roc_auc_score
+from scipy.stats import rankdata
 
 HERE = Path(__file__).resolve().parent
 RES = HERE / "results" / "bench"
@@ -80,9 +80,13 @@ def _windows(get, recs, speed, band):
 
 
 def _auc(h_parts, f_parts):
+    """Window AUROC (Mann-Whitney with average ranks for ties; identical to
+    sklearn.metrics.roc_auc_score, checked by a test, and fast enough for the
+    record bootstrap)."""
     h, f = np.concatenate(h_parts), np.concatenate(f_parts)
-    return float(roc_auc_score(np.r_[np.zeros(len(h)), np.ones(len(f))],
-                               np.r_[h, f]))
+    r = rankdata(np.r_[h, f])
+    nf, nh = len(f), len(h)
+    return float((r[nh:].sum() - nf * (nf + 1) / 2) / (nf * nh))
 
 
 def h1_analysis(W, ott, band=None):
@@ -168,7 +172,14 @@ def h2_analysis(E):
 
 # ------------------------------------------------------------------ report
 
-def to_markdown(T, E, W, ott):
+def analyse(W, ott):
+    """The slow part (record bootstrap), kept apart so the tables can be
+    regenerated from results/bench/analysis.json alone."""
+    a, b = h1_analysis(W, ott), h1_analysis(W, ott, band=BAND)
+    return {"all": {"res": a[0], "n_ok": a[1]}, "band": {"res": b[0], "n_ok": b[1]}}
+
+
+def to_markdown(T, E, A):
     L = ["# Banco de pruebas (CWRU) → IMS y Ottawa", "",
          "*Generado por `reproducibility_package/bench_report.py` desde "
          "`results/bench/` (`bench_transfer.py`). Criterios del protocolo "
@@ -229,7 +240,8 @@ def to_markdown(T, E, W, ott):
                     "registros sanos con alarma (de 8)"]
                    + [f"AUROC {n}" for n in FAULTS.values()], rows))
 
-    all_w, band_w = h1_analysis(W, ott), h1_analysis(W, ott, band=BAND)
+    all_w = (A["all"]["res"], A["all"]["n_ok"])
+    band_w = (A["band"]["res"], A["band"]["n_ok"])
     L += ["", "## H1: ¿se transfiere la forma? (sección qg, Ottawa)", "",
           f"AUROC ventana a ventana, media [mín–máx] sobre 5 semillas. "
           f"Intervalos por bootstrap de registros ({BOOT} remuestreos). "
@@ -272,8 +284,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--print", action="store_true")
     ap.add_argument("--res", type=Path, default=RES)
+    ap.add_argument("--reuse", action="store_true",
+                    help="render from the committed analysis.json")
     args = ap.parse_args()
-    md = to_markdown(*load(args.res))
+    T, E, W, ott = load(args.res)
+    af = args.res / "analysis.json"
+    if args.reuse:
+        A = json.loads(af.read_text())
+    else:
+        A = json.loads(json.dumps(analyse(W, ott)))
+        af.write_text(json.dumps(A, indent=1) + "\n")
+    md = to_markdown(T, E, A)
     if args.print:
         print(md)
     else:

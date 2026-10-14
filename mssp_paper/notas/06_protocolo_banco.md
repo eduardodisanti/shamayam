@@ -100,3 +100,31 @@ Tres variantes (banco q, banco qg, C-ruido qg) por 5 semillas, unos 15 min por e
   - El banco en q y en qg deja sin reconstruir el 50–52% de la varianza en la validación del banco, con generalización 1,17–1,29 y 14–22 épocas. Aprende: la fracción está por debajo de 0,95, y mucho por debajo del 70–90% de los modelos por máquina en IMS y Ottawa. Se mira la estructura del banco, no el ruido.
   - El control C-ruido deja sin reconstruir el 100%, como se esperaba: no hay nada que aprender.
   - Diagnósticos en `results/bench/training.json`. Se pasa a la etapa 2 sin cambios.
+- **14-oct, etapa 2 (destinos).** Se puntúan IMS y Ottawa sin cambiar nada del banco. Tablas en [`tablas_banco.md`](tablas_banco.md), generadas por `bench_report.py` con los criterios de este protocolo escritos como código antes de la ejecución completa (commit `a84c968`). El análisis por *bootstrap* se guarda en `results/bench/analysis.json` y un test lo recalcula exactamente. Único cambio de código posterior: el AUROC se calcula por rangos (Mann–Whitney) en lugar de con sklearn, por velocidad; un test comprueba que da exactamente lo mismo.
+
+## Resultado (14-oct)
+
+**Veredictos según los criterios registrados:**
+- **H2: opera.**
+  - El banco en q saca el fallo del bearing 1 de IMS en el registro 539 en las 5 semillas, con FAR 0% (n = 99).
+  - En Ottawa, con los cuatro ensayos: FAR 7,9% y AUROC 0,997 (interior), 0,806 (bola), 0,995 (combinado) y 0,49 (exterior).
+- **H1: no se detecta transferencia con este método.**
+
+**Lo que muestran los datos:**
+- **En q, el origen del modelo de fábrica no importa.** Banco, simulador y RMS operan igual: en Ottawa el OEM del simulador en q da FAR 8,4% y AUROC 0,997 / 0,781 / 0,994 / 0,445, y en IMS los tres salen en el registro 539. El escenario realista (banco del fabricante → campo) opera, que es lo que el paper necesita mostrar.
+- **En qg (solo forma), lo que el banco aprende no llega a otras máquinas.**
+  - AUROC medio del banco: 0,545 (interior), 0,502 (bola), 0,586 (combinado).
+  - Controles: C-ruido 0,51 / 0,51 / 0,50 y C-simulador 0,61 / 0,48 / 0,41.
+  - Techo (modelo por máquina en qg): 0,998 / 0,850 / 0,994.
+  - Solo en combinado el banco supera a ambos controles, y solo en 3 de 5 semillas, lejos del 0,80. En 15–25 Hz sale lo mismo, así que la velocidad no confunde.
+- **IMS en qg:** el banco no saca el fallo del bearing 1 en ninguna semilla. Es coherente con un fallo sobre todo energético.
+- **Observación fuera del criterio (no se afirma):** en pista exterior el banco en qg da 0,647 y supera a ambos controles en las 5 semillas (0,670 en 15–25 Hz). Es una señal pequeña pero consistente, en el único fallo que en estos datos solo ve la curtosis (0,988) y no ve ningún otro modelo. Queda anotado para el trabajo futuro, no para el paper.
+
+**Lectura:**
+- La forma que ve el modelo por máquina es propia de esa máquina. Ni el simulador ni un banco real de otra máquina la proporcionan a través de nuestro cociente.
+- Es lo que predecía H0: la vía de transmisión (sensor, montaje, estructura) no está en G, y es justo lo que separa la forma de una máquina de la de otra. No afirmamos que la forma no se transfiera; este método no la transfiere.
+- Encaja con el trabajo futuro ya anotado: ampliar G con la vía de transmisión (preblanqueo cepstral) es exactamente lo que haría transferible la forma. Si se prueba, será con un protocolo nuevo (v2), no como ajuste de este.
+
+**Consecuencia para el paper (la registrada para "no se detecta transferencia"):**
+- Se mantiene el eje de tres escalones. El banco aporta dos cosas: el escenario realista opera igual que el simulador, y la forma no se transfiere con este cociente, que es un límite medido.
+- La columna del paper (regla de puesta en marcha certificada, cociente, modos de fallo) no cambia.

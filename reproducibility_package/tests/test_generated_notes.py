@@ -167,3 +167,32 @@ def test_contamination_tolerance_is_exactly_n_minus_k():
                 assert r["lost"] == 0 and abs(r["inflation_median"] - 1) < 0.05
             if r["m"] == r["tolerates"] + 1:
                 assert r["inflation_median"] > 1.5
+
+
+# ------------------------------------------------------------- bench (CWRU -> IMS, Ottawa)
+
+def _bench():
+    import bench_report
+    res = HERE / "results" / "bench"
+    if not (res / "analysis.json").exists():
+        pytest.skip("bench results not committed yet")
+    return bench_report, res
+
+
+def test_bench_table_is_regenerated_exactly():
+    import json
+    br, res = _bench()
+    T, E, _, _ = br.load(res)
+    A = json.loads((res / "analysis.json").read_text())
+    assert br.to_markdown(T, E, A) == (NOTES / "tablas_banco.md").read_text()
+
+
+@pytest.mark.slow
+def test_bench_analysis_recomputes_exactly():
+    """The record bootstrap behind the H1 verdict is deterministic and
+    reproduces the committed analysis from the committed window scores."""
+    import json
+    br, res = _bench()
+    _, _, W, ott = br.load(res)
+    fresh = json.loads(json.dumps(br.analyse(W, ott)))
+    assert fresh == json.loads((res / "analysis.json").read_text())
