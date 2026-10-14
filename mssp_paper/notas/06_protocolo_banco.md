@@ -1,6 +1,6 @@
 # Protocolo registrado: modelo de fábrica aprendido en un banco de pruebas (CWRU) y desplegado en IMS y Ottawa
 
-*Escrito el 14-oct, **antes** de implementar y ejecutar nada. Para revisar y aprobar. Una vez aprobado, cualquier cambio se anota aquí con fecha y motivo (versión 2, 3…), y nunca se cambia nada después de ver los resultados de IMS u Ottawa sin dejarlo escrito.*
+*Versión 1, escrita el 14-oct antes de implementar nada. **Aprobada el 14-oct con cambios** (incorporados abajo: prueba de la forma reforzada, nombres de los resultados, control de aprendizaje por etapas). Cualquier cambio posterior se anota aquí con fecha y motivo, y nunca se cambia nada después de ver los resultados de IMS u Ottawa sin dejarlo escrito.*
 
 ## Por qué
 
@@ -35,11 +35,42 @@ El origen de la puntuación de fábrica es un **eje** del mismo experimento, con
 - **Ottawa:** proyección con el encoder; escenarios A-1 y los cuatro ensayos 1; FAR por ventana y por banda de velocidad, registros sanos con alarma, y registros detectados y AUROC por tipo de fallo.
 - **Comparación:** lado a lado con los resultados ya generados (OEM del simulador q/qg, modelos por máquina, indicadores clásicos). No se reejecutan.
 
-## Criterios de lectura (fijados antes; para tu revisión)
+## Criterios de lectura (aprobados 14-oct)
 
-- **"La forma se transfiere" (H1):** en Ottawa con los cuatro ensayos, el OEM del banco en qg tiene AUROC medio ≥ 0,80 en al menos dos de interior, bola y combinado, y por encima del OEM del simulador en qg en esos dos.
-- **"Opera" (H2):** en IMS con n = 99, el bearing 1 sale como mucho 10 registros después del 539 en al menos 4 de 5 semillas, con FAR ≤ 2% en el bearing 1.
-- Entre medias se informa como **parcial**, describiendo qué se transfiere y qué no. Si no se cumple ninguno de los dos criterios, **no transfiere**: es un límite medido (la vía de transmisión no está en G) y queda como trabajo futuro.
+La transferencia de la forma (H1) es el resultado más importante, así que su prueba tiene que ser a prueba de balas: controles que separen la forma aprendida del banco de cualquier otra explicación, intervalos que respeten que las ventanas de un mismo registro no son independientes, y una comprobación de que la velocidad no confunde.
+
+**Controles (todos en la sección qg, misma arquitectura, mismo programa, mismas semillas):**
+- **C-ruido:** el mismo autoencoder entrenado con ventanas de ruido blanco gaussiano normalizadas (un "banco" sin estructura). Si alcanza el mismo AUROC, la detección viene de la arquitectura y la normalización, no de la forma aprendida.
+- **C-simulador:** el OEM del simulador en qg (ya calculado).
+- **Referencias:** el modelo por máquina en qg (techo, *in-sample*) y la curtosis en el cociente (indicador clásico invariante a la ganancia).
+
+**Estadística:**
+- AUROC ventana a ventana por tipo de fallo y semilla, frente a los sanos de prueba.
+- Intervalo al 95% por *bootstrap* de registros: se remuestrean registros completos, sanos y de fallo, 2000 veces, no ventanas sueltas.
+- Diferencia pareada con cada control: AUROC(banco) − AUROC(control) sobre los mismos remuestreos.
+
+**"La forma se transfiere" para un tipo de fallo** si se cumplen las dos:
+1. AUROC medio sobre las 5 semillas ≥ 0,80.
+2. En al menos 4 de 5 semillas, el intervalo de la diferencia pareada queda entero por encima de 0 frente a C-ruido y frente a C-simulador.
+
+**H1 se cumple** si la forma se transfiere en al menos dos de pista interior, bola y combinado. La pista exterior se informa, pero no entra en el criterio (en estos datos solo la curtosis la ve).
+
+**Comprobación de confusión por velocidad:** se repite el AUROC con solo las ventanas de 15–25 Hz (rango común a sanos y fallos). Si H1 se cumple con todas las ventanas pero no en esa banda, se informa como **no concluyente**.
+
+**Secundario:** en IMS, salida del bearing 1 con el OEM del banco en qg.
+
+**"Opera" (H2):** en IMS con n = 99, el bearing 1 sale como mucho 10 registros después del 539 en al menos 4 de 5 semillas, con FAR ≤ 2% en el bearing 1.
+
+**Cómo se nombra el resultado:**
+- **Transfiere:** se cumple el criterio.
+- **Evidencia parcial:** se cumple para un tipo de fallo, o solo en parte de las semillas. Se describe qué y dónde.
+- **No se detecta transferencia con este método:** no sabemos si la forma transfiere; este método (este autoencoder, esta sección, estos datos) no la detecta. No se afirma que no transfiera.
+
+## Control de aprendizaje, por etapas
+
+1. Se entrena con el banco y se miran **solo** los diagnósticos del banco (fracción no reconstruida y generalización en la validación del banco), antes de puntuar ningún destino.
+2. Si la fracción no reconstruida en la validación supera 0,95 ("aprende poco"), se anota aquí antes de seguir. No es una parada, pero se interpreta con eso delante.
+3. El control C-ruido no pasa el filtro de colapso (no hay nada que aprender); se registra su fracción no reconstruida y se usa igualmente.
 
 ## Lo que no se hará
 
@@ -55,7 +86,7 @@ El origen de la puntuación de fábrica es un **eje** del mismo experimento, con
 
 ## Coste estimado
 
-Dos variantes por 5 semillas, unos 15 min por entrenamiento en esta máquina: ~2,5 h. La evaluación es rápida porque los destinos ya están proyectados.
+Tres variantes (banco q, banco qg, C-ruido qg) por 5 semillas, unos 15 min por entrenamiento en esta máquina: ~4 h. La evaluación es rápida porque los destinos ya están proyectados.
 
 ## Consecuencias para el paper según el resultado
 
