@@ -143,7 +143,8 @@ def test_ottawa_training_free_arms_reproduce_across_runs():
 
 @pytest.mark.parametrize("res,note,fn", [
     ("ims_classical/results.json", "tablas_ims_clasicos.md", "classical_markdown"),
-    ("contamination/results.json", "tablas_contaminacion.md", "contamination_markdown")])
+    ("contamination/results.json", "tablas_contaminacion.md", "contamination_markdown"),
+    ("multispace/results.json", "tablas_multiespacio.md", "multispace_markdown")])
 def test_extra_tables_are_regenerated_exactly(res, note, fn):
     import json
     import extra_reports

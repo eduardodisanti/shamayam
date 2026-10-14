@@ -15,6 +15,7 @@ HERE = Path(__file__).resolve().parent
 NOTES = HERE.parent / "mssp_paper" / "notas"
 CLASSICAL = HERE / "results" / "ims_classical" / "results.json"
 CONTAM = HERE / "results" / "contamination" / "results.json"
+MULTI = HERE / "results" / "multispace" / "results.json"
 
 IND = (("oem_pub", "OEM publicado (autoencoder, referencia)"),
        ("rms", "RMS"), ("kurtosis", "curtosis"), ("crest", "factor de cresta"),
@@ -100,6 +101,62 @@ def contamination_markdown(R):
     return "\n".join(L)
 
 
+def _mr(v, nd=1, pct=False):
+    import numpy as np
+    if not v:
+        return "—"
+    s = "%" if pct else ""
+    if len(v) == 1 or min(v) == max(v):
+        return fmt(v[0], nd) + s
+    return f"{fmt(float(np.mean(v)), nd)}{s} [{fmt(min(v), nd)}–{fmt(max(v), nd)}]"
+
+
+def multispace_markdown(R):
+    names = {"I": "pista interior", "O": "pista exterior", "B": "bola",
+             "C": "combinado"}
+    scen = {"ABCD1": "los cuatro ensayos 1", "A1": "A-1"}
+    L = ["# Varios espacios cociente a la vez, con la garantía", "",
+         "*Generado por `reproducibility_package/extra_reports.py` desde "
+         "`results/multispace/results.json` (`multispace_union.py`). No editar a "
+         "mano: `tests/test_generated_notes.py` lo comprueba byte a byte.*", "",
+         "Alarma si cualquiera de los K espacios supera su radio. Cada radio se "
+         f"toma al nivel 1 − {fmt(R['alpha'], 2)}/K (Bonferroni), de modo que la "
+         f"falsa alarma total queda acotada por {fmt(R['alpha'], 2)} sin suponer "
+         "nada sobre la dependencia entre espacios. Precio: con K = 2 hacen falta "
+         "al menos 99 observaciones de puesta en marcha. Nada se entrena: "
+         "puntuaciones ya guardadas.", "",
+         "## Ottawa (5 semillas del OEM; la curtosis no depende de la semilla)", "",
+         "FAR por ventana y registros sanos con alarma persistente (de 8); por tipo "
+         "de fallo, registros detectados (de 12). Media [mín–máx] sobre semillas.", ""]
+    rows = []
+    for sc, combos in R["ottawa"].items():
+        for name, runs in combos.items():
+            ok = [r for r in runs if r["certifiable"]]
+            if not ok:
+                rows.append([scen[sc], name, "no certificable (pocas observaciones)"]
+                            + ["—"] * 5)
+                continue
+            rows.append([scen[sc], name,
+                         _mr([100 * r["far_k"] / r["far_n"] for r in ok], pct=True),
+                         _mr([r["rec_false"] for r in ok])]
+                        + [_mr([r["detection"][c]["rec"] for r in ok]) for c in names])
+    L.append(table(["puesta en marcha", "espacios", "FAR ventanas",
+                    "registros sanos con alarma"] + list(names.values()), rows))
+    L += ["", "## IMS (salida y FAR en los registros 200–499)", ""]
+    rows = []
+    for b, combos in R["ims"].items():
+        for name, rs in combos.items():
+            rows.append([b, name] + [
+                "no certificable" if not r["certifiable"] else
+                (("sin salida" if r["departure"] is None else
+                  f"{r['departure']} ({fmt(r['lead_hours'], 2)} h)")
+                 + f"; FAR {fmt(100 * r['far_k'] / r['far_n'])}%") for r in rs])
+    L.append(table(["bearing", "espacios", "n = 49", "n = 99", "n = 149", "n = 200"],
+                   rows))
+    L.append("")
+    return "\n".join(L)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--print", action="store_true")
@@ -107,7 +164,9 @@ def main():
     out = {NOTES / "tablas_ims_clasicos.md":
            classical_markdown(json.loads(CLASSICAL.read_text())),
            NOTES / "tablas_contaminacion.md":
-           contamination_markdown(json.loads(CONTAM.read_text()))}
+           contamination_markdown(json.loads(CONTAM.read_text())),
+           NOTES / "tablas_multiespacio.md":
+           multispace_markdown(json.loads(MULTI.read_text()))}
     for path, md in out.items():
         if args.print:
             print(md)

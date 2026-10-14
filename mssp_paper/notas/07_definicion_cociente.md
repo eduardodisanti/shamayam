@@ -63,6 +63,20 @@ Todos se calibran con la misma regla certificada. La tabla de resultados compara
 - **Encaja con la práctica clásica sin competir con ella.** Seguimiento de órdenes, preblanqueo y envolvente son las herramientas que la práctica ya usa (Randall, Antoni, Borghesani). El paper explica por qué funcionan (son secciones de G) y qué cuestan.
 - **§4–5 se reescriben con esta estructura:** modelo de observación, G, secciones, orden y coste, y cocientes gruesos. Arzelà–Ascoli y la topología fina van a un apéndice.
 
+## 5b. Varios espacios a la vez (acordado 14-oct)
+
+El método no tiene por qué usar un solo cociente. Se declara un conjunto de espacios, cada uno con su G y su coste, y se vigila en todos: lo que un espacio no ve lo ve otro. Por ejemplo, energía y forma, o forma e impulsividad. Es defendible porque cada cociente tiene su coste declarado.
+
+**La garantía se conserva al combinarlos, con un precio exacto:**
+- **Unión de alarmas con nivel repartido (Bonferroni).** Con K espacios, cada radio se toma al nivel 1 − 0,02/K; la falsa alarma total queda acotada por 0,02 sin suponer nada sobre la dependencia entre espacios. El mínimo de puesta en marcha sube: con K = 2 hacen falta n ≥ 99, y con K = 3, n ≥ 149. El menú 49/99/149 se lee también como cuántos espacios se pueden vigilar a la vez con la misma garantía.
+- **Alternativa:** una puntuación combinada fijada en fábrica (una función fija de las K puntuaciones). La regla del estadístico de orden se aplica directamente y conserva n = 49. Cuidado: la combinación no puede depender de los datos de la puesta en marcha sin romper la intercambiabilidad.
+
+**Comprobado con puntuaciones ya guardadas** ([`tablas_multiespacio.md`](tablas_multiespacio.md), `multispace_union.py`, sin entrenar nada):
+- **Ottawa, con los cuatro ensayos.** Autoencoder en el cociente + curtosis detecta los cuatro tipos de fallo: interior, exterior y combinado en 12 de 12, y bola en 6–8 de 12. La FAR es del 7,8%, no mayor que la del autoencoder solo (8,4%). Por separado, el autoencoder no ve la pista exterior y la curtosis apenas ve la bola.
+- **Ottawa con A-1 (un registro, unas 66 ventanas):** la unión de dos espacios **no es certificable**. Es exactamente el precio anunciado.
+- **IMS:** RMS + curtosis y OEM + curtosis no son certificables con n = 49. Con n ≥ 99 sacan el fallo del bearing 1 en el registro 539, con FAR 0%, igual que el mejor espacio solo.
+- **Una advertencia que vale para todo Ottawa:** la FAR observada (5–10%) supera el 2% nominal. La garantía exige que las ventanas de puesta en marcha sean intercambiables con las de operación, y aquí los ensayos de prueba son otros (lo midió el apéndice de velocidad). No es un fallo de la combinación.
+
 ## 6. Siguiente paso propuesto
 
 Protocolo v2 del banco, derivado de esta definición y no ad hoc:
