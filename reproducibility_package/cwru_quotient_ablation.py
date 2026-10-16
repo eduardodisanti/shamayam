@@ -71,11 +71,26 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--cwru-root", **dataset_arg("CWRU_Bearing_NumPy"))
     ap.add_argument("--out", type=Path, default=RESULTS)
+    # Seed extension (16-oct): the default run is unchanged; the 5-seed run is
+    #   --seeds 0,1,2,3,4 --levels G1,G2,G3,G4 --name quotient_ablation_5seeds.json
+    ap.add_argument("--seeds", default=",".join(map(str, SEEDS)))
+    ap.add_argument("--levels", default=",".join(LEVELS))
+    ap.add_argument("--name", default="quotient_ablation.json")
+    ap.add_argument("--epochs", type=int, default=None, help="smoke tests only")
+    ap.add_argument("--speeds", default=",".join(SPEEDS), help="smoke tests only")
     args = ap.parse_args()
+    seeds = tuple(int(v) for v in args.seeds.split(","))
+    levels = tuple(args.levels.split(","))
+    kw = {} if args.epochs is None else {"epochs": args.epochs}
     t0 = time.time()
-    rep = {"n_commission": N_COMMISSION, "n_aug": N_AUG, "seeds": list(SEEDS),
-           "levels": list(LEVELS), "speeds": {}}
-    for rpm in SPEEDS:
+    path = args.out / args.name
+    rep = json.loads(path.read_text()) if path.exists() and args.name != \
+        "quotient_ablation.json" else {
+        "n_commission": N_COMMISSION, "n_aug": N_AUG, "seeds": list(seeds),
+        "levels": list(levels), "speeds": {}}
+    for rpm in args.speeds.split(","):
+        if rpm in rep["speeds"]:
+            continue                                  # resume
         data, _ = load_config(args.cwru_root, rpm, "B")
         H = data["healthy"]
         with np.load(args.cwru_root / f"{rpm} RPM" / f"{rpm}_Normal.npz") as d:
@@ -83,13 +98,14 @@ def main():
         y, _ = project_signal(x, FS["Normal"], int(rpm) / 60.0)
         segment = y[:N_COMMISSION * ORDER_WINDOW]
         cal, rest = H[:N_COMMISSION], H[N_COMMISSION:]
-        entry = {lv: [] for lv in LEVELS}
-        for lv in LEVELS:
-            for seed in SEEDS:
-                rng = np.random.default_rng(1000 * seed + LEVELS.index(lv))
+        entry = {lv: [] for lv in levels}
+        for lv in levels:
+            for seed in seeds:
+                # rng index as in the registered run (G1=0, G2=1, G3=2, G4=3)
+                rng = np.random.default_rng(1000 * seed + ("G1", "G2", "G3", "G4").index(lv))
                 Xtr = make_training_set(lv, segment, cal, N_AUG, rng)
                 try:
-                    op = AssetSpecificOperator(seed=seed).fit(Xtr)
+                    op = AssetSpecificOperator(seed=seed, **kw).fit(Xtr)
                 except RuntimeError:
                     entry[lv].append({"seed": seed, "learned": False})
                     continue
@@ -107,9 +123,8 @@ def main():
                       flush=True)
         rep["speeds"][rpm] = entry
         args.out.mkdir(parents=True, exist_ok=True)
-        (args.out / "quotient_ablation.json").write_text(
-            json.dumps(rep, indent=1) + "\n")        # checkpoint per speed
-    print("wrote", args.out / "quotient_ablation.json")
+        path.write_text(json.dumps(rep, indent=1) + "\n")   # checkpoint per speed
+    print("wrote", path)
 
 
 if __name__ == "__main__":

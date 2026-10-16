@@ -26,6 +26,7 @@ envelope indicator (peak/median of the squared-envelope spectrum, orders
 
 import argparse
 import json
+import os
 import time
 from pathlib import Path
 
@@ -42,7 +43,9 @@ from mssp_repro.field.order_domain import (ORDER_WINDOW, SAMPLES_PER_REV,
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "results" / "bench_v2"
-MODELS = Path("/home/claude/work/bench_models_v2")
+# Weights are not committed. SHAMAYAM_MODELS_ROOT relocates them (16-oct);
+# unset, the location of the registered run is kept.
+MODELS = Path(os.environ.get("SHAMAYAM_MODELS_ROOT", "/home/claude/work")) / "bench_models_v2"
 SEEDS = (42, 0, 1, 2, 3)
 LOCAL_SEEDS = (0, 1, 2, 3, 4)
 VARIANTS = ("bench_w", "bench_wg", "noise_wg", "sim_wg")

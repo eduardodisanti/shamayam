@@ -1,6 +1,7 @@
 {
-  "about": "Every dataset the experiments read. Each lives in its own folder under the data root (MSSP_DATA_ROOT, or the author's Google Drive folder MyDrive/datasets), and its manifest pins every file by SHA-256. Check with: python3 datasets_tool.py verify --deep",
+  "about": "Every dataset the experiments read. Each lives in its own folder under the data root (MSSP_DATA_ROOT, or the first of default_roots that exists: the author's external disk /Volumes/SAMSUNG-1/datasets, then Google Drive MyDrive/datasets), and its manifest pins every file by SHA-256. Check with: python3 datasets_tool.py verify --deep",
   "default_roots": [
+    "/Volumes/SAMSUNG-1/datasets",
     "~/Library/CloudStorage/GoogleDrive-*/My Drive/datasets",
     "~/Library/CloudStorage/GoogleDrive-*/Mi unidad/datasets",
     "~/datasets"
@@ -54,6 +55,22 @@
       "manifest_sha256": "a93306413a384d3cd87cb412889b1c59fb3549643824af986d8420f71ef48f6f",
       "files": 60,
       "bytes": 800604570
+    },
+    "XJTU-SY_Bearing_Datasets": {
+      "title": "XJTU-SY rolling element bearing run-to-failure data (Xi'an Jiaotong University and Changxing Sumyoung Technology)",
+      "source": "https://github.com/WangBiaoXJTU/xjtu-sy-bearing-datasets",
+      "version": "XJTU-SY_Bearing_Datasets as distributed by the authors (15 bearings, 9216 CSV files, with Introduction_to_XJTU-SY_Bearing_Dataset.pdf); pinned by this manifest",
+      "original": "B. Wang, Y. Lei, N. Li, N. Li, A hybrid prognostics approach for estimating remaining useful life of rolling element bearings, IEEE Transactions on Reliability 69(1) (2020) 401-412, doi:10.1109/TR.2018.2882682",
+      "license": "No licence stated. The authors' introduction: publicly available, anyone can use them to validate prognostics algorithms; publications are requested to cite the paper above",
+      "fetch": {
+        "kind": "manual",
+        "instructions": "Download XJTU-SY_Bearing_Datasets from the links on the source page and extract it into XJTU-SY_Bearing_Datasets/, keeping the three condition folders (35Hz12kN, 37.5Hz11kN, 40Hz10kN) and the Introduction PDF. 25.6 kHz, 32768 samples (1.28 s) every minute; column 1 horizontal, column 2 vertical acceleration (g)."
+      },
+      "loader_subdir": "",
+      "manifest": "manifests/XJTU-SY_Bearing_Datasets.sha256",
+      "manifest_sha256": "ad46b745faa5e06aea207cbdbf4a1c48af34872776b877792fb158cc6485802a",
+      "files": 9217,
+      "bytes": 12220812451
     }
   }
 }

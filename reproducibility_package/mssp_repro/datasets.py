@@ -10,7 +10,8 @@ lives in its own folder under one data root:
         ...
 
 The data root is `MSSP_DATA_ROOT` when set; otherwise the first of the
-registry's `default_roots` that exists (the author's Google Drive folder
+registry's `default_roots` that exists (the author's external disk
+`/Volumes/SAMSUNG-1/datasets`, then the Google Drive folder
 `MyDrive/datasets`, then `~/datasets`).
 
 Each dataset has a committed manifest with the SHA-256 of every file, so

@@ -242,8 +242,9 @@ for completeness; none of the mathematical claims depend on it.
 Requirements beyond Layer A: `tensorflow`, plus
 
 - the datasets registered in `datasets/registry.json`, each in its own folder
-  under one data root (`MSSP_DATA_ROOT`; by default the author's Google Drive
-  folder `MyDrive/datasets`):
+  under one data root (`MSSP_DATA_ROOT`; by default the author's external disk
+  `/Volumes/SAMSUNG-1/datasets`, then the Google Drive folder
+  `MyDrive/datasets`):
   - **`CWRU_Bearing_NumPy/`**: the NumPy conversion of the CWRU data, pinned
     to commit `b1179d2`, loaded as `Data/{speed} RPM/{speed}_Normal.npz` and
     the corresponding fault files;

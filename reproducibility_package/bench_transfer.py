@@ -28,6 +28,7 @@ unexplained), recorded; not applied to the noise control.
 
 import argparse
 import json
+import os
 import time
 from pathlib import Path
 
@@ -39,7 +40,9 @@ from mssp_repro.field.order_domain import (ORDER_WINDOW, angular_resample,
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "results" / "bench"
-MODELS = Path("/home/claude/work/bench_models")
+# Weights are not committed. SHAMAYAM_MODELS_ROOT relocates them (16-oct);
+# unset, the location of the registered run is kept.
+MODELS = Path(os.environ.get("SHAMAYAM_MODELS_ROOT", "/home/claude/work")) / "bench_models"
 SEEDS = (42, 0, 1, 2, 3)
 VARIANTS = ("bench_q", "bench_qg", "noise_qg")
 RPMS = ("1797", "1772", "1750", "1730")
