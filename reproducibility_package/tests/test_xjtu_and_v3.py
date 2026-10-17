@@ -116,3 +116,10 @@ def test_cwru_ablation_5seeds_table_is_regenerated_exactly():
     if not cr.RES.exists():
         pytest.skip("5-seed ablation not committed yet")
     assert cr.to_markdown(json.loads(cr.RES.read_text())) == cr.OUT.read_text()
+
+
+def test_xjtu_discussion_tables_are_regenerated_exactly():
+    import xjtu_discussion as xd
+    if not (xd.RES / "report.json").exists():
+        pytest.skip("XJTU results not committed yet")
+    assert xd.to_markdown(*xd.load()) == xd.OUT.read_text()

@@ -20,9 +20,9 @@
 1. **La FAR de H1 se concentra en un rodamiento.** En 2_3 la franja está al 100% por encima del radio con todos los modelos, también con el RMS. En los demás: 2_1 0%, 3_1 0,1%, 3_2 ~2%, 3_4 3–7% (sección 1).
 2. **El RMS de 2_3 sube a partir del ~27% de la vida y no vuelve a bajar** (×1,3 al 30%, ×2 al 60%, ×8 al 70%). Lo mismo, con escalón más tardío, en 2_5 (desde el ~40%) y 3_2 (desde el ~50%). Las salidas del OEM en esos tres caen justo en esos escalones (secciones 2 y 3).
 3. **El OEM sale casi siempre en el mismo registro que el RMS** (11 de 13, con uno o dos registros de diferencia). El modelo del banco también. La excepción es 1_4 (jaula), donde el OEM da alarma por el canal vertical y el RMS no la da (sección 2).
-4. **En los rodamientos cortos, la puesta en marcha con n = 99 ocupa buena parte de la vida** (61% en 1_2 y en 2_2, 87% en 3_5) y en algunos el RMS ya ha cambiado dentro de ella (1_2 y 2_2 suben ×2–3 entre el 30 y el 40% de la vida; 3_5 empieza a la mitad de su nivel). El radio de esos rodamientos se calcula, al menos en parte, sobre registros que no son de régimen estable.
-5. **3_4** es el único caso en que algunas semillas dan alarma temprana (registro ~1017) sin que el RMS cambie; el RMS horizontal baja un ~18% al principio y luego queda plano.
-6. **Por máquina, n = 49:** casi toda su FAR viene de 2_3 (100%) y de 3_2 (~65–77%); en 2_1, 3_1 y 3_4 es 0%.
+4. **En los rodamientos cortos, la puesta en marcha con n = 99 ocupa buena parte de la vida** (61% en 1_2 y en 2_2, 87% en 3_5) y en algunos el RMS ya ha cambiado dentro de ella (1_2 sube ×3 entre el 30 y el 40% de la vida, 2_2 ×2 entre el 30 y el 50%; 3_5 empieza a la mitad del nivel que luego tiene). El radio de esos rodamientos se calcula, al menos en parte, sobre registros que no son de régimen estable.
+5. **3_4** es el único caso en que algunas semillas dan alarma temprana (registro ~1017) sin que el RMS cambie; el RMS horizontal queda hasta un ~18% por debajo del de la puesta en marcha y el vertical, plano, hasta el ~95% de la vida.
+6. **Por máquina, n = 49:** casi toda su FAR viene de 2_3 (100%) y de 3_2 (64–77%); en 2_1, 3_1 y 3_4 es 0%.
 
 ## 4. Posibles lecturas (hipótesis, sin decidir)
 
