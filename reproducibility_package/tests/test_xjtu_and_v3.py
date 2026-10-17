@@ -81,8 +81,25 @@ def test_xjtu_table_is_regenerated_exactly():
         pytest.skip("XJTU results not committed yet")
     D = xr.load()
     A = json.loads(json.dumps(xr.analyse(D)))
-    assert A == json.loads((xr.RES / "report.json").read_text())
+    # Same numbers; scipy's Spearman p-values may differ in the last bits
+    # across scipy versions, so floats are compared to 1e-9 relative.
+    _assert_close(A, json.loads((xr.RES / "report.json").read_text()))
     assert xr.to_markdown(A, D) == (NOTES / "tablas_xjtu.md").read_text()
+
+
+def _assert_close(a, b, path=""):
+    if isinstance(a, dict):
+        assert set(a) == set(b), path
+        for k in a:
+            _assert_close(a[k], b[k], f"{path}/{k}")
+    elif isinstance(a, list):
+        assert len(a) == len(b), path
+        for i, (x, y) in enumerate(zip(a, b)):
+            _assert_close(x, y, f"{path}[{i}]")
+    elif isinstance(a, float) and isinstance(b, float):
+        assert a == pytest.approx(b, rel=1e-9, abs=1e-300), path
+    else:
+        assert a == b, path
 
 
 def test_bench_v3_table_is_regenerated_exactly():

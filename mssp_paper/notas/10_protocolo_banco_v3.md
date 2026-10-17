@@ -74,4 +74,8 @@ Unos 20 entrenamientos (bench_s, C-ruido y C-simulador con 5 semillas cada uno, 
 
 ## Registro de ejecución
 
-*(vacío)*
+- **16-oct, etapa 1 (entrenamiento) y etapa 2 (evaluación), sin cambios respecto a lo registrado** (commit `df51e2a`; macOS 27.0.1, TensorFlow 2.21.0). Tablas en [`tablas_banco_v3.md`](tablas_banco_v3.md).
+  - **Banco s:** 0 de 5 modelos aprenden (fracción no reconstruida en la validación del banco 0,995–1,008). Se aplica la condición fijada antes: **H1v3 no evaluable con este autoencoder**; H2v3 y H3v3 sin modelo que evaluar.
+  - **Controles y techo:** fracción no reconstruida de C-ruido 1,000 (como se esperaba), de C-simulador 0,861–0,877 y del techo por máquina en Ottawa 0,014–0,015.
+  - **Referencias clásicas en ventanas de 30 vueltas:** en IMS, curtosis sale en 709 y envolvente en 704 con n = 99, como en v2 con ventanas de 3 vueltas.
+  - Como se fijó en "Lo que no se hará", no hay v4 en este paper.

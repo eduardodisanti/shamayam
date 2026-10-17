@@ -1,0 +1,187 @@
+{
+ "protocol": "10_protocolo_banco_v3.md (16-oct)",
+ "bench": {
+  "dataset": "CWRU_Bearing_NumPy",
+  "version": "commit b1179d28761048530daa4f04a5c1659eff529499 (2025-02-04)",
+  "manifest_sha256": "45f93f24478ada2dcbe573b1e0034d5424d484b3df6142e7a1c9e62fb9380df8"
+ },
+ "records": [
+  {
+   "rpm": "1797",
+   "shaft_hz": 29.92199999999935,
+   "seconds": 5.082041666666667
+  },
+  {
+   "rpm": "1772",
+   "shaft_hz": 29.52599999999935,
+   "seconds": 10.0813125
+  },
+  {
+   "rpm": "1750",
+   "shaft_hz": 29.15199999999936,
+   "seconds": 10.105479166666667
+  },
+  {
+   "rpm": "1730",
+   "shaft_hz": 28.73999999999941,
+   "seconds": 10.1175625
+  }
+ ],
+ "diagnostics": [
+  {
+   "model": "bench_s",
+   "seed": 42,
+   "learned": false,
+   "unexplained_val": 0.9973840693195755
+  },
+  {
+   "model": "bench_s",
+   "seed": 0,
+   "learned": false,
+   "unexplained_val": 0.9947753044091235
+  },
+  {
+   "model": "bench_s",
+   "seed": 1,
+   "learned": false,
+   "unexplained_val": 1.0076073388786175
+  },
+  {
+   "model": "bench_s",
+   "seed": 2,
+   "learned": false,
+   "unexplained_val": 1.0046172112497225
+  },
+  {
+   "model": "bench_s",
+   "seed": 3,
+   "learned": false,
+   "unexplained_val": 0.9982076794423433
+  },
+  {
+   "model": "noise_s",
+   "seed": 42,
+   "learned": true,
+   "unexplained_val": 1.0,
+   "epochs_run": 27,
+   "best_val_loss": 1.003846287727356,
+   "generalisation_gap": 1.003845928724076
+  },
+  {
+   "model": "noise_s",
+   "seed": 0,
+   "learned": true,
+   "unexplained_val": 0.9999998810399582,
+   "epochs_run": 17,
+   "best_val_loss": 1.002095103263855,
+   "generalisation_gap": 1.0020945059689843
+  },
+  {
+   "model": "noise_s",
+   "seed": 1,
+   "learned": true,
+   "unexplained_val": 0.9999998810867812,
+   "epochs_run": 13,
+   "best_val_loss": 1.002489686012268,
+   "generalisation_gap": 1.0024893274941464
+  },
+  {
+   "model": "noise_s",
+   "seed": 2,
+   "learned": true,
+   "unexplained_val": 1.0000002380620228,
+   "epochs_run": 17,
+   "best_val_loss": 1.0014979839324951,
+   "generalisation_gap": 1.0014970288305007
+  },
+  {
+   "model": "noise_s",
+   "seed": 3,
+   "learned": true,
+   "unexplained_val": 1.0,
+   "epochs_run": 29,
+   "best_val_loss": 1.000405192375183,
+   "generalisation_gap": 1.000405073117605
+  },
+  {
+   "model": "sim_s",
+   "seed": 42,
+   "learned": true,
+   "unexplained_val": 0.8685988782948318,
+   "epochs_run": 14,
+   "best_val_loss": 0.9208516478538513,
+   "generalisation_gap": 1.1139888848629715
+  },
+  {
+   "model": "sim_s",
+   "seed": 0,
+   "learned": true,
+   "unexplained_val": 0.8769852133403047,
+   "epochs_run": 15,
+   "best_val_loss": 0.889785885810852,
+   "generalisation_gap": 1.089894087427172
+  },
+  {
+   "model": "sim_s",
+   "seed": 1,
+   "learned": true,
+   "unexplained_val": 0.8605143956023161,
+   "epochs_run": 16,
+   "best_val_loss": 0.8673619031906128,
+   "generalisation_gap": 1.0707841463009027
+  },
+  {
+   "model": "sim_s",
+   "seed": 2,
+   "learned": true,
+   "unexplained_val": 0.8662590650205868,
+   "epochs_run": 15,
+   "best_val_loss": 0.8617974519729614,
+   "generalisation_gap": 1.0586637105094172
+  },
+  {
+   "model": "sim_s",
+   "seed": 3,
+   "learned": true,
+   "unexplained_val": 0.8681939766643298,
+   "epochs_run": 15,
+   "best_val_loss": 0.8572090864181519,
+   "generalisation_gap": 1.0518064470690556
+  },
+  {
+   "model": "local_s",
+   "seed": 0,
+   "learned": true,
+   "unexplained": 0.01360783725976944,
+   "generalisation_gap": 1.4431362183690106
+  },
+  {
+   "model": "local_s",
+   "seed": 1,
+   "learned": true,
+   "unexplained": 0.014126756228506565,
+   "generalisation_gap": 1.4197498511552469
+  },
+  {
+   "model": "local_s",
+   "seed": 2,
+   "learned": true,
+   "unexplained": 0.014516101218760014,
+   "generalisation_gap": 1.4044278574886224
+  },
+  {
+   "model": "local_s",
+   "seed": 3,
+   "learned": true,
+   "unexplained": 0.01427469402551651,
+   "generalisation_gap": 1.4655056821354997
+  },
+  {
+   "model": "local_s",
+   "seed": 4,
+   "learned": true,
+   "unexplained": 0.013593082316219807,
+   "generalisation_gap": 1.3758123844118386
+  }
+ ]
+}

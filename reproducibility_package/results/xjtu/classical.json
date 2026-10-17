@@ -1,0 +1,29 @@
+{
+ "protocol": "09_protocolo_xjtu.md",
+ "data": {
+  "dataset": "XJTU-SY_Bearing_Datasets",
+  "version": "XJTU-SY_Bearing_Datasets as distributed by the authors (15 bearings, 9216 CSV files, with Introduction_to_XJTU-SY_Bearing_Dataset.pdf); pinned by this manifest",
+  "manifest_sha256": "ad46b745faa5e06aea207cbdbf4a1c48af34872776b877792fb158cc6485802a"
+ },
+ "envelope_orders": [
+  2.0,
+  20.0
+ ],
+ "bearings": [
+  "1_1",
+  "1_2",
+  "1_3",
+  "1_4",
+  "1_5",
+  "2_1",
+  "2_2",
+  "2_3",
+  "2_4",
+  "2_5",
+  "3_1",
+  "3_2",
+  "3_3",
+  "3_4",
+  "3_5"
+ ]
+}

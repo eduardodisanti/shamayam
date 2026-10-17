@@ -99,4 +99,12 @@
 
 ## Registro de ejecución
 
-*(vacío)*
+- **16–17-oct, ejecución completa** (commit de registro `df51e2a`; macOS 27.0.1, Python 3.12.15, TensorFlow 2.21.0; todas las etapas sin cambios respecto a lo registrado). Tablas en [`tablas_xjtu.md`](tablas_xjtu.md), generadas por `xjtu_report.py` y comprobadas byte a byte.
+  - **H1: opera en parte.** Los 13 rodamientos comisionables salen antes del final en las 5 semillas, pero la FAR agregada en la franja sana es 5,3–6,1%, por encima del 5% fijado.
+  - **H2: no se replica.** Con n = 49, la mediana de la FAR en la franja es 30,7% para el crudo por máquina y 28,9% para el cociente por máquina (OEM: 4,6%).
+  - **Diagnóstico declarado:** la tendencia de Spearman del RMS en la franja es significativa en los cinco rodamientos largos; en 2_3 es creciente (ρ = 0,48 en H, 0,46 en V).
+
+  **Lectura (para discutir, no es veredicto del protocolo; desglose hecho después de ver los resultados):**
+  - El exceso de FAR viene de 2_3 (jaula): está al 100% sobre el radio durante toda su franja con todos los modelos, también con el RMS, y todos salen en los registros 146–151 (27% de la vida). El supuesto de que la primera mitad de la vida es sana no se cumple en 2_3, y el diagnóstico declarado lo señalaba.
+  - Sin 2_3, la FAR agregada del OEM (H+V, n = 99) sería 1,6–2,3%; la de los modelos por máquina con n = 49 seguiría en 24–29%, sobre todo por 3_2 (≈ 70% de la franja sobre el radio).
+  - El veredicto registrado no cambia: "opera en parte".
