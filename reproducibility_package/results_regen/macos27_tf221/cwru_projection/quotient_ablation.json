@@ -1,0 +1,237 @@
+{
+ "n_commission": 49,
+ "n_aug": 4000,
+ "seeds": [
+  0,
+  1
+ ],
+ "levels": [
+  "G1",
+  "G2",
+  "G3"
+ ],
+ "speeds": {
+  "1730": {
+   "G1": [
+    {
+     "seed": 0,
+     "learned": true,
+     "tau": 0.6196512579917908,
+     "far_k": 1,
+     "far_n": 47,
+     "gap": 1.269172459807034,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    },
+    {
+     "seed": 1,
+     "learned": true,
+     "tau": 0.6230261325836182,
+     "far_k": 1,
+     "far_n": 47,
+     "gap": 1.2228491258869465,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    }
+   ],
+   "G2": [
+    {
+     "seed": 0,
+     "learned": true,
+     "tau": 0.6125072836875916,
+     "far_k": 2,
+     "far_n": 47,
+     "gap": 1.3366681982947874,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    },
+    {
+     "seed": 1,
+     "learned": true,
+     "tau": 0.5757833123207092,
+     "far_k": 2,
+     "far_n": 47,
+     "gap": 1.2276803987770146,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    }
+   ],
+   "G3": [
+    {
+     "seed": 0,
+     "learned": true,
+     "tau": 0.5871556401252747,
+     "far_k": 4,
+     "far_n": 47,
+     "gap": 1.534726581206997,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    },
+    {
+     "seed": 1,
+     "learned": true,
+     "tau": 0.6035634875297546,
+     "far_k": 1,
+     "far_n": 47,
+     "gap": 1.1949081328956577,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    }
+   ]
+  },
+  "1750": {
+   "G1": [
+    {
+     "seed": 0,
+     "learned": true,
+     "tau": 0.5512059926986694,
+     "far_k": 0,
+     "far_n": 49,
+     "gap": 1.2604568772935691,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    },
+    {
+     "seed": 1,
+     "learned": true,
+     "tau": 0.5481714606285095,
+     "far_k": 0,
+     "far_n": 49,
+     "gap": 1.2925631508527764,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    }
+   ],
+   "G2": [
+    {
+     "seed": 0,
+     "learned": true,
+     "tau": 0.5542895793914795,
+     "far_k": 0,
+     "far_n": 49,
+     "gap": 1.4905850373241227,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    },
+    {
+     "seed": 1,
+     "learned": true,
+     "tau": 0.5366048216819763,
+     "far_k": 0,
+     "far_n": 49,
+     "gap": 1.2511672417321704,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    }
+   ],
+   "G3": [
+    {
+     "seed": 0,
+     "learned": true,
+     "tau": 0.5428210496902466,
+     "far_k": 0,
+     "far_n": 49,
+     "gap": 1.2693652601464134,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    },
+    {
+     "seed": 1,
+     "learned": true,
+     "tau": 0.5500583052635193,
+     "far_k": 0,
+     "far_n": 49,
+     "gap": 1.3444011167791683,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    }
+   ]
+  },
+  "1772": {
+   "G1": [
+    {
+     "seed": 0,
+     "learned": true,
+     "tau": 0.4553074240684509,
+     "far_k": 1,
+     "far_n": 50,
+     "gap": 1.2314680365211754,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    },
+    {
+     "seed": 1,
+     "learned": true,
+     "tau": 0.4761787950992584,
+     "far_k": 0,
+     "far_n": 50,
+     "gap": 1.2756213493421797,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    }
+   ],
+   "G2": [
+    {
+     "seed": 0,
+     "learned": true,
+     "tau": 0.45678791403770447,
+     "far_k": 5,
+     "far_n": 50,
+     "gap": 1.463825557537982,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    },
+    {
+     "seed": 1,
+     "learned": true,
+     "tau": 0.4439428746700287,
+     "far_k": 2,
+     "far_n": 50,
+     "gap": 1.3170276383624904,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    }
+   ],
+   "G3": [
+    {
+     "seed": 0,
+     "learned": true,
+     "tau": 0.4745250940322876,
+     "far_k": 0,
+     "far_n": 50,
+     "gap": 1.356155956356766,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    },
+    {
+     "seed": 1,
+     "learned": true,
+     "tau": 0.4665599465370178,
+     "far_k": 1,
+     "far_n": 50,
+     "gap": 1.2508831308704509,
+     "ball_dr": 100.0,
+     "inner_race_dr": 100.0,
+     "outer_race_dr": 100.0
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,198 @@
+{
+ "protocol": "08_protocolo_banco_v2.md (14-oct)",
+ "bench": {
+  "dataset": "CWRU_Bearing_NumPy",
+  "version": "commit b1179d28761048530daa4f04a5c1659eff529499 (2025-02-04)",
+  "manifest_sha256": "45f93f24478ada2dcbe573b1e0034d5424d484b3df6142e7a1c9e62fb9380df8"
+ },
+ "records": [
+  {
+   "rpm": "1797",
+   "shaft_hz": 29.92199999999935,
+   "seconds": 5.082041666666667
+  },
+  {
+   "rpm": "1772",
+   "shaft_hz": 29.52599999999935,
+   "seconds": 10.0813125
+  },
+  {
+   "rpm": "1750",
+   "shaft_hz": 29.15199999999936,
+   "seconds": 10.105479166666667
+  },
+  {
+   "rpm": "1730",
+   "shaft_hz": 28.73999999999941,
+   "seconds": 10.1175625
+  }
+ ],
+ "diagnostics": [
+  {
+   "model": "bench_w",
+   "seed": 42,
+   "learned": false,
+   "unexplained_val": 1.0000720903671079
+  },
+  {
+   "model": "bench_w",
+   "seed": 0,
+   "learned": false,
+   "unexplained_val": 1.0000187865875139
+  },
+  {
+   "model": "bench_w",
+   "seed": 1,
+   "learned": false,
+   "unexplained_val": 1.0000153430905514
+  },
+  {
+   "model": "bench_w",
+   "seed": 2,
+   "learned": false,
+   "unexplained_val": 1.0000581933281198
+  },
+  {
+   "model": "bench_w",
+   "seed": 3,
+   "learned": false,
+   "unexplained_val": 1.0000489606892684
+  },
+  {
+   "model": "bench_wg",
+   "seed": 42,
+   "learned": false,
+   "unexplained_val": 1.0000001190775585
+  },
+  {
+   "model": "bench_wg",
+   "seed": 0,
+   "learned": false,
+   "unexplained_val": 1.0000001190689665
+  },
+  {
+   "model": "bench_wg",
+   "seed": 1,
+   "learned": false,
+   "unexplained_val": 1.0
+  },
+  {
+   "model": "bench_wg",
+   "seed": 2,
+   "learned": false,
+   "unexplained_val": 0.9999995237454562
+  },
+  {
+   "model": "bench_wg",
+   "seed": 3,
+   "learned": false,
+   "unexplained_val": 1.0000001190781116
+  },
+  {
+   "model": "noise_wg",
+   "seed": 42,
+   "learned": true,
+   "unexplained_val": 0.999999880915791,
+   "epochs_run": 13,
+   "best_val_loss": 1.0010502338409424,
+   "generalisation_gap": 1.0010502935081895
+  },
+  {
+   "model": "noise_wg",
+   "seed": 0,
+   "learned": true,
+   "unexplained_val": 1.0,
+   "epochs_run": 14,
+   "best_val_loss": 1.0009105205535889,
+   "generalisation_gap": 1.0009105205535889
+  },
+  {
+   "model": "noise_wg",
+   "seed": 1,
+   "learned": true,
+   "unexplained_val": 0.9999998809069555,
+   "epochs_run": 12,
+   "best_val_loss": 1.0009759664535522,
+   "generalisation_gap": 1.0009758471279326
+  },
+  {
+   "model": "noise_wg",
+   "seed": 2,
+   "learned": true,
+   "unexplained_val": 1.0000001190995833,
+   "epochs_run": 12,
+   "best_val_loss": 1.0009212493896484,
+   "generalisation_gap": 1.000921428368347
+  },
+  {
+   "model": "noise_wg",
+   "seed": 3,
+   "learned": true,
+   "unexplained_val": 1.000000119082564,
+   "epochs_run": 12,
+   "best_val_loss": 1.0010643005371094,
+   "generalisation_gap": 1.001064061864838
+  },
+  {
+   "model": "sim_wg",
+   "seed": 42,
+   "learned": false,
+   "unexplained_val": 1.0
+  },
+  {
+   "model": "sim_wg",
+   "seed": 0,
+   "learned": true,
+   "unexplained_val": 0.977330531186854,
+   "epochs_run": 15,
+   "best_val_loss": 0.9802919030189514,
+   "generalisation_gap": 1.0658481621365583
+  },
+  {
+   "model": "sim_wg",
+   "seed": 1,
+   "learned": false,
+   "unexplained_val": 1.000000118739772
+  },
+  {
+   "model": "sim_wg",
+   "seed": 2,
+   "learned": false,
+   "unexplained_val": 0.9829615069357773
+  },
+  {
+   "model": "sim_wg",
+   "seed": 3,
+   "learned": true,
+   "unexplained_val": 0.971403040342433,
+   "epochs_run": 14,
+   "best_val_loss": 0.9725745916366577,
+   "generalisation_gap": 1.0604796847526685
+  },
+  {
+   "model": "local_wg",
+   "seed": 0,
+   "learned": false
+  },
+  {
+   "model": "local_wg",
+   "seed": 1,
+   "learned": false
+  },
+  {
+   "model": "local_wg",
+   "seed": 2,
+   "learned": false
+  },
+  {
+   "model": "local_wg",
+   "seed": 3,
+   "learned": false
+  },
+  {
+   "model": "local_wg",
+   "seed": 4,
+   "learned": false
+  }
+ ]
+}

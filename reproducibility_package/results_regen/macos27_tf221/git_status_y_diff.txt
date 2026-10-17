@@ -1,0 +1,104 @@
+ M mssp_paper/notas/tablas_banco.md
+ M mssp_paper/notas/tablas_banco_v2.md
+ M mssp_paper/notas/tablas_contaminacion.md
+ M mssp_paper/notas/tablas_cwru_proyeccion.md
+ M mssp_paper/notas/tablas_ims_certificado.md
+ M mssp_paper/notas/tablas_ims_clasicos.md
+ M mssp_paper/notas/tablas_ims_cociente.md
+ M mssp_paper/notas/tablas_multiespacio.md
+ M mssp_paper/notas/tablas_ottawa.md
+ M reproducibility_package/results/bench/analysis.json
+ M reproducibility_package/results/bench/evaluation.json
+ M reproducibility_package/results/bench/training.json
+ M reproducibility_package/results/bench/window_scores.npz
+ M reproducibility_package/results/bench_v2/analysis_v2.json
+ M reproducibility_package/results/bench_v2/evaluation.json
+ M reproducibility_package/results/bench_v2/training.json
+ M reproducibility_package/results/bench_v2/window_scores.npz
+ M reproducibility_package/results/contamination/results.json
+ M reproducibility_package/results/cwru_projection/asset_reference.json
+ M reproducibility_package/results/cwru_projection/limited_data.json
+ M reproducibility_package/results/cwru_projection/oem_seeds.json
+ M reproducibility_package/results/cwru_projection/quotient_ablation.json
+ M reproducibility_package/results/cwru_projection/raw_vs_quotient.json
+ M reproducibility_package/results/cwru_projection/results.json
+ M reproducibility_package/results/cwru_projection/scores.npz
+ M reproducibility_package/results/data.json
+ M reproducibility_package/results/field_residuals_ims.npz
+ M reproducibility_package/results/ims_certified/results.json
+ M reproducibility_package/results/ims_classical/features.npz
+ M reproducibility_package/results/ims_classical/results.json
+ M reproducibility_package/results/ims_quotient/learning_curve.json
+ M reproducibility_package/results/ims_quotient/seeds.json
+ M reproducibility_package/results/layer_a_results.txt
+ M reproducibility_package/results/manifest.json
+ M reproducibility_package/results/multispace/results.json
+ M reproducibility_package/results/ottawa/appendix.json
+ M reproducibility_package/results/ottawa/results.json
+ M reproducibility_package/results/ottawa/results_seed0.json
+ M reproducibility_package/results/ottawa/results_seed1.json
+ M reproducibility_package/results/ottawa/results_seed2.json
+ M reproducibility_package/results/ottawa/results_seed3.json
+ M reproducibility_package/results/ottawa/results_seed4.json
+ M reproducibility_package/results/ottawa/scores_seed0.npz
+ M reproducibility_package/results/ottawa/scores_seed1.npz
+ M reproducibility_package/results/ottawa/scores_seed2.npz
+ M reproducibility_package/results/ottawa/scores_seed3.npz
+ M reproducibility_package/results/ottawa/scores_seed4.npz
+ M reproducibility_package/results/stability.json
+?? figures/
+?? reproducibility_package/results/cwru_projection/operator_order.keras
+?? reproducibility_package/results/cwru_projection/operator_time.keras
+?? reproducibility_package/results/cwru_projection/scaler_order.npz
+?? reproducibility_package/results/cwru_projection/scaler_time.npz
+?? reproducibility_package/results/ottawa/scores.npz
+?? tables/
+ mssp_paper/notas/tablas_banco.md                   |    60 +-
+ mssp_paper/notas/tablas_banco_v2.md                |    34 +-
+ mssp_paper/notas/tablas_contaminacion.md           |    24 +-
+ mssp_paper/notas/tablas_cwru_proyeccion.md         |   208 +-
+ mssp_paper/notas/tablas_ims_certificado.md         |    48 +-
+ mssp_paper/notas/tablas_ims_clasicos.md            |    16 +-
+ mssp_paper/notas/tablas_ims_cociente.md            |   120 +-
+ mssp_paper/notas/tablas_multiespacio.md            |    20 +-
+ mssp_paper/notas/tablas_ottawa.md                  |   196 +-
+ .../results/bench/analysis.json                    |   646 +-
+ .../results/bench/evaluation.json                  |  1284 +-
+ .../results/bench/training.json                    |    96 +-
+ .../results/bench/window_scores.npz                |   Bin 640020 -> 639715 bytes
+ .../results/bench_v2/analysis_v2.json              |    98 +-
+ .../results/bench_v2/evaluation.json               |   402 +-
+ .../results/bench_v2/training.json                 |    38 +-
+ .../results/bench_v2/window_scores.npz             |   Bin 387438 -> 387333 bytes
+ .../results/contamination/results.json             |    60 +-
+ .../results/cwru_projection/asset_reference.json   |    42 +-
+ .../results/cwru_projection/limited_data.json      |   106 +-
+ .../results/cwru_projection/oem_seeds.json         |   152 +-
+ .../results/cwru_projection/quotient_ablation.json |    86 +-
+ .../results/cwru_projection/raw_vs_quotient.json   |   148 +-
+ .../results/cwru_projection/results.json           |   892 +-
+ .../results/cwru_projection/scores.npz             |   Bin 317101 -> 316965 bytes
+ reproducibility_package/results/data.json          |  4514 +--
+ .../results/field_residuals_ims.npz                |   Bin 24682 -> 24666 bytes
+ .../results/ims_certified/results.json             |   180 +-
+ .../results/ims_classical/features.npz             |   Bin 120366 -> 120366 bytes
+ .../results/ims_classical/results.json             |   124 +-
+ .../results/ims_quotient/learning_curve.json       |   404 +-
+ .../results/ims_quotient/seeds.json                |   844 +-
+ .../results/layer_a_results.txt                    |    57 +-
+ reproducibility_package/results/manifest.json      |    12 +-
+ .../results/multispace/results.json                |   238 +-
+ .../results/ottawa/appendix.json                   |   866 +-
+ .../results/ottawa/results.json                    |   674 +-
+ .../results/ottawa/results_seed0.json              |   331 +-
+ .../results/ottawa/results_seed1.json              |   296 +-
+ .../results/ottawa/results_seed2.json              |   238 +-
+ .../results/ottawa/results_seed3.json              |   264 +-
+ .../results/ottawa/results_seed4.json              |   262 +-
+ .../results/ottawa/scores_seed0.npz                |   Bin 474583 -> 503804 bytes
+ .../results/ottawa/scores_seed1.npz                |   Bin 474484 -> 475496 bytes
+ .../results/ottawa/scores_seed2.npz                |   Bin 446908 -> 447021 bytes
+ .../results/ottawa/scores_seed3.npz                |   Bin 503587 -> 503874 bytes
+ .../results/ottawa/scores_seed4.npz                |   Bin 475336 -> 475475 bytes
+ reproducibility_package/results/stability.json     | 39836 +++++++++----------
+ 48 files changed, 27031 insertions(+), 26885 deletions(-)

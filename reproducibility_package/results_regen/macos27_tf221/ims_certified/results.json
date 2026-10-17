@@ -1,0 +1,246 @@
+{
+ "cache": "field_residuals_ims.npz",
+ "persistence": [
+  8,
+  10
+ ],
+ "failed_bearing": 1,
+ "bearings": {
+  "1": {
+   "published": {
+    "n": 49,
+    "tau": 0.0141607074132737,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0,
+    "far": 2.6490066225165565
+   },
+   "n_active": 982,
+   "r_(k), n=49": {
+    "n": 49,
+    "tau": 0.01419413078795461,
+    "rank": 49,
+    "far_k": 4,
+    "far_n": 151,
+    "far": 2.6490066225165565,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0
+   },
+   "r_(k), n=99": {
+    "n": 99,
+    "tau": 0.014210428056471488,
+    "rank": 98,
+    "far_k": 1,
+    "far_n": 101,
+    "far": 0.9900990099009901,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0
+   },
+   "r_(k), n=149": {
+    "n": 149,
+    "tau": 0.01419413078795461,
+    "rank": 147,
+    "far_k": 2,
+    "far_n": 51,
+    "far": 3.9215686274509802,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0
+   },
+   "tolerancia 0,98/0,95, n=149": {
+    "n": 149,
+    "tau": 0.014274196589694303,
+    "rank": 149,
+    "far_k": 1,
+    "far_n": 51,
+    "far": 1.9607843137254901,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0
+   },
+   "spearman_first149": {
+    "rho": -0.3343297660076184,
+    "p": 3.083585727910297e-05
+   }
+  },
+  "2": {
+   "published": {
+    "n": 49,
+    "tau": 0.018245201303678397,
+    "departure": 709,
+    "lead_hours": 45.5,
+    "exceedance_post": 91.20879120879121,
+    "far": 7.28476821192053
+   },
+   "n_active": 982,
+   "r_(k), n=49": {
+    "n": 49,
+    "tau": 0.018305063685950113,
+    "rank": 49,
+    "far_k": 8,
+    "far_n": 151,
+    "far": 5.298013245033113,
+    "departure": 711,
+    "lead_hours": 45.166666666666664,
+    "exceedance_post": 88.92988929889299
+   },
+   "r_(k), n=99": {
+    "n": 99,
+    "tau": 0.018413569011232433,
+    "rank": 98,
+    "far_k": 1,
+    "far_n": 101,
+    "far": 0.9900990099009901,
+    "departure": 734,
+    "lead_hours": 41.33333333333333,
+    "exceedance_post": 86.29032258064517
+   },
+   "r_(k), n=149": {
+    "n": 149,
+    "tau": 0.018413569011232433,
+    "rank": 147,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 734,
+    "lead_hours": 41.33333333333333,
+    "exceedance_post": 86.29032258064517
+   },
+   "tolerancia 0,98/0,95, n=149": {
+    "n": 149,
+    "tau": 0.018425228074193,
+    "rank": 149,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 734,
+    "lead_hours": 41.33333333333333,
+    "exceedance_post": 84.67741935483872
+   },
+   "spearman_first149": {
+    "rho": 0.2055867948485398,
+    "p": 0.011893101479605251
+   }
+  },
+  "3": {
+   "published": {
+    "n": 49,
+    "tau": 0.022166913980070282,
+    "departure": 898,
+    "lead_hours": 14.0,
+    "exceedance_post": 100.0,
+    "far": 0.0
+   },
+   "n_active": 982,
+   "r_(k), n=49": {
+    "n": 49,
+    "tau": 0.022267222075777894,
+    "rank": 49,
+    "far_k": 0,
+    "far_n": 151,
+    "far": 0.0,
+    "departure": 899,
+    "lead_hours": 13.833333333333332,
+    "exceedance_post": 100.0
+   },
+   "r_(k), n=99": {
+    "n": 99,
+    "tau": 0.022162734476082465,
+    "rank": 98,
+    "far_k": 0,
+    "far_n": 101,
+    "far": 0.0,
+    "departure": 898,
+    "lead_hours": 14.0,
+    "exceedance_post": 100.0
+   },
+   "r_(k), n=149": {
+    "n": 149,
+    "tau": 0.02215549579876311,
+    "rank": 147,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 898,
+    "lead_hours": 14.0,
+    "exceedance_post": 100.0
+   },
+   "tolerancia 0,98/0,95, n=149": {
+    "n": 149,
+    "tau": 0.022267222075777894,
+    "rank": 149,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 899,
+    "lead_hours": 13.833333333333332,
+    "exceedance_post": 100.0
+   },
+   "spearman_first149": {
+    "rho": -0.5686631598040994,
+    "p": 3.8657712855354355e-14
+   }
+  },
+  "4": {
+   "published": {
+    "n": 49,
+    "tau": 0.010082786644206327,
+    "departure": 664,
+    "lead_hours": 53.0,
+    "exceedance_post": 97.79874213836479,
+    "far": 3.9735099337748347
+   },
+   "n_active": 982,
+   "r_(k), n=49": {
+    "n": 49,
+    "tau": 0.010086647289640763,
+    "rank": 49,
+    "far_k": 6,
+    "far_n": 151,
+    "far": 3.9735099337748343,
+    "departure": 664,
+    "lead_hours": 53.0,
+    "exceedance_post": 97.48427672955975
+   },
+   "r_(k), n=99": {
+    "n": 99,
+    "tau": 0.010082625783979893,
+    "rank": 98,
+    "far_k": 6,
+    "far_n": 101,
+    "far": 5.9405940594059405,
+    "departure": 664,
+    "lead_hours": 53.0,
+    "exceedance_post": 97.79874213836479
+   },
+   "r_(k), n=149": {
+    "n": 149,
+    "tau": 0.01008994345936705,
+    "rank": 147,
+    "far_k": 3,
+    "far_n": 51,
+    "far": 5.882352941176471,
+    "departure": 664,
+    "lead_hours": 53.0,
+    "exceedance_post": 97.16981132075472
+   },
+   "tolerancia 0,98/0,95, n=149": {
+    "n": 149,
+    "tau": 0.010330772520426442,
+    "rank": 149,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 707,
+    "lead_hours": 45.83333333333333,
+    "exceedance_post": 98.54545454545455
+   },
+   "spearman_first149": {
+    "rho": -0.0918265916923635,
+    "p": 0.26536434722998076
+   }
+  }
+ }
+}

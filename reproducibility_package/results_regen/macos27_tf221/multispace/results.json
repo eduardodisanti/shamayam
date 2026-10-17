@@ -1,0 +1,1519 @@
+{
+ "alpha": 0.02,
+ "ottawa": {
+  "ABCD1": {
+   "OEM (q)": [
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 35,
+     "far_n": 538,
+     "rec_false": 1,
+     "detection": {
+      "I": {
+       "k": 759,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 4,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 234,
+       "n": 765,
+       "rec": 7,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 745,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 40,
+     "far_n": 538,
+     "rec_false": 1,
+     "detection": {
+      "I": {
+       "k": 758,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 14,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 243,
+       "n": 765,
+       "rec": 8,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 748,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 28,
+     "far_n": 538,
+     "rec_false": 1,
+     "detection": {
+      "I": {
+       "k": 758,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 6,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 214,
+       "n": 765,
+       "rec": 7,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 737,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 56,
+     "far_n": 538,
+     "rec_false": 2,
+     "detection": {
+      "I": {
+       "k": 760,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 23,
+       "n": 766,
+       "rec": 1,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 267,
+       "n": 765,
+       "rec": 8,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 747,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 38,
+     "far_n": 538,
+     "rec_false": 1,
+     "detection": {
+      "I": {
+       "k": 760,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 10,
+       "n": 766,
+       "rec": 0,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 231,
+       "n": 765,
+       "rec": 7,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 749,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    }
+   ],
+   "curtosis (q)": [
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 26,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 765,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 720,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 26,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 765,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 720,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 26,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 765,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 720,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 26,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 765,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 720,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 26,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 765,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 720,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    }
+   ],
+   "OEM (q) + curtosis (q)": [
+    {
+     "certifiable": true,
+     "K": 2,
+     "far_k": 33,
+     "far_n": 538,
+     "rec_false": 1,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 691,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 196,
+       "n": 765,
+       "rec": 6,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 2,
+     "far_k": 40,
+     "far_n": 538,
+     "rec_false": 1,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 691,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 219,
+       "n": 765,
+       "rec": 7,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 2,
+     "far_k": 37,
+     "far_n": 538,
+     "rec_false": 1,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 691,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 206,
+       "n": 765,
+       "rec": 6,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 2,
+     "far_k": 50,
+     "far_n": 538,
+     "rec_false": 1,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 691,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 236,
+       "n": 765,
+       "rec": 8,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 2,
+     "far_k": 40,
+     "far_n": 538,
+     "rec_false": 1,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 691,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 223,
+       "n": 765,
+       "rec": 7,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    }
+   ]
+  },
+  "A1": {
+   "OEM (q)": [
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 171,
+     "far_n": 538,
+     "rec_false": 4,
+     "detection": {
+      "I": {
+       "k": 765,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 213,
+       "n": 766,
+       "rec": 7,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 602,
+       "n": 765,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 757,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 198,
+     "far_n": 538,
+     "rec_false": 7,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 280,
+       "n": 766,
+       "rec": 11,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 625,
+       "n": 765,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 230,
+     "far_n": 538,
+     "rec_false": 8,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 318,
+       "n": 766,
+       "rec": 11,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 638,
+       "n": 765,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 757,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 244,
+     "far_n": 538,
+     "rec_false": 8,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 346,
+       "n": 766,
+       "rec": 10,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 665,
+       "n": 765,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 156,
+     "far_n": 538,
+     "rec_false": 4,
+     "detection": {
+      "I": {
+       "k": 764,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 209,
+       "n": 766,
+       "rec": 6,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 548,
+       "n": 765,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 757,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    }
+   ],
+   "curtosis (q)": [
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 34,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 730,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 34,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 730,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 34,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 730,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 34,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 730,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    },
+    {
+     "certifiable": true,
+     "K": 1,
+     "far_k": 34,
+     "far_n": 538,
+     "rec_false": 0,
+     "detection": {
+      "I": {
+       "k": 766,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "O": {
+       "k": 730,
+       "n": 766,
+       "rec": 12,
+       "rec_n": 12
+      },
+      "B": {
+       "k": 95,
+       "n": 765,
+       "rec": 2,
+       "rec_n": 12
+      },
+      "C": {
+       "k": 758,
+       "n": 758,
+       "rec": 12,
+       "rec_n": 12
+      }
+     }
+    }
+   ],
+   "OEM (q) + curtosis (q)": [
+    {
+     "certifiable": false
+    },
+    {
+     "certifiable": false
+    },
+    {
+     "certifiable": false
+    },
+    {
+     "certifiable": false
+    },
+    {
+     "certifiable": false
+    }
+   ]
+  }
+ },
+ "ims": {
+  "1": {
+   "RMS": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    }
+   ],
+   "curtosis": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 708,
+     "lead_hours": 45.666666666666664
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 2,
+     "far_n": 300,
+     "departure": 654,
+     "lead_hours": 54.666666666666664
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 654,
+     "lead_hours": 54.666666666666664
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 654,
+     "lead_hours": 54.666666666666664
+    }
+   ],
+   "OEM publicado": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    }
+   ],
+   "RMS + curtosis": [
+    {
+     "n": 49,
+     "certifiable": false
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    }
+   ],
+   "OEM publicado + curtosis": [
+    {
+     "n": 49,
+     "certifiable": false
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    }
+   ]
+  },
+  "2": {
+   "RMS": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 782,
+     "lead_hours": 33.33333333333333
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 782,
+     "lead_hours": 33.33333333333333
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 710,
+     "lead_hours": 45.33333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 710,
+     "lead_hours": 45.33333333333333
+    }
+   ],
+   "curtosis": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    }
+   ],
+   "OEM publicado": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 711,
+     "lead_hours": 45.166666666666664
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 734,
+     "lead_hours": 41.33333333333333
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 734,
+     "lead_hours": 41.33333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 712,
+     "lead_hours": 45.0
+    }
+   ],
+   "RMS + curtosis": [
+    {
+     "n": 49,
+     "certifiable": false
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 782,
+     "lead_hours": 33.33333333333333
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 782,
+     "lead_hours": 33.33333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 782,
+     "lead_hours": 33.33333333333333
+    }
+   ],
+   "OEM publicado + curtosis": [
+    {
+     "n": 49,
+     "certifiable": false
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 734,
+     "lead_hours": 41.33333333333333
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 734,
+     "lead_hours": 41.33333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 734,
+     "lead_hours": 41.33333333333333
+    }
+   ]
+  },
+  "3": {
+   "RMS": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    }
+   ],
+   "curtosis": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    }
+   ],
+   "OEM publicado": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 899,
+     "lead_hours": 13.833333333333332
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 898,
+     "lead_hours": 14.0
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 898,
+     "lead_hours": 14.0
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    }
+   ],
+   "RMS + curtosis": [
+    {
+     "n": 49,
+     "certifiable": false
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    }
+   ],
+   "OEM publicado + curtosis": [
+    {
+     "n": 49,
+     "certifiable": false
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 899,
+     "lead_hours": 13.833333333333332
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 899,
+     "lead_hours": 13.833333333333332
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 898,
+     "lead_hours": 14.0
+    }
+   ]
+  },
+  "4": {
+   "RMS": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 619,
+     "lead_hours": 60.5
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 619,
+     "lead_hours": 60.5
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 619,
+     "lead_hours": 60.5
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 619,
+     "lead_hours": 60.5
+    }
+   ],
+   "curtosis": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 939,
+     "lead_hours": 7.166666666666666
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 925,
+     "lead_hours": 9.5
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 925,
+     "lead_hours": 9.5
+    }
+   ],
+   "OEM publicado": [
+    {
+     "n": 49,
+     "certifiable": true,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 664,
+     "lead_hours": 53.0
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 6,
+     "far_n": 300,
+     "departure": 664,
+     "lead_hours": 53.0
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 4,
+     "far_n": 300,
+     "departure": 664,
+     "lead_hours": 53.0
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 4,
+     "far_n": 300,
+     "departure": 666,
+     "lead_hours": 52.666666666666664
+    }
+   ],
+   "RMS + curtosis": [
+    {
+     "n": 49,
+     "certifiable": false
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 656,
+     "lead_hours": 54.33333333333333
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 656,
+     "lead_hours": 54.33333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 2,
+     "far_n": 300,
+     "departure": 656,
+     "lead_hours": 54.33333333333333
+    }
+   ],
+   "OEM publicado + curtosis": [
+    {
+     "n": 49,
+     "certifiable": false
+    },
+    {
+     "n": 99,
+     "certifiable": true,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 664,
+     "lead_hours": 53.0
+    },
+    {
+     "n": 149,
+     "certifiable": true,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 707,
+     "lead_hours": 45.83333333333333
+    },
+    {
+     "n": 200,
+     "certifiable": true,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 707,
+     "lead_hours": 45.83333333333333
+    }
+   ]
+  }
+ }
+}
