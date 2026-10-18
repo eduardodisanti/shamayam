@@ -73,7 +73,7 @@ def to_markdown(S, C):
                 r = S.get(key.format(s=s), {}).get("bearings", {}).get(b)
                 if r is not None and "far_k" in r:
                     v.append(100 * r["far_k"] / r["far_n"])
-            row.append("—" if not v else (fmt(min(v)) + "%" if max(v) - min(v) < 0.05
+            row.append("—" if not v else (fmt(min(v)) + "%" if fmt(min(v)) == fmt(max(v))
                                           else f"{fmt(min(v))}–{fmt(max(v))}%"))
         rows.append(row)
     L.append(table(["modelo"] + [f"{b} [{band(b)[0]}, {band(b)[1]})" for b in BAND_BEARINGS],
@@ -113,15 +113,88 @@ def to_markdown(S, C):
             rows.append([b, ch] + [fmt(v, 2) for v in profile(C[f"{b}/{ch}/rms"],
                                                              LIFE_RECORDS[b])])
     L.append(table(["rod.", "canal"] + [fmt(f, 2) for f in FRACTIONS], rows))
+
+    L += ["", "## 4. Falsas alarmas por modelo y longitud de puesta en marcha, sin 2_3", "",
+          "Igual que la sección 1 pero agregando los cuatro rodamientos con franja "
+          "sana sin 2_3 (2_1, 3_1, 3_2, 3_4). Quitar 2_3 es una decisión posterior a "
+          "ver los resultados; con 2_3 todas las cifras suben, pero la comparación "
+          "entre el OEM y el RMS no cambia de sentido.", ""]
+    rows = []
+    for space, ns in (("H", (49, 99, 149)), ("V", (49, 99, 149)), ("H+V", (99, 149))):
+        for n in ns:
+            row = [space, n,
+                   _far_range(S, "oem_q/{s}/" + f"{space}/{n}", OEM_SEEDS),
+                   _far_range(S, f"rms/-/{space}/{n}", ("-",)),
+                   _far_range(S, f"kurtosis/-/{space}/{n}", ("-",)),
+                   _far_range(S, f"envelope/-/{space}/{n}", ("-",))]
+            for arm in ("raw", "quot"):
+                row.append(_far_range(S, arm + "/{s}/" + f"{space}/{n}", LOCAL_SEEDS)
+                           if space == "H" and n in (49, 99) else "—")
+            rows.append(row)
+    L.append(table(["canal", "n", "OEM", "RMS", "curtosis", "envolvente",
+                    "por máquina crudo", "por máquina cociente"], rows))
+
+    L += ["", "## 5. Cambio de la puntuación justo después de la puesta en marcha (n = 49)", "",
+          "Mediana de la puntuación en los registros 49–148 dividida por la mediana "
+          "en los registros 0–48, canal horizontal. Mayor que 1: la puntuación sube "
+          "al salir de la puesta en marcha. Rango sobre semillas.", ""]
+    rows = []
+    for b in BAND_BEARINGS:
+        row = [b]
+        for arm in ("raw", "quot"):
+            row.append(_range2([_jump(L49[s].get(f"{b}/49/{arm}")) for s in LOCAL_SEEDS]))
+        row.append(_range2([_jump({"learned": True, "scores": list(F[f"oem_q/{s}/{b}/H"])})
+                            for s in OEM_SEEDS]))
+        row.append(_range2([_jump({"learned": True, "scores": list(C[f"{b}/H/rms"])})]))
+        rows.append(row)
+    L.append(table(["rod.", "por máquina crudo", "por máquina cociente", "OEM", "RMS"],
+                   rows))
     L.append("")
     return "\n".join(L)
 
 
+def _far_range(S, key, seeds, excl=("2_3",)):
+    v = []
+    for s in seeds:
+        B = S.get(key.format(s=s), {}).get("bearings", {})
+        k = sum(B[b]["far_k"] for b in B if "far_k" in B[b] and b not in excl)
+        n = sum(B[b]["far_n"] for b in B if "far_n" in B[b] and b not in excl)
+        if n:
+            v.append(100 * k / n)
+    if not v:
+        return "—"
+    lo, hi = fmt(min(v)), fmt(max(v))
+    return lo + "%" if lo == hi else f"{lo}–{hi}%"
+
+
+def _jump(r):
+    if not r or not r.get("learned"):
+        return None
+    x = np.asarray(r["scores"], dtype=float)
+    return float(np.median(x[49:149]) / np.median(x[:49]))
+
+
+def _range2(v):
+    v = [x for x in v if x is not None]
+    if not v:
+        return "—"
+    lo, hi = fmt(min(v), 2), fmt(max(v), 2)
+    return lo if lo == hi else f"{lo}–{hi}"
+
+
 def load(res=RES):
+    global L49, F
     S = json.loads((res / "report.json").read_text())["settings"]
     with np.load(res / "classical.npz") as z:
         C = {k: z[k] for k in z.files}
+    with np.load(res / "factory_scores.npz") as z:
+        F = {k: z[k] for k in z.files}
+    L49 = {s: json.loads((res / "local" / f"seed{s}.json").read_text())["runs"]
+           for s in LOCAL_SEEDS}
     return S, C
+
+
+L49, F = {}, {}
 
 
 def main():

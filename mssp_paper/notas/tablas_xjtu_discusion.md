@@ -67,3 +67,30 @@ RMS del registro dividido por la mediana de los 99 primeros; mediana móvil de �
 | 3_4 | V | 1,00 | 0,99 | 0,98 | 0,96 | 0,96 | 0,96 | 0,90 | 1,05 | 1,05 | 2,25 |
 | 3_5 | H | 0,53 | 0,78 | 1,02 | 0,99 | 1,04 | 1,03 | 1,05 | 1,24 | 1,38 | 1,42 |
 | 3_5 | V | 0,49 | 0,58 | 1,03 | 1,20 | 0,98 | 0,98 | 1,35 | 1,51 | 2,39 | 2,45 |
+
+## 4. Falsas alarmas por modelo y longitud de puesta en marcha, sin 2_3
+
+Igual que la sección 1 pero agregando los cuatro rodamientos con franja sana sin 2_3 (2_1, 3_1, 3_2, 3_4). Quitar 2_3 es una decisión posterior a ver los resultados; con 2_3 todas las cifras suben, pero la comparación entre el OEM y el RMS no cambia de sentido.
+
+| canal | n | OEM | RMS | curtosis | envolvente | por máquina crudo | por máquina cociente |
+|---|---|---|---|---|---|---|---|
+| H | 49 | 0,8% | 5,0% | 1,0% | 0,4% | 26,5–29,0% | 23,9–27,6% |
+| H | 99 | 0,8–0,9% | 2,2% | 0,8% | 0,4% | 6,2–10,2% | 9,0–14,8% |
+| H | 149 | 1,0–1,1% | 2,2% | 1,0% | 0,4% | — | — |
+| V | 49 | 0,8–2,4% | 1,5% | 3,8% | 11,9% | — | — |
+| V | 99 | 0,9–2,0% | 1,2% | 3,8% | 12,0% | — | — |
+| V | 149 | 0,6–1,3% | 1,0% | 3,8% | 0,9% | — | — |
+| H+V | 99 | 1,6–2,3% | 1,7% | 3,4% | 9,0% | — | — |
+| H+V | 149 | 1,1–1,3% | 1,0% | 1,6% | 0,2% | — | — |
+
+## 5. Cambio de la puntuación justo después de la puesta en marcha (n = 49)
+
+Mediana de la puntuación en los registros 49–148 dividida por la mediana en los registros 0–48, canal horizontal. Mayor que 1: la puntuación sube al salir de la puesta en marcha. Rango sobre semillas.
+
+| rod. | por máquina crudo | por máquina cociente | OEM | RMS |
+|---|---|---|---|---|
+| 2_1 | 0,86–0,89 | 0,80–0,82 | 0,86 | 0,92 |
+| 2_3 | 0,99–1,06 | 0,94–0,97 | 0,96–0,97 | 0,97 |
+| 3_1 | 0,91–0,95 | 0,86 | 0,87–0,88 | 0,95 |
+| 3_2 | 1,61–1,75 | 1,39–1,41 | 1,02 | 1,05 |
+| 3_4 | 0,87–0,88 | 0,85 | 0,83–0,84 | 0,91 |
