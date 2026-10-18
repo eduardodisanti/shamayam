@@ -15,6 +15,26 @@
 - **H1, opera en parte.** El OEM, con los dos canales y n = 99, da alarma antes del final en los 13 rodamientos comisionables y en las 5 semillas, pero la FAR en la franja sana es 5,3–6,1%, por encima del 5% fijado.
 - **H2, no se replica.** Con n = 49, los modelos por máquina tienen una FAR en la franja de ~30% (crudo 30,7%, cociente 28,9%); el OEM, 4,6%.
 
+## 2b. Cómo se lee H1: dentro y fuera del diseño (decidido 18-oct)
+
+**El veredicto registrado no cambia: "opera en parte".** Es la aplicación mecánica del criterio (FAR agregada ≤ 5%) y renombrarlo después de ver los datos sería cambiar el criterio. Lo que sí se especifica es *qué parte* no cumple y por qué: el método garantiza algo bajo supuestos declarados, y la parte que no cumple es la que viola uno de ellos.
+
+| Supuesto del método | Qué garantiza si se cumple | ¿Se cumple en XJTU? |
+|---|---|---|
+| **S1.** Lo que varía está en G: velocidad (constante, nominal), fase, ganancia, offset, frecuencia de muestreo | la sección q lo elimina | sí: condiciones constantes en cada rodamiento |
+| **S2.** Lo que no está en G (carga, vía de transmisión) no cambia durante la operación | el radio local sigue siendo válido | sí: carga y montaje fijos en cada ensayo |
+| **S3.** La puesta en marcha es intercambiable con la operación sana que sigue | FAR ≤ α (en media con n = 49/99; con confianza 0,95 con n = 149) | **no en 2_3**: el RMS sube de forma monótona desde el ~27% de la vida, así que la franja declarada no es sana. Dudoso en 3_4 (rodaje, en dirección conservadora) |
+| **S4.** La puesta en marcha termina antes de que empiece la degradación | el radio describe lo sano | **no en los rodamientos cortos con n = 99**: 1_2, 2_2 y 3_5 (la puesta en marcha ocupa el 61–87% de la vida) |
+
+**Formulación para el paper:**
+- **Dentro del diseño** (S1–S4 sin violación visible): el modelo de fábrica, con un cociente simple (sección q) y sin ningún dato del activo, da alarma antes del final en los 13 rodamientos comisionables, y las falsas alarmas agregadas en 2_1, 3_1, 3_2 y 3_4 son 1,6–2,3% (H+V, n = 99; nominal 2%; `tablas_xjtu_discusion.md`, sección 4).
+- **Fuera del diseño:** donde falla S3 (2_3) no se pueden medir falsas alarmas, porque la referencia sana no lo es; el método da alarma pronto, igual que el RMS. Donde falla S4, el radio se calcula en parte sobre registros que ya no son de régimen estable.
+- **El veredicto registrado** se informa tal cual, con una frase que diga que la parte que no cumple es la que viola S3.
+
+**Condición de honestidad:** la clasificación de 2_3 como fuera de S3 se hizo **después de ver los datos**. El diagnóstico declarado de antemano (Spearman del RMS en la franja) es significativo en los cinco rodamientos largos, porque con cientos de registros cualquier tendencia lo es, así que no sirve como clasificador; lo que distingue a 2_3 es el tamaño del cambio (×1,3 y subiendo), no el p-valor. Se dice así en el texto.
+
+**Sin más experimentos (decidido 18-oct).** Una prueba registrada de S3 basada en tamaño del efecto (por ejemplo, franja válida solo si su RMS mediano queda a ±10% del de la puesta en marcha) y cualquier otro arreglo o mejora del protocolo quedan como **trabajo futuro**, no se ejecutan en este paper.
+
 ## 3. Observaciones (tablas en `tablas_xjtu_discusion.md`)
 
 1. **La FAR de H1 se concentra en un rodamiento.** En 2_3 la franja está al 100% por encima del radio con todos los modelos, también con el RMS. En los demás: 2_1 0%, 3_1 0,1%, 3_2 ~2%, 3_4 3–7% (sección 1).
@@ -39,7 +59,7 @@
 
 ## 5. Preguntas abiertas para decidir juntos
 
-1. ¿Cómo se presenta H1 en el paper: solo el veredicto, o el veredicto más la FAR por rodamiento, más algo de lo anterior marcado como posterior?
+1. ~~¿Cómo se presenta H1 en el paper?~~ **Decidido 18-oct:** veredicto registrado + especificación dentro/fuera del diseño (sección 2b).
 2. ¿Hace falta una forma independiente de saber cuándo empieza la degradación en XJTU (literatura sobre el *first predicting time* de cada rodamiento, por ejemplo) antes de decir nada sobre 2_3?
 3. ¿Se discute la puesta en marcha larga en ensayos acelerados como limitación del menú 49/99/149?
 4. ¿Queremos entender por qué el OEM ve energía y no forma, o se queda como está (D7)?
