@@ -35,6 +35,15 @@
 
 **Sin más experimentos (decidido 18-oct).** Una prueba registrada de S3 basada en tamaño del efecto (por ejemplo, franja válida solo si su RMS mediano queda a ±10% del de la puesta en marcha) y cualquier otro arreglo o mejora del protocolo quedan como **trabajo futuro**, no se ejecutan en este paper.
 
+## 2c. Puesta en marcha corta: el OEM frente al RMS (decidido 18-oct)
+
+**Entra en el paper como resultado**, desde la tabla registrada (`tablas_xjtu.md`, menú de puesta en marcha), sin el desglose posterior:
+
+- Canal H, n = 49: **OEM 4,5–4,6% frente a RMS 8,6%** de falsas alarmas en la franja: 4 puntos porcentuales menos, **la mitad**.
+- Se da la tabla completa, no solo esa casilla: canal H con n = 99 y 149 (OEM 4,6–4,8% frente a RMS 6,0% y 5,1%), canal V con n = 49 (4,5–6,0% frente a 5,2%) y la unión H+V con n = 99, que es el análisis principal (5,3–6,1% frente a 5,5%).
+- Frase propuesta: *con puesta en marcha corta, el modelo de fábrica tiene la mitad de falsas alarmas que el RMS en el canal horizontal; la diferencia se cierra al alargar la puesta en marcha, y en el vertical no la hay.* La segunda parte es la predicción del método: el OEM trae de fábrica la varianza normal y el RMS tiene que verla en la puesta en marcha.
+- Se escribe en puntos porcentuales y en proporción ("4 puntos", "la mitad"), no "un 4% menos".
+
 ## 3. Observaciones (tablas en `tablas_xjtu_discusion.md`)
 
 1. **La FAR de H1 se concentra en un rodamiento.** En 2_3 la franja está al 100% por encima del radio con todos los modelos, también con el RMS. En los demás: 2_1 0%, 3_1 0,1%, 3_2 ~2%, 3_4 3–7% (sección 1).
