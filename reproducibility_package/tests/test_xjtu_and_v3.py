@@ -130,3 +130,10 @@ def test_bench_v3_discussion_table_is_regenerated_exactly():
     if not (bd.RES / "window_scores.npz").exists():
         pytest.skip("bench v3 results not committed yet")
     assert bd.to_markdown(bd.load()) == bd.OUT.read_text()
+
+
+def test_cwru_ablation_discussion_table_is_regenerated_exactly():
+    import cwru_ablation_discussion as cd
+    if not cd.RES.exists():
+        pytest.skip("5-seed ablation not committed yet")
+    assert cd.to_markdown(json.loads(cd.RES.read_text())) == cd.OUT.read_text()
