@@ -67,6 +67,8 @@ class Macros:
             f", seed {meta.get('seed','?')}"
             + ("  [QUICK RUN, not quotable]" if meta.get("quick") else ""),
             "% regenerate: python3 run_all.py && python3 make_macros.py",
+            "% also read: results/field_residuals_ims.npz (nasa*), "
+            "results/stability.json (stab*)",
             "%",
             "% Each macro below is a measured quantity quoted inline in the",
             "% prose. An undefined macro is a compile error by design.",
@@ -82,6 +84,52 @@ def _row(rows, n):
         if r["n"] == n:
             return r
     raise KeyError(f"no row at n={n}")
+
+
+def _sci(x, sig=3):
+    """LaTeX scientific notation for use inside math: 2.62\\times10^{-3}.
+    With one significant figure a unit mantissa is dropped: 10^{-3}."""
+    mant, exp = f"{x:.{sig - 1}e}".split("e")
+    exp = int(exp)
+    if sig == 1 and mant == "1":
+        return f"10^{{{exp}}}"
+    return f"{mant}\\times10^{{{exp}}}"
+
+
+def _pct(x):
+    """A percentage to one decimal, without a trailing .0 (100, 91.5)."""
+    t = f"{x:.1f}"
+    return t[:-2] if t.endswith(".0") else t
+
+
+_WORDS = ("zero", "one", "two", "three", "four", "five", "six", "seven",
+          "eight", "nine", "ten", "eleven", "twelve")
+
+
+def _word(k):
+    return _WORDS[k] if 0 <= k < len(_WORDS) else str(k)
+
+
+def training(d, m):
+    """
+    The A2 training run, quoted in the description of the operator. The
+    sentence says training "terminated" by early stopping; a run that used its
+    whole budget (as the TensorFlow 2.21 regeneration did) would make that
+    sentence false while leaving every number plausible. So the epoch count
+    and the best epoch are emitted ONLY for an early-stopped run, and any
+    other run fails the build at that sentence, which then has to be
+    rewritten rather than silently refilled.
+    """
+    t = d["training"]
+    m.add("trainParams", f"{t['parameters']:,}".replace(",", "{,}"))
+    m.add("trainEpochsBudget", t["epochs_budget"], "{:d}")
+    if t.get("stop_reason") == "early_stopping":
+        m.add("trainEpochsRun", t["epochs_run"], "{:d}")
+        m.add("trainBestEpoch", t["best_epoch"], "{:d}")
+    m.add("trainBestLoss", _sci(t["best_loss"], 3))
+    m.add("trainLrInitial", _sci(t["initial_lr"], 1))
+    m.add("trainLrFinal", _sci(t["final_lr"], 1))
+    m.add("trainLrReductions", _word(t["lr_reductions"]))
 
 
 def saturation(d, m):
@@ -153,6 +201,23 @@ def end_to_end(d, m):
         m.add("etoeDetectHi", max(det), "{:.1f}")
     m.add("etoeFAR", e["healthy_far"], "{:.2f}")
 
+    # Median residuals and per-regime detection, quoted in one sentence.
+    m.add("etoeMedNom", _sci(e["healthy_median_residual"], 3))
+    tags = {"outer_race": "Outer", "inner_race": "Inner", "ball_fault": "Ball"}
+    for r in e.get("regimes", []):
+        tag = tags[r["regime"]]
+        m.add(f"etoeMed{tag}", _sci(r["median_residual"], 3))
+        m.add(f"etoeDetect{tag}", _pct(r["detection"]))
+
+    # Simulated assets sharing one operator: radii and their spread.
+    names = ("One", "Two", "Three", "Four")
+    radii = e["asset_radii"]
+    if len(radii) != len(names):
+        raise KeyError(f"expected {len(names)} asset radii, got {len(radii)}")
+    for tag, r in zip(names, radii):
+        m.add(f"etoeAssetRadius{tag}", _sci(r, 3))
+    m.add("etoeAssetSpread", e["spread"], "{:.2f}")
+
 
 
 def nasa(d, m):
@@ -189,33 +254,111 @@ def nasa(d, m):
     m.add("nasaTauSpread", max(taus) / min(taus), "{:.1f}")
     m.add("nasaExceedanceMean", float(np.mean(exc)), "{:.1f}")
 
-SECTIONS = [("saturation", saturation), ("end_to_end", end_to_end),
-            ("nasa", nasa)]
+def stability(d, m):
+    """
+    The seed study of the field pipeline. The prose around
+    Table~\\ref{tab:stability} quotes ranges over its columns, and one of them
+    (how many bearing--seed pairs commission at the floor) had drifted from
+    the table it summarises. Every quantity below is computed exactly as
+    `make_tables.table_stability` computes the column it summarises.
+    """
+    import numpy as np
+    from make_tables import ESTIMATOR_ONLY_SPREAD
+
+    path = Path(__file__).parent / "results" / "stability.json"
+    if not path.exists():
+        raise KeyError("stability.json absent")
+    s = json.loads(path.read_text())
+    rows = s["rows"]
+    est = s.get("estimator_only", ESTIMATOR_ONLY_SPREAD)
+    bearings = rows[0]["bearings"]
+
+    def col(i, key):
+        return np.array([r["field"][i][key] for r in rows], dtype=float)
+
+    def rel(x):
+        return 100 * x.std(ddof=1) / x.mean()
+
+    spread = [rel(col(i, "tau")) for i in range(len(bearings))]
+    norm = [rel(col(i, "tau_normalised")) for i in range(len(bearings))]
+    est_pct = [100 * e for e in est]
+    share = [e / sp * 100 for e, sp in zip(est_pct, spread)]
+    factor = [sp / nr for sp, nr in zip(spread, norm)]
+
+    m.add("stabSpreadLo", min(spread), "{:.1f}")
+    m.add("stabSpreadHi", max(spread), "{:.1f}")
+    m.add("stabEstLo", min(est_pct), "{:.1f}")
+    m.add("stabEstHi", max(est_pct), "{:.1f}")
+    m.add("stabEstShareLo", min(share), "{:.0f}")
+    m.add("stabEstShareHi", max(share), "{:.0f}")
+    m.add("stabNormSpreadLo", min(norm), "{:.1f}")
+    m.add("stabNormSpreadHi", max(norm), "{:.1f}")
+    m.add("stabNormFactorLo", min(factor), "{:.1f}")
+    m.add("stabNormFactorHi", max(factor), "{:.1f}")
+
+    # Commissioning at the floor: how many of the bearing--seed pairs.
+    ns = [f["n"] for r in rows for f in r["field"]]
+    floor = min(ns)
+    m.add("stabFloorN", floor, "{:d}")
+    m.add("stabFloorCount", sum(n == floor for n in ns), "{:d}")
+    m.add("stabPairs", len(ns), "{:d}")
+
+    # Bearing 1: lead time across seeds, and the radius spread behind it.
+    i1 = bearings.index(1)
+    lead = col(i1, "lead_hours")
+    m.add("stabBOneLeadLo", lead.min(), "{:.1f}")
+    m.add("stabBOneLeadHi", lead.max(), "{:.1f}")
+    m.add("stabBOneLeadSpread", rel(lead), "{:.2f}")
+    m.add("stabBOneTauSpread", spread[i1], "{:.1f}")
+
+    # The sparsity check. "All units active under every seed" is a claim, so
+    # the count is emitted only when it holds.
+    units = len(rows[0]["latent_sd"])
+    if all(r["active@0.01"] == units for r in rows):
+        m.add("stabLatentActive", units, "{:d}")
+    pr = np.array([r["participation_ratio"] for r in rows])
+    tm = np.array([r["tau_mc"] for r in rows])
+    m.add("stabPRCorrTauMC", float(np.corrcoef(pr, tm)[0, 1]), "{:+.2f}")
 
 
-def main():
-    if not DATA_PATH.exists():
-        raise SystemExit(f"{DATA_PATH} not found; run `python3 run_all.py` first")
-    d = json.loads(DATA_PATH.read_text())
+SECTIONS = [("training", training), ("saturation", saturation),
+            ("end_to_end", end_to_end), ("nasa", nasa),
+            ("stability", stability)]
+
+# Sections that read their own artefact rather than data.json.
+OWN_ARTEFACT = ("nasa", "stability")
+
+
+def build(data_path=DATA_PATH):
+    """
+    Compute every macro and return (text, macros, missing, data). Separate
+    from `main` so a test can regenerate `values.tex` in memory and compare it
+    byte for byte with the committed file.
+    """
+    d = json.loads(Path(data_path).read_text())
     meta = d.get("_meta", {})
-    if meta.get("quick"):
-        print("WARNING: data.json came from a --quick run; the macros it "
-              "produces are not quotable.")
-
     m, missing = Macros(), []
     for key, fn in SECTIONS:
-        # The NASA section reads its own Layer B artefact rather than
-        # data.json, so it decides for itself whether it can run.
-        if key != "nasa" and key not in d:
+        if key not in OWN_ARTEFACT and key not in d:
             missing.append(key)
             continue
         try:
             fn(d, m)
         except (KeyError, IndexError) as exc:
             missing.append(f"{key} ({exc})")
+    return m.render(meta), m, missing, d
+
+
+def main():
+    if not DATA_PATH.exists():
+        raise SystemExit(f"{DATA_PATH} not found; run `python3 run_all.py` first")
+    text, m, missing, d = build()
+    if d.get("_meta", {}).get("quick"):
+        print("WARNING: data.json came from a --quick run; the macros it "
+              "produces are not quotable.")
 
     OUT.parent.mkdir(exist_ok=True)
-    OUT.write_text(m.render(meta))
+    OUT.write_text(text)
     print(f"  wrote {OUT.relative_to(HERE.parent)}  "
           f"({len(m._m)} macro(s))")
     if missing:

@@ -2115,13 +2115,13 @@ than as a source of spurious alarms.
 
 \paragraph{The representation operator and its training.}
 The operator is the convolutional autoencoder of the technical note,
-reproduced without modification at \(847{,}601\) trainable parameters and
+reproduced without modification at \(\trainParams\) trainable parameters and
 fitted on \(4000\) simulated nominal windows. The epoch count is a budget
 rather than a target: training is stopped by validation loss, the learning
 rate is annealed on plateaus, and the best weights are restored. On the run
-reported here it terminated after \(372\) of a permitted \(500\) epochs, with
-the best validation loss of \(2.62\times10^{-3}\) attained at epoch \(347\)
-and the learning rate annealed from \(10^{-3}\) to \(2\times10^{-6}\) in nine
+reported here it terminated after \(\trainEpochsRun\) of a permitted \(\trainEpochsBudget\) epochs, with
+the best validation loss of \(\trainBestLoss\) attained at epoch \(\trainBestEpoch\)
+and the learning rate annealed from \(\trainLrInitial\) to \(\trainLrFinal\) in \trainLrReductions{}
 reductions. Validation uses a held-out split of the \emph{nominal} data only,
 so early stopping selects for reconstructing nominal behaviour and cannot
 consult a fault.
@@ -2132,17 +2132,17 @@ Deterministic kernels are enabled throughout.
 \paragraph{End-to-end membership.}
 With the radius certified from \(120\) nominal windows, the held-out
 false-alarm rate on \(1500\) further nominal windows is \(\etoeFAR\%\)
-against a nominal \(2\%\). The median residual rises from \(2.32\times10^{-3}\) on
-nominal windows to \(6.88\times10^{-3}\), \(1.08\times10^{-2}\) and
-\(1.73\times10^{-2}\) on ball, outer-race and inner-race faults, and the
-single membership rule \eqref{eq:decision_rule} detects them at \(91.5\%\),
-\(100\%\) and \(100\%\) respectively. No fault observation entered the
+against a nominal \(2\%\). The median residual rises from \(\etoeMedNom\) on
+nominal windows to \(\etoeMedBall\), \(\etoeMedOuter\) and
+\(\etoeMedInner\) on ball, outer-race and inner-race faults, and the
+single membership rule \eqref{eq:decision_rule} detects them at \(\etoeDetectBall\%\),
+\(\etoeDetectOuter\%\) and \(\etoeDetectInner\%\) respectively. No fault observation entered the
 fitting, the calibration or the stopping decision.
 
 Four simulated assets differing only by an installation signature, sharing one
 representation operator and one target coverage, identify radii of
-\(1.00\times10^{-2}\), \(8.26\times10^{-3}\), \(2.45\times10^{-2}\) and
-\(1.43\times10^{-2}\), a spread of \(2.97\) between the largest and the
+\(\etoeAssetRadiusOne\), \(\etoeAssetRadiusTwo\), \(\etoeAssetRadiusThree\) and
+\(\etoeAssetRadiusFour\), a spread of \(\etoeAssetSpread\) between the largest and the
 smallest. This is the behaviour Remark~\ref{rem:scale_not_invariant}
 predicts: the representation is shared and its residual scale is not.
 
@@ -2469,7 +2469,7 @@ optimism, because the online arm is being asked to match it.
 Refitting the four asset-specific operators shows that they do not merely use
 all the data, they memorise it: the validation loss exceeds the training loss
 by factors of \(2.4\), \(3.9\), \(3.2\) and \(1.5\) across the four speeds,
-for \(847{,}601\) parameters fitted to roughly \(320\) training windows. A
+for \(\trainParams\) parameters fitted to roughly \(320\) training windows. A
 threshold calibrated on those same windows therefore sits at the \(98\)th
 percentile of residuals the operator has partly reconstructed from memory,
 and the resulting \(2.23\%\) false-alarm rate is optimistic by construction.
@@ -2638,32 +2638,32 @@ following.
 
 Three things follow.
 
-First, the radius does move with the seed, by \(4.4\) to \(6.6\%\). Reporting
+First, the radius does move with the seed, by \(\stabSpreadLo\) to \(\stabSpreadHi\%\). Reporting
 it to six significant figures, as Table~\ref{tab:nasa} does for a single run,
 overstates what is determined.
 
 Second, almost none of that comes from the estimator. Holding the operator
-fixed and resampling the commissioning window gives \(0.5\) to \(1.2\%\), so
-the order-statistic estimator contributes between an eighth and a third of the
-observed spread. This is worth stating positively: at the commissioning
+fixed and resampling the commissioning window gives \(\stabEstLo\) to \(\stabEstHi\%\), so
+the order-statistic estimator contributes between \(\stabEstShareLo\) and \(\stabEstShareHi\%\) of the
+observed spread, bearing by bearing. This is worth stating positively: at the commissioning
 lengths actually selected, near \(n=49\), the estimator is stable, which is
 the empirical counterpart of clearing the degenerate range of
 Corollary~\ref{cor:degenerate_range}. Nor is the spread an artefact of the
-sparsity penalty on the latent layer: all \(16\) latent units remain active
+sparsity penalty on the latent layer: all \(\stabLatentActive\) latent units remain active
 under every seed, and the concentration of the code correlates with the radius
-at \(+0.13\).
+at \(\stabPRCorrTauMC\).
 
 Third, and this is the substantive result, the variation is one of SCALE
 rather than of geometry. Normalising each radius by the median early-life
 residual of the same bearing under the same seed reduces the spread to
-\(0.7\)--\(1.2\%\), a factor of four to nine. A seed fixes an overall gauge
+\(\stabNormSpreadLo\)--\(\stabNormSpreadHi\%\), by a factor of \(\stabNormFactorLo\) to \(\stabNormFactorHi\) bearing by bearing. A seed fixes an overall gauge
 for the operator: nominal and degraded residuals move together, the radius
 moves with them, and the membership decision does not move at all. The
-consequence is visible in the invariants. The commissioning length is \(49\)
-in \(17\) of the \(20\) bearing--seed combinations, and on bearing~1 the lead
-time is \(74.2\) to \(74.3\) hours across all five seeds --- a spread of
-\(0.12\%\) on a seventy-four-hour forecast, produced by operators whose radii
-differ by \(5.7\%\).
+consequence is visible in the invariants. The commissioning length is \(\stabFloorN\)
+in \(\stabFloorCount\) of the \(\stabPairs\) bearing--seed combinations, and on bearing~1 the lead
+time is \(\stabBOneLeadLo\) to \(\stabBOneLeadHi\) hours across all five seeds --- a spread of
+\(\stabBOneLeadSpread\%\) on a seventy-four-hour forecast, produced by operators whose radii
+differ by \(\stabBOneTauSpread\%\).
 
 This is what the quotient formulation predicts and had not previously been
 shown: the diagnostic content is in the geometry of the nominal region
@@ -2778,9 +2778,9 @@ The claim that a representation transfers while its residual scale does not
 now rests on three independent observations of increasing force.
 
 Simulated assets differing only by an installation signature identify radii
-spanning a factor of \(2.49\) under one operator. Physically distinct NASA IMS
+spanning a factor of \(\etoeAssetSpread\) under one operator. Physically distinct NASA IMS
 bearings, independently commissioned under one representation and one
-convergence criterion, identify radii spanning a factor of \(2.8\). The
+convergence criterion, identify radii spanning a factor of \(\nasaTauSpread\). The
 sharpest case, however, is the CWRU reference of
 Table~\ref{tab:cwru_oracle}: four detectors of identical architecture, trained
 on the data of their own operating condition, produce decision thresholds from
