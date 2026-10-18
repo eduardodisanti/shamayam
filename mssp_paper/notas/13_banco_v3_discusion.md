@@ -40,6 +40,6 @@
 
 ## 5. Preguntas abiertas para decidir juntos
 
-1. ¿Cómo entran v1, v2 y v3 en el paper: un párrafo y una tabla como "límite medido" del modelo de fábrica aprendido en un banco, o solo v1 con v2 y v3 en un apéndice?
+1. ~~¿Cómo entran v1, v2 y v3 en el paper?~~ **Decidido 18-oct (D12):** resultados en el cuerpo con una tabla resumen; tablas completas de v2 y v3 en un apéndice.
 2. ¿Se cita la mejora de las referencias clásicas con ventanas largas (observación 2), o es un detalle que no aporta a la tesis?
 3. ¿Se discute el resultado del control de ruido, y en qué términos?
