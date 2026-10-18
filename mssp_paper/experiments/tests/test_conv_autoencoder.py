@@ -72,16 +72,28 @@ def test_a_different_seed_gives_different_weights():
 
 
 @pytest.mark.slow
-def test_training_is_reproducible_under_the_seed():
+def test_training_is_reproducible_under_the_seed(monkeypatch):
     """
     Two independent short trainings from the same seed must agree exactly.
     This is what `enable_op_determinism` buys, and it holds within a single
-    TensorFlow build rather than across builds.
+    TensorFlow build on CPU rather than across builds or on a pluggable GPU
+    device such as Metal.
+
+    Two epochs cannot produce an operator that has learned anything, and the
+    collapse guard in `fit` rightly refuses such an operator (it leaves about
+    two thirds of the variance unreconstructed after two epochs). That guard
+    answers a different question, so it is disabled here: this test is about
+    whether the arithmetic repeats, not about whether the model is good. The
+    loss histories are compared as well as the residuals, so a difference
+    anywhere in training shows up even if it washes out in the output.
     """
+    import mssp_repro.conv_autoencoder as cae
+    monkeypatch.setattr(cae, "assert_operator_learned", lambda *a, **k: None)
     X = _windows(200, 0)
-    r1 = ConvAEResidualOperator(seed=42, epochs=2).fit(X).residual(X[:32])
-    r2 = ConvAEResidualOperator(seed=42, epochs=2).fit(X).residual(X[:32])
-    assert np.array_equal(r1, r2)
+    a = ConvAEResidualOperator(seed=42, epochs=2).fit(X)
+    b = ConvAEResidualOperator(seed=42, epochs=2).fit(X)
+    assert a.history_ == b.history_
+    assert np.array_equal(a.residual(X[:32]), b.residual(X[:32]))
 
 
 # ---------------------------------------------------------------------
