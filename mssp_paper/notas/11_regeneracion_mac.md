@@ -24,6 +24,38 @@
 | A2: FAR sana certificada | 2,2% | 3,4% | Mismo orden; nominal 2% |
 | Tabla 10 del manuscrito (radios y antelaciones exactos) | — | no idénticos | Los cuatro tests de la Tabla 10 fallan por eso; el test de 1 época falla con TF 2.21 en cualquier plataforma |
 
+## Corrección del orden de la regeneración (18-oct)
+
+El lanzador ejecutó `make_tables.py`, `make_figures.py` y `make_macros.py` justo después de `run_all.py`, **antes** de regenerar `stability.json` y la caché de IMS. Las tablas `stability.tex` y `nasa.tex` y las macros de IMS de la primera pasada salían, por tanto, de los resultados publicados. Se han vuelto a generar desde los resultados regenerados (sin entrenar nada) y sustituyen a las anteriores en `results_regen/macos27_tf221/tables/`. Las figuras no se han vuelto a generar.
+
+## Qué cambia en el texto del manuscrito (`mssp_draft.tex`, numeración de líneas al 18-oct)
+
+**Cifras escritas a mano que vienen de un único entrenamiento y no se reproducen** (no son macros, así que no se actualizan solas; el README dice que todo número del texto es generado, y estas líneas no lo cumplen):
+
+| Líneas | Qué dice | Publicado | Regenerado |
+|---|---|---|---|
+| 2122–2125 | épocas, mejor época, reducciones del *learning rate* del operador A2 | 372/500, época 347, 9 reducciones | 500/500 (presupuesto agotado), época 500, 7 reducciones |
+| 2136–2140 | medianas del residuo: sano / bola / exterior / interior | 2,32·10⁻³ / 6,88·10⁻³ / 1,08·10⁻² / 1,73·10⁻² | 2,25·10⁻³ / 6,69·10⁻³ / 1,04·10⁻² / 1,66·10⁻² |
+| 2139 | detección de la bola (escrito a mano, aunque existe la macro `\etoeDetectLo`) | 91,5% | 94,5% |
+| 2144–2146 | radios de los cuatro activos simulados y su dispersión | 8,26·10⁻³ a 2,45·10⁻²; 2,97 | 7,42·10⁻³ a 2,11·10⁻²; 2,84 |
+
+**Cifras del estudio de semillas** (párrafos tras `\input{tables/stability}`):
+
+| Líneas | Qué dice | Publicado | Regenerado |
+|---|---|---|---|
+| 2640 | el radio se mueve con la semilla | 4,4–6,6% | 4,6–10,8% |
+| 2645 | contribución del estimador | 0,5–1,2% | 0,5–1,2% (se reproduce) |
+| 2659 | dispersión normalizada por la mediana temprana | 0,7–1,2% | 0,3–0,6% |
+| 2663 | n = 49 en *x* de 20 combinaciones | el texto dice 17; **los resultados publicados dan 16** | 18 |
+| 2664–2665 | antelación del bearing 1 sobre semillas | 74,2–74,3 h | 74,2–74,3 h (se reproduce) |
+| 2666 | diferencia de radios entre operadores | 5,7% | 7,4% |
+
+La línea 2663 tiene además una discrepancia **previa**: con los resultados publicados (`results/stability.json`), n = 49 aparece en 16 de las 20 combinaciones, no en 17.
+
+**Tabla `nasa` (operador publicado, parada adaptativa):** el bearing 2 pasa de n = 54 y 31,33 h a n = 49 y 45,50 h; la antelación media de 43,0 a 46,6 h (macro `\nasaLeadMean`). El *highlight* de la línea 135 ("14–74 h") sigue valiendo (regenerado 14,0–73,8 h).
+
+**Notas (no van al paper tal cual, pero de ellas sale el texto):** `03_resultados_ims.md` afirma 0 falsas alarmas en los sanos tras la puesta en marcha del bearing 1 (0/151, 0/101, 0/51) y que el bearing 4 tiene 2 falsas alarmas con r₍ₖ₎; con el operador reentrenado son 4/151, 1/101, 2/51 en el bearing 1 y 6/151, 6/101, 3/51 en el bearing 4.
+
 ## Consecuencias para la escritura
 
 - Las cifras que dependen del entrenamiento concreto del operador (FAR exactas, salidas de los bearings 2–4 de IMS) se citan como rango sobre semillas o con la versión que las produjo, no como valores únicos.
