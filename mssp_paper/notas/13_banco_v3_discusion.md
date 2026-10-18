@@ -42,4 +42,4 @@
 
 1. ~~¿Cómo entran v1, v2 y v3 en el paper?~~ **Decidido 18-oct (D12):** resultados en el cuerpo con una tabla resumen; tablas completas de v2 y v3 en un apéndice.
 2. ¿Se cita la mejora de las referencias clásicas con ventanas largas (observación 2), o es un detalle que no aporta a la tesis?
-3. ¿Se discute el resultado del control de ruido, y en qué términos?
+3. ~~¿Se discute el resultado del control de ruido?~~ **Decidido 18-oct (D13):** solo el hecho y qué calcula (observación 5), en una frase del apéndice; sin interpretación.
