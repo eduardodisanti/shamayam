@@ -123,3 +123,10 @@ def test_xjtu_discussion_tables_are_regenerated_exactly():
     if not (xd.RES / "report.json").exists():
         pytest.skip("XJTU results not committed yet")
     assert xd.to_markdown(*xd.load()) == xd.OUT.read_text()
+
+
+def test_bench_v3_discussion_table_is_regenerated_exactly():
+    import bench_v3_discussion as bd
+    if not (bd.RES / "window_scores.npz").exists():
+        pytest.skip("bench v3 results not committed yet")
+    assert bd.to_markdown(bd.load()) == bd.OUT.read_text()
