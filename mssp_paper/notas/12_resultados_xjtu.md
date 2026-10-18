@@ -44,6 +44,13 @@
 - Frase propuesta: *con puesta en marcha corta, el modelo de fábrica tiene la mitad de falsas alarmas que el RMS en el canal horizontal; la diferencia se cierra al alargar la puesta en marcha, y en el vertical no la hay.* La segunda parte es la predicción del método: el OEM trae de fábrica la varianza normal y el RMS tiene que verla en la puesta en marcha.
 - Se escribe en puntos porcentuales y en proporción ("4 puntos", "la mitad"), no "un 4% menos".
 
+## 2d. H2: cómo se informa (decidido 18-oct)
+
+- **Tal cual:** con n = 49, los modelos por máquina (crudo y cociente) tienen ~30% de falsas alarmas en la franja y el OEM 4,6%; la lectura de IMS (solo el cociente hace viable una puesta en marcha corta con un modelo aprendido) **no se replica**. Se dice de dónde sale: 2_3 está igual para todos (caso de S3) y lo que separa a los modelos por máquina es 3_2 (64–77% frente a ~2% del OEM; 0% en los otros tres); con n = 99 baja en 3_2 al 17–27%.
+- **Lectura para el paper:** en XJTU, con poca puesta en marcha, el único modelo aprendido que opera es el de fábrica.
+- **Limitación conocida:** un modelo aprendido solo con la puesta en marcha corta del propio activo puede ser sensible a cambios que el cociente no elimina; no se ha caracterizado qué cambia en 3_2. La limitación es del modelo por máquina, no del OEM (que con el cociente simple opera en 3_2).
+- **Trabajo futuro:** las hipótesis (d) y (e) de la sección 4; no se comprueban en este paper (D10).
+
 ## 3. Observaciones (tablas en `tablas_xjtu_discusion.md`)
 
 1. **La FAR de H1 se concentra en un rodamiento.** En 2_3 la franja está al 100% por encima del radio con todos los modelos, también con el RMS. En los demás: 2_1 0%, 3_1 0,1%, 3_2 ~2%, 3_4 3–7% (sección 1).
