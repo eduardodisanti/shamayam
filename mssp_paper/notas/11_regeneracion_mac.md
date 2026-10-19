@@ -61,3 +61,13 @@ La línea 2663 tiene además una discrepancia **previa**: con los resultados pub
 - Las cifras que dependen del entrenamiento concreto del operador (FAR exactas, salidas de los bearings 2–4 de IMS) se citan como rango sobre semillas o con la versión que las produjo, no como valores únicos.
 - La salida del bearing 1 en 539 y los veredictos de los protocolos sí se pueden citar como robustos al reentrenamiento y a la plataforma.
 - Si se quiere congelar la Tabla 10, hay que guardar los pesos del operador publicado junto con la caché de residuos; la caché ya fija los residuos, pero no el operador.
+
+## Referencia en CPU (19-oct, D15)
+
+Desde el 19-oct la referencia del paper es la ejecución en CPU, no la publicada. La publicada entrenó A2 y el operador de IMS en GPU Metal (TF 2.16–2.19), donde `enable_op_determinism` no garantiza nada; en el Mac solo la CPU es determinista.
+
+- **Ejecución:** `launchers/ref_cpu.command` en `999593e`. TensorFlow sin GPU visible; test de determinismo en CPU superado antes de entrenar (dos entrenamientos con la misma semilla dan historial y residuos idénticos). A2 con presupuesto de 5000 épocas: **converge por parada temprana en 585** (mejor época 545, 12 reducciones del learning rate). La capa B es la de la regeneración en CPU de esta nota.
+- **A1 idéntica byte a byte** a la publicada. Las 8 tablas del paper y las 9 tablas de notas generadas aquí son idénticas a las generadas en el Mac.
+- **Por qué cambian las cifras:** dispositivo, versión de TF/Keras y de numpy/BLAS, y el número de épocas producen otro operador entrenado, como otra semilla. Lo que no depende del entrenamiento concreto no se mueve (A1, veredictos, salida del bearing 1 en 539). Lo que depende de un solo operador cambia lo que cambia entre semillas (en CPU, la ejecución principal de IMS cae dentro del rango de sus propias semillas). Lo que se calcula sobre 5 semillas es ruidoso por sí mismo (una desviación típica de 5 valores tiene un intervalo del 95% de 0,6 a 2,9 veces el valor). Los cocientes de residuos del PCA son cocientes de ceros numéricos y cambian con BLAS.
+- **Lo publicado** se guarda en `reproducibility_package/results_published_metal/` (nada lee de ahí). La tabla de diferencias va al apéndice y al repo (decidido 18-oct).
+- **Texto:** cifras de A2 (deriva, adecuación, FAR), del estudio de semillas y sus repeticiones (highlights, introducción, resumen) pasan a macros. Las de §9.3 CWRU y la puesta en marcha permutada de §9.4 son del pipeline anterior (ningún script del paquete las produce): marcadas en el `.tex` como `PRE-D15 NUMBERS`, se sustituyen al reescribir esas secciones.

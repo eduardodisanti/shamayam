@@ -41,6 +41,11 @@ HERE = Path(__file__).parent
 DATA_PATH = HERE / "results" / "data.json"
 OUT = HERE.parent / "tables" / "values.tex"
 
+# Design constants of run_all.py that the derived macros below need. They are
+# repeated here rather than imported because run_all imports TensorFlow.
+E2E_N_CAL, E2E_N_EVAL, E2E_ALPHA = 120, 1500, 0.02   # experiment_end_to_end
+DRIFT_N_COMMISSION = 120                            # experiment_drift
+
 
 class Macros:
     """
@@ -94,6 +99,13 @@ def _sci(x, sig=3):
     if sig == 1 and mant == "1":
         return f"10^{{{exp}}}"
     return f"{mant}\\times10^{{{exp}}}"
+
+
+def _num(x, sig=3):
+    """Plain decimal between 0.1 and 1000 (38.6, 0.461), else _sci."""
+    if 0.1 <= abs(x) < 1000:
+        return f"{x:.{sig}g}"
+    return _sci(x, sig)
 
 
 def _pct(x):
@@ -218,6 +230,20 @@ def end_to_end(d, m):
         m.add(f"etoeAssetRadius{tag}", _sci(r, 3))
     m.add("etoeAssetSpread", e["spread"], "{:.2f}")
 
+    # How unusual the observed held-out rate is under the guarantee itself.
+    # A single calibration attains a RANDOM coverage C ~ Beta(k, n+1-k); the
+    # held-out count of exceedances is then beta-binomial. The constants are
+    # those of run_all.experiment_end_to_end (120 commissioning windows, 1500
+    # held-out windows, alpha 0.02).
+    import math
+    from scipy.stats import betabinom
+    n, n_eval, alpha = E2E_N_CAL, E2E_N_EVAL, E2E_ALPHA
+    k = math.ceil((1 - alpha) * (n + 1))
+    count = round(e["healthy_far"] * n_eval / 100)
+    m.add("etoeFARMean", 100 * (n + 1 - k) / (n + 1), "{:.2f}")
+    m.add("etoeFARPExceed",
+          100 * betabinom(n_eval, n + 1 - k, k).sf(count - 1), "{:.0f}")
+
 
 
 def nasa(d, m):
@@ -253,6 +279,64 @@ def nasa(d, m):
     m.add("nasaTauHi", max(taus), "{:.2e}")
     m.add("nasaTauSpread", max(taus) / min(taus), "{:.1f}")
     m.add("nasaExceedanceMean", float(np.mean(exc)), "{:.1f}")
+
+def drift(d, m):
+    """
+    The attractor-drift experiment on the simulator. Departure index, delay,
+    severity at detection and post-departure exceedance per fault family, and
+    the false-alarm rate on the nominal records between commissioning and
+    onset, which the prose discusses at length and which therefore must not be
+    a copied number.
+    """
+    regs = {r["regime"]: r for r in d["drift"]["regimes"]}
+    tags = {"inner_race": "Inner", "outer_race": "Outer", "ball_fault": "Ball"}
+    onsets = {r["onset"] for r in regs.values()}
+    if len(onsets) != 1:
+        raise KeyError(f"onset differs across regimes: {onsets}")
+    onset = onsets.pop()
+    m.add("driftOnset", onset, "{:d}")
+    m.add("driftPreN", onset - DRIFT_N_COMMISSION, "{:d}")
+    m.add("driftPreStep", 100 / (onset - DRIFT_N_COMMISSION), "{:.1f}")
+    pre = {r["far_pre"] for r in regs.values()}
+    if len(pre) != 1:
+        raise KeyError(f"pre-onset FAR differs across regimes: {pre}")
+    m.add("driftFARPre", 100 * pre.pop(), "{:.1f}")
+    for key, tag in tags.items():
+        r = regs[key]
+        if r["detected"] is None:
+            continue
+        m.add(f"driftDetect{tag}", r["detected"], "{:d}")
+        m.add(f"driftDelay{tag}", r["delay"], "{:d}")
+        m.add(f"driftSev{tag}", r["severity_at_detection"], "{:.3f}")
+        m.add(f"driftExc{tag}", 100 * r["exceedance_post"], "{:.1f}")
+
+
+def adequacy(d, m):
+    """
+    The distance-proxy probe. Only quantities with a physical reading are
+    emitted: the distance each operator accepts, relative to the nominal
+    spacing, and the residual of the convolutional operator across the probe.
+    The residual of the linear operator is numerically zero everywhere
+    (1e-31 to 1e-27); ratios of it are rounding, not measurement, so the only
+    thing emitted about it is its order of magnitude.
+    """
+    import math
+    ops = d["adequacy"]["operators"]
+    pca = next(o for o in ops if o["operator"].startswith("PCA"))
+    conv = next(o for o in ops if o["operator"].startswith("Conv"))
+    m.add("adqPCAMaxDist", pca["max_accepted_distance"], "{:.0f}")
+    m.add("adqPCARatio", pca["ratio"], "{:.0f}")
+    top = max(r["residual"] for r in pca["rows"])
+    m.add("adqPCAResOrder", f"10^{{{math.floor(math.log10(top))}}}")
+    m.add("adqConvRatio", conv["ratio"], "{:.1f}")
+    m.add("adqRatioBetween", pca["ratio"] / conv["ratio"], "{:.0f}")
+    m.add("adqConvResLo", _num(conv["rows"][0]["residual"], 3))
+    m.add("adqConvResHi", _num(conv["rows"][-1]["residual"], 3))
+    m.add("adqConvGrowthOrders",
+          _word(math.floor(math.log10(conv["residual_growth"]))))
+    m.add("adqPCABallDR", pca["detection"]["ball_fault"], "{:.0f}")
+    m.add("adqConvBallDR", conv["detection"]["ball_fault"], "{:.0f}")
+
 
 def stability(d, m):
     """
@@ -319,10 +403,21 @@ def stability(d, m):
     pr = np.array([r["participation_ratio"] for r in rows])
     tm = np.array([r["tau_mc"] for r in rows])
     m.add("stabPRCorrTauMC", float(np.corrcoef(pr, tm)[0, 1]), "{:+.2f}")
+    # The magnitude a correlation over this many seeds must exceed to be
+    # distinguishable from zero at the 5% level (two-sided).
+    from scipy.stats import t as student_t
+    q = student_t.ppf(0.975, len(rows) - 2)
+    m.add("stabCorrCrit", q / np.sqrt(len(rows) - 2 + q * q), "{:.2f}")
+
+    # Range of the departure index across seeds, per bearing.
+    for i, tag in enumerate(("One", "Two", "Three", "Four")[:len(bearings)]):
+        dep = col(i, "departure")
+        m.add(f"stabDepRange{tag}", int(dep.max() - dep.min()), "{:d}")
 
 
 SECTIONS = [("training", training), ("saturation", saturation),
-            ("end_to_end", end_to_end), ("nasa", nasa),
+            ("end_to_end", end_to_end), ("drift", drift),
+            ("adequacy", adequacy), ("nasa", nasa),
             ("stability", stability)]
 
 # Sections that read their own artefact rather than data.json.

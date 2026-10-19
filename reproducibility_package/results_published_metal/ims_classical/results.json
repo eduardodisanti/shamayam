@@ -1,0 +1,710 @@
+{
+ "ns": [
+  49,
+  99,
+  149,
+  200
+ ],
+ "far_window": [
+  200,
+  500
+ ],
+ "envelope_orders": [
+  2.0,
+  20.0
+ ],
+ "bearings": {
+  "1": {
+   "n_active": 982,
+   "oem_pub": [
+    {
+     "n": 49,
+     "tau": 0.01420596515869393,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 99,
+     "tau": 0.014147433835793944,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 149,
+     "tau": 0.014144312973846407,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 200,
+     "tau": 0.014142588493140304,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    }
+   ],
+   "rms": [
+    {
+     "n": 49,
+     "tau": 0.08023091753158985,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 99,
+     "tau": 0.07986518690485471,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 149,
+     "tau": 0.07986468708340597,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 200,
+     "tau": 0.07975294328114468,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    }
+   ],
+   "kurtosis": [
+    {
+     "n": 49,
+     "tau": 1.1579526553794093,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 708,
+     "lead_hours": 45.666666666666664
+    },
+    {
+     "n": 99,
+     "tau": 0.656100854926803,
+     "far_k": 2,
+     "far_n": 300,
+     "departure": 654,
+     "lead_hours": 54.666666666666664
+    },
+    {
+     "n": 149,
+     "tau": 0.6543005391663157,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 654,
+     "lead_hours": 54.666666666666664
+    },
+    {
+     "n": 200,
+     "tau": 0.6543005391663157,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 654,
+     "lead_hours": 54.666666666666664
+    }
+   ],
+   "crest": [
+    {
+     "n": 49,
+     "tau": 7.7232163036250014,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "tau": 6.701863414092458,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 977,
+     "lead_hours": 0.8333333333333333
+    },
+    {
+     "n": 149,
+     "tau": 6.701863414092458,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 977,
+     "lead_hours": 0.8333333333333333
+    },
+    {
+     "n": 200,
+     "tau": 6.683970237530091,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 977,
+     "lead_hours": 0.8333333333333333
+    }
+   ],
+   "envelope": [
+    {
+     "n": 49,
+     "tau": 4.916725826453414,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 99,
+     "tau": 4.916725826453414,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 149,
+     "tau": 4.850649229126483,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    },
+    {
+     "n": 200,
+     "tau": 4.850649229126483,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 539,
+     "lead_hours": 73.83333333333333
+    }
+   ]
+  },
+  "2": {
+   "n_active": 982,
+   "oem_pub": [
+    {
+     "n": 49,
+     "tau": 0.01861505791106645,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 794,
+     "lead_hours": 31.333333333333332
+    },
+    {
+     "n": 99,
+     "tau": 0.018604709821588853,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 794,
+     "lead_hours": 31.333333333333332
+    },
+    {
+     "n": 149,
+     "tau": 0.018564164967221373,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 791,
+     "lead_hours": 31.833333333333332
+    },
+    {
+     "n": 200,
+     "tau": 0.018512694822514757,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 720,
+     "lead_hours": 43.666666666666664
+    }
+   ],
+   "rms": [
+    {
+     "n": 49,
+     "tau": 0.09785277420693554,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 782,
+     "lead_hours": 33.33333333333333
+    },
+    {
+     "n": 99,
+     "tau": 0.09785277420693554,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 782,
+     "lead_hours": 33.33333333333333
+    },
+    {
+     "n": 149,
+     "tau": 0.0972332340602941,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 710,
+     "lead_hours": 45.33333333333333
+    },
+    {
+     "n": 200,
+     "tau": 0.09716200429798487,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 710,
+     "lead_hours": 45.33333333333333
+    }
+   ],
+   "kurtosis": [
+    {
+     "n": 49,
+     "tau": 0.506800523087489,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "tau": 0.4514263787586881,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 149,
+     "tau": 0.41420969056014867,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 200,
+     "tau": 0.39208310868328233,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    }
+   ],
+   "crest": [
+    {
+     "n": 49,
+     "tau": 6.89466192599756,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "tau": 7.003500552667667,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 149,
+     "tau": 6.89466192599756,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 200,
+     "tau": 6.854903553625777,
+     "far_k": 2,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    }
+   ],
+   "envelope": [
+    {
+     "n": 49,
+     "tau": 9.340282661582975,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 899,
+     "lead_hours": 13.833333333333332
+    },
+    {
+     "n": 99,
+     "tau": 8.32277562258859,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 895,
+     "lead_hours": 14.5
+    },
+    {
+     "n": 149,
+     "tau": 8.32277562258859,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 895,
+     "lead_hours": 14.5
+    },
+    {
+     "n": 200,
+     "tau": 8.466735481036457,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 895,
+     "lead_hours": 14.5
+    }
+   ]
+  },
+  "3": {
+   "n_active": 982,
+   "oem_pub": [
+    {
+     "n": 49,
+     "tau": 0.021930395680315354,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 896,
+     "lead_hours": 14.333333333333332
+    },
+    {
+     "n": 99,
+     "tau": 0.021792026565355414,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 896,
+     "lead_hours": 14.333333333333332
+    },
+    {
+     "n": 149,
+     "tau": 0.021500109530547085,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 892,
+     "lead_hours": 15.0
+    },
+    {
+     "n": 200,
+     "tau": 0.021426221903632667,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 892,
+     "lead_hours": 15.0
+    }
+   ],
+   "rms": [
+    {
+     "n": 49,
+     "tau": 0.11066653411194949,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    },
+    {
+     "n": 99,
+     "tau": 0.1105864184403996,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    },
+    {
+     "n": 149,
+     "tau": 0.11051722719626421,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    },
+    {
+     "n": 200,
+     "tau": 0.10986104941894782,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 894,
+     "lead_hours": 14.666666666666666
+    }
+   ],
+   "kurtosis": [
+    {
+     "n": 49,
+     "tau": 3.2130746993092547,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "tau": 3.2130746993092547,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 149,
+     "tau": 3.2130746993092547,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 200,
+     "tau": 3.1232234702109753,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    }
+   ],
+   "crest": [
+    {
+     "n": 49,
+     "tau": 9.875880461019268,
+     "far_k": 13,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "tau": 10.716643246180098,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 149,
+     "tau": 10.457159736493761,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 200,
+     "tau": 10.457159736493761,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    }
+   ],
+   "envelope": [
+    {
+     "n": 49,
+     "tau": 8.088391801319908,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 882,
+     "lead_hours": 16.666666666666664
+    },
+    {
+     "n": 99,
+     "tau": 7.66355732098865,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 879,
+     "lead_hours": 17.166666666666664
+    },
+    {
+     "n": 149,
+     "tau": 7.539799444941581,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 879,
+     "lead_hours": 17.166666666666664
+    },
+    {
+     "n": 200,
+     "tau": 6.745462519732653,
+     "far_k": 4,
+     "far_n": 300,
+     "departure": 877,
+     "lead_hours": 17.5
+    }
+   ]
+  },
+  "4": {
+   "n_active": 982,
+   "oem_pub": [
+    {
+     "n": 49,
+     "tau": 0.009815037031384075,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 705,
+     "lead_hours": 46.166666666666664
+    },
+    {
+     "n": 99,
+     "tau": 0.009725396685740528,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 667,
+     "lead_hours": 52.5
+    },
+    {
+     "n": 149,
+     "tau": 0.009709152119124638,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 667,
+     "lead_hours": 52.5
+    },
+    {
+     "n": 200,
+     "tau": 0.009725396685740528,
+     "far_k": 3,
+     "far_n": 300,
+     "departure": 667,
+     "lead_hours": 52.5
+    }
+   ],
+   "rms": [
+    {
+     "n": 49,
+     "tau": 0.05684094159689459,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 619,
+     "lead_hours": 60.5
+    },
+    {
+     "n": 99,
+     "tau": 0.05684094159689459,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 619,
+     "lead_hours": 60.5
+    },
+    {
+     "n": 149,
+     "tau": 0.05684094159689459,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 619,
+     "lead_hours": 60.5
+    },
+    {
+     "n": 200,
+     "tau": 0.05684094159689459,
+     "far_k": 5,
+     "far_n": 300,
+     "departure": 619,
+     "lead_hours": 60.5
+    }
+   ],
+   "kurtosis": [
+    {
+     "n": 49,
+     "tau": 0.8061899920379609,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "tau": 0.33710734347670446,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 939,
+     "lead_hours": 7.166666666666666
+    },
+    {
+     "n": 149,
+     "tau": 0.29584285690412404,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 925,
+     "lead_hours": 9.5
+    },
+    {
+     "n": 200,
+     "tau": 0.29584285690412404,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": 925,
+     "lead_hours": 9.5
+    }
+   ],
+   "crest": [
+    {
+     "n": 49,
+     "tau": 9.241748355182063,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 99,
+     "tau": 7.259184338172843,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 149,
+     "tau": 6.795091197769684,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    },
+    {
+     "n": 200,
+     "tau": 6.651948920382977,
+     "far_k": 1,
+     "far_n": 300,
+     "departure": null,
+     "lead_hours": null
+    }
+   ],
+   "envelope": [
+    {
+     "n": 49,
+     "tau": 4.7083700414991085,
+     "far_k": 0,
+     "far_n": 300,
+     "departure": 707,
+     "lead_hours": 45.83333333333333
+    },
+    {
+     "n": 99,
+     "tau": 4.383861075669881,
+     "far_k": 7,
+     "far_n": 300,
+     "departure": 706,
+     "lead_hours": 46.0
+    },
+    {
+     "n": 149,
+     "tau": 4.283245528791819,
+     "far_k": 11,
+     "far_n": 300,
+     "departure": 706,
+     "lead_hours": 46.0
+    },
+    {
+     "n": 200,
+     "tau": 4.283245528791819,
+     "far_k": 11,
+     "far_n": 300,
+     "departure": 706,
+     "lead_hours": 46.0
+    }
+   ]
+  }
+ }
+}

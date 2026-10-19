@@ -49,101 +49,101 @@
    "variant": "bench_q",
    "seed": 42,
    "learned": true,
-   "unexplained_val": 0.5127296390867331,
+   "unexplained_val": 0.5144262109534341,
    "epochs_run": 16,
-   "best_val_loss": 0.51410311460495,
-   "best_train_loss": 0.4238130748271942,
-   "generalisation_gap": 1.2130421290437314
+   "best_val_loss": 0.5158042311668396,
+   "best_train_loss": 0.4203625023365021,
+   "generalisation_gap": 1.2270462477025033
   },
   {
    "variant": "bench_q",
    "seed": 0,
    "learned": true,
-   "unexplained_val": 0.5095747470210987,
-   "epochs_run": 15,
-   "best_val_loss": 0.5115459561347961,
-   "best_train_loss": 0.43358027935028076,
-   "generalisation_gap": 1.17981831853918
+   "unexplained_val": 0.5084272665026176,
+   "epochs_run": 14,
+   "best_val_loss": 0.5103940367698669,
+   "best_train_loss": 0.43786099553108215,
+   "generalisation_gap": 1.1656531227468876
   },
   {
    "variant": "bench_q",
    "seed": 1,
    "learned": true,
-   "unexplained_val": 0.513827990188755,
+   "unexplained_val": 0.5147105133659333,
    "epochs_run": 15,
-   "best_val_loss": 0.5036848187446594,
-   "best_train_loss": 0.4321369230747223,
-   "generalisation_gap": 1.16556765193972
+   "best_val_loss": 0.5045499205589294,
+   "best_train_loss": 0.43065088987350464,
+   "generalisation_gap": 1.171598462752814
   },
   {
    "variant": "bench_q",
    "seed": 2,
    "learned": true,
-   "unexplained_val": 0.5087689756379647,
+   "unexplained_val": 0.5091838890197724,
    "epochs_run": 15,
-   "best_val_loss": 0.5130744576454163,
-   "best_train_loss": 0.4344961941242218,
-   "generalisation_gap": 1.1808491411060071
+   "best_val_loss": 0.5134928822517395,
+   "best_train_loss": 0.43421387672424316,
+   "generalisation_gap": 1.1825805433156256
   },
   {
    "variant": "bench_q",
    "seed": 3,
    "learned": true,
-   "unexplained_val": 0.5013757550315865,
-   "epochs_run": 22,
-   "best_val_loss": 0.49618765711784363,
-   "best_train_loss": 0.38384509086608887,
-   "generalisation_gap": 1.2926768348092472
+   "unexplained_val": 0.5004359292948943,
+   "epochs_run": 21,
+   "best_val_loss": 0.49525755643844604,
+   "best_train_loss": 0.3859788477420807,
+   "generalisation_gap": 1.2831209775759207
   },
   {
    "variant": "bench_qg",
    "seed": 42,
    "learned": true,
-   "unexplained_val": 0.5189999826201525,
+   "unexplained_val": 0.5212838255282343,
    "epochs_run": 14,
-   "best_val_loss": 0.5197378396987915,
-   "best_train_loss": 0.44493427872657776,
-   "generalisation_gap": 1.1681227195762596
+   "best_val_loss": 0.522024929523468,
+   "best_train_loss": 0.44382578134536743,
+   "generalisation_gap": 1.176193343120032
   },
   {
    "variant": "bench_qg",
    "seed": 0,
    "learned": true,
-   "unexplained_val": 0.5069166658728042,
-   "epochs_run": 19,
-   "best_val_loss": 0.5074697136878967,
-   "best_train_loss": 0.40525126457214355,
-   "generalisation_gap": 1.252234744347247
+   "unexplained_val": 0.5069266685401821,
+   "epochs_run": 18,
+   "best_val_loss": 0.507479727268219,
+   "best_train_loss": 0.4054282605648041,
+   "generalisation_gap": 1.2517127606280987
   },
   {
    "variant": "bench_qg",
    "seed": 1,
    "learned": true,
-   "unexplained_val": 0.5077649160585511,
+   "unexplained_val": 0.5068806008959647,
    "epochs_run": 17,
-   "best_val_loss": 0.5081637501716614,
-   "best_train_loss": 0.4120754301548004,
-   "generalisation_gap": 1.2331813861864183
+   "best_val_loss": 0.5072787404060364,
+   "best_train_loss": 0.4114062488079071,
+   "generalisation_gap": 1.233036060769446
   },
   {
    "variant": "bench_qg",
    "seed": 2,
    "learned": true,
-   "unexplained_val": 0.5187415472241802,
-   "epochs_run": 15,
-   "best_val_loss": 0.5194674730300903,
-   "best_train_loss": 0.4433579742908478,
-   "generalisation_gap": 1.1716660196785225
+   "unexplained_val": 0.5180024706122259,
+   "epochs_run": 14,
+   "best_val_loss": 0.5187273621559143,
+   "best_train_loss": 0.44855797290802,
+   "generalisation_gap": 1.1564332672385316
   },
   {
    "variant": "bench_qg",
    "seed": 3,
    "learned": true,
-   "unexplained_val": 0.5099829379375815,
-   "epochs_run": 19,
-   "best_val_loss": 0.5105282664299011,
-   "best_train_loss": 0.4051859676837921,
-   "generalisation_gap": 1.2599850615466484
+   "unexplained_val": 0.5059679707649039,
+   "epochs_run": 16,
+   "best_val_loss": 0.506509006023407,
+   "best_train_loss": 0.4176253378391266,
+   "generalisation_gap": 1.2128311195009898
   },
   {
    "variant": "noise_qg",
@@ -160,7 +160,7 @@
    "seed": 0,
    "learned": true,
    "unexplained_val": 1.0,
-   "epochs_run": 13,
+   "epochs_run": 14,
    "best_val_loss": 1.0009105205535889,
    "best_train_loss": 1.0,
    "generalisation_gap": 1.0009105205535889
@@ -182,8 +182,8 @@
    "unexplained_val": 1.0000001190995833,
    "epochs_run": 12,
    "best_val_loss": 1.0009212493896484,
-   "best_train_loss": 0.9999999403953552,
-   "generalisation_gap": 1.0009213090492075
+   "best_train_loss": 0.9999998211860657,
+   "generalisation_gap": 1.000921428368347
   },
   {
    "variant": "noise_qg",

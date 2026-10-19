@@ -38,9 +38,12 @@ def test_ims_table_is_regenerated_exactly(ims_results):
     assert ims.to_markdown(ims_results) == committed
 
 
-# Published Table 10: radius and lead time per bearing.
-PUBLISHED = {"1": (0.014150, 73.83), "2": (0.018596, 31.33),
-             "3": (0.021798, 14.33), "4": (0.009729, 52.50)}
+# Reference Table 10: radius and lead time per bearing, from the CPU reference
+# run (D15). The values published before D15 came from an operator trained on
+# Apple Metal and are kept in results_published_metal/: (0.014150, 73.83),
+# (0.018596, 31.33), (0.021798, 14.33), (0.009729, 52.50).
+PUBLISHED = {"1": (0.014161, 73.83), "2": (0.018245, 45.50),
+             "3": (0.022167, 14.00), "4": (0.010083, 53.00)}
 
 
 @pytest.mark.parametrize("bearing", sorted(PUBLISHED))

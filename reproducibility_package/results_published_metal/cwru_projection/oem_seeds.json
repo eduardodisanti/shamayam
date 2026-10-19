@@ -1,0 +1,553 @@
+{
+ "config": "B",
+ "seeds": {
+  "0": {
+   "training": {
+    "epochs_run": 33,
+    "budget": 100,
+    "stop_reason": "early_stopping",
+    "best_val_loss": 0.06490906327962875,
+    "final_val_loss": 0.06553836911916733,
+    "final_lr": 0.0002500000118743628,
+    "tau_mc": 0.11040177941322327
+   },
+   "speeds": {
+    "1730": {
+     "n_healthy": 96,
+     "oracle": {
+      "tau": 0.06493463292717934,
+      "far": 2.083333333333333,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.06494803726673126,
+      "n_heldout": 47,
+      "far_heldout": 2.127659574468085,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.11040177941322327,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1750": {
+     "n_healthy": 98,
+     "oracle": {
+      "tau": 0.06713375419378281,
+      "far": 2.0408163265306123,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.06634998321533203,
+      "n_heldout": 49,
+      "far_heldout": 8.16326530612245,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.11040177941322327,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1772": {
+     "n_healthy": 99,
+     "oracle": {
+      "tau": 0.08097177058458328,
+      "far": 2.0202020202020203,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.08130260556936264,
+      "n_heldout": 50,
+      "far_heldout": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.11040177941322327,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1797": {
+     "n_healthy": 50,
+     "oracle": {
+      "tau": 0.09302398830652235,
+      "far": 2.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.09662963449954987,
+      "n_heldout": 1,
+      "far_heldout": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.11040177941322327,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    }
+   }
+  },
+  "1": {
+   "training": {
+    "epochs_run": 34,
+    "budget": 100,
+    "stop_reason": "early_stopping",
+    "best_val_loss": 0.06410586833953857,
+    "final_val_loss": 0.06430036574602127,
+    "final_lr": 0.0001250000059371814,
+    "tau_mc": 0.10964108258485794
+   },
+   "speeds": {
+    "1730": {
+     "n_healthy": 96,
+     "oracle": {
+      "tau": 0.05581016689538955,
+      "far": 2.083333333333333,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.056878712028265,
+      "n_heldout": 47,
+      "far_heldout": 2.127659574468085,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.10964108258485794,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1750": {
+     "n_healthy": 98,
+     "oracle": {
+      "tau": 0.058006381914019585,
+      "far": 2.0408163265306123,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.05954188480973244,
+      "n_heldout": 49,
+      "far_heldout": 2.0408163265306123,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.10964108258485794,
+      "far": 0.0,
+      "ball_dr": 99.31972789115646,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1772": {
+     "n_healthy": 99,
+     "oracle": {
+      "tau": 0.06945070236921311,
+      "far": 2.0202020202020203,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.07291144132614136,
+      "n_heldout": 50,
+      "far_heldout": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.10964108258485794,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1797": {
+     "n_healthy": 50,
+     "oracle": {
+      "tau": 0.08709562107920646,
+      "far": 2.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.08799531310796738,
+      "n_heldout": 1,
+      "far_heldout": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.10964108258485794,
+      "far": 0.0,
+      "ball_dr": 99.33774834437085,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    }
+   }
+  },
+  "2": {
+   "training": {
+    "epochs_run": 34,
+    "budget": 100,
+    "stop_reason": "early_stopping",
+    "best_val_loss": 0.06399228423833847,
+    "final_val_loss": 0.06460230052471161,
+    "final_lr": 0.0002500000118743628,
+    "tau_mc": 0.10850203782320023
+   },
+   "speeds": {
+    "1730": {
+     "n_healthy": 96,
+     "oracle": {
+      "tau": 0.060629398375749585,
+      "far": 2.083333333333333,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.060584794729948044,
+      "n_heldout": 47,
+      "far_heldout": 4.25531914893617,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.10850203782320023,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1750": {
+     "n_healthy": 98,
+     "oracle": {
+      "tau": 0.06253413289785385,
+      "far": 2.0408163265306123,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.0652000829577446,
+      "n_heldout": 49,
+      "far_heldout": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.10850203782320023,
+      "far": 0.0,
+      "ball_dr": 99.65986394557824,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1772": {
+     "n_healthy": 99,
+     "oracle": {
+      "tau": 0.07523224920034408,
+      "far": 2.0202020202020203,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.07804657518863678,
+      "n_heldout": 50,
+      "far_heldout": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.10850203782320023,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1797": {
+     "n_healthy": 50,
+     "oracle": {
+      "tau": 0.08990161433815956,
+      "far": 2.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.09098313003778458,
+      "n_heldout": 1,
+      "far_heldout": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.10850203782320023,
+      "far": 0.0,
+      "ball_dr": 99.33774834437085,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    }
+   }
+  },
+  "3": {
+   "training": {
+    "epochs_run": 35,
+    "budget": 100,
+    "stop_reason": "early_stopping",
+    "best_val_loss": 0.06517524272203445,
+    "final_val_loss": 0.06554840505123138,
+    "final_lr": 0.0001250000059371814,
+    "tau_mc": 0.11075090616941452
+   },
+   "speeds": {
+    "1730": {
+     "n_healthy": 96,
+     "oracle": {
+      "tau": 0.06369087174534797,
+      "far": 2.083333333333333,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.06288342922925949,
+      "n_heldout": 47,
+      "far_heldout": 8.51063829787234,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.11075090616941452,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1750": {
+     "n_healthy": 98,
+     "oracle": {
+      "tau": 0.06427226573228836,
+      "far": 2.0408163265306123,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.06385853886604309,
+      "n_heldout": 49,
+      "far_heldout": 8.16326530612245,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.11075090616941452,
+      "far": 0.0,
+      "ball_dr": 99.65986394557824,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1772": {
+     "n_healthy": 99,
+     "oracle": {
+      "tau": 0.07614645898342132,
+      "far": 2.0202020202020203,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.0806177631020546,
+      "n_heldout": 50,
+      "far_heldout": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.11075090616941452,
+      "far": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    },
+    "1797": {
+     "n_healthy": 50,
+     "oracle": {
+      "tau": 0.09443225175142288,
+      "far": 2.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "auroc": {
+      "ball": 1.0,
+      "inner_race": 1.0,
+      "outer_race": 1.0
+     },
+     "certified": {
+      "n_cal": 49,
+      "tau": 0.09569588303565979,
+      "n_heldout": 1,
+      "far_heldout": 0.0,
+      "ball_dr": 100.0,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     },
+     "direct": {
+      "tau": 0.11075090616941452,
+      "far": 0.0,
+      "ball_dr": 99.33774834437085,
+      "inner_race_dr": 100.0,
+      "outer_race_dr": 100.0
+     }
+    }
+   }
+  }
+ }
+}

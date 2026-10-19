@@ -19,15 +19,15 @@ Sección: preblanqueo cepstral por registro (Hz) → remuestreo angular → (wg)
 | bench_wg | 2 | colapso | 1,000 | — | — |
 | bench_wg | 3 | colapso | 1,000 | — | — |
 | noise_wg | 42 | sí | 1,000 | 13 | 1,00 |
-| noise_wg | 0 | sí | 1,000 | 13 | 1,00 |
+| noise_wg | 0 | sí | 1,000 | 14 | 1,00 |
 | noise_wg | 1 | sí | 1,000 | 12 | 1,00 |
 | noise_wg | 2 | sí | 1,000 | 12 | 1,00 |
 | noise_wg | 3 | sí | 1,000 | 12 | 1,00 |
 | sim_wg | 42 | colapso | 1,000 | — | — |
-| sim_wg | 0 | colapso | 0,982 | — | — |
+| sim_wg | 0 | sí | 0,977 | 15 | 1,07 |
 | sim_wg | 1 | colapso | 1,000 | — | — |
-| sim_wg | 2 | sí | 0,973 | 15 | 1,07 |
-| sim_wg | 3 | sí | 0,971 | 15 | 1,07 |
+| sim_wg | 2 | colapso | 0,983 | — | — |
+| sim_wg | 3 | sí | 0,971 | 14 | 1,06 |
 | local_wg | 0 | colapso | — | — | — |
 | local_wg | 1 | colapso | — | — | — |
 | local_wg | 2 | colapso | — | — | — |
@@ -64,10 +64,10 @@ Media [mín–máx] sobre semillas; FAR en los registros 200–499; salida del b
 | noise_wg | 99 | 1,7% [0,0–5,3] | sin salida |
 | noise_wg | 149 | 0,9% [0,3–2,0] | sin salida |
 | noise_wg | 200 | 1,1% [0,3–2,0] | sin salida |
-| sim_wg | 49 | 6,3% [3,3–9,3] | sin salida |
-| sim_wg | 99 | 3,2% [1,7–4,7] | sin salida |
-| sim_wg | 149 | 3,3% [2,0–4,7] | sin salida |
-| sim_wg | 200 | 3,5% [2,3–4,7] | sin salida |
+| sim_wg | 49 | 2,5% [1,7–3,3] | sin salida |
+| sim_wg | 99 | 2,2% [2,0–2,3] | sin salida |
+| sim_wg | 149 | 1,8% [1,3–2,3] | sin salida |
+| sim_wg | 200 | 2,0% [2,0–2,0] | sin salida |
 | kurt_w | 49 | 0,0% | 710–710 |
 | kurt_w | 99 | 0,3% | 709–709 |
 | kurt_w | 149 | 0,3% | 709–709 |
@@ -84,7 +84,7 @@ Media [mín–máx] sobre semillas; FAR en los registros 200–499; salida del b
 | bench_w | colapso | — | — | — | — | — |
 | bench_wg | colapso | — | — | — | — | — |
 | noise_wg | 1,9% [0,7–2,6] | 0,0 [0,0–0,0] | 0,504 [0,473–0,527] | 0,506 [0,459–0,534] | 0,491 [0,474–0,507] | 0,500 [0,442–0,542] |
-| sim_wg | 3,3% [2,6–4,1] | 0,0 [0,0–0,0] | 0,376 [0,364–0,388] | 0,431 [0,429–0,433] | 0,487 [0,476–0,497] | 0,475 [0,468–0,481] |
+| sim_wg | 3,6% [2,2–5,0] | 0,0 [0,0–0,0] | 0,365 [0,363–0,367] | 0,413 [0,394–0,432] | 0,461 [0,431–0,490] | 0,461 [0,449–0,474] |
 | kurt_w | 5,4% | 0,0 | 0,963 | 0,466 | 0,995 | 0,993 |
 | env_w | 2,6% | 0,0 | 0,792 | 0,558 | 0,305 | 0,231 |
 
@@ -96,18 +96,18 @@ Modelos del banco wg que aprenden con no reconstruida ≤ 0,95: 0 de 5.
 
 | fallo | banco wg | C-ruido wg | C-simulador wg | por máquina wg (techo) | curtosis w | envolvente w | supera controles | se transfiere |
 |---|---|---|---|---|---|---|---|---|
-| pista interior | — | 0,504 [0,473–0,527] | 0,376 [0,364–0,388] | — | 0,963 | 0,792 | 0/0 | no |
-| bola | — | 0,506 [0,459–0,534] | 0,431 [0,429–0,433] | — | 0,466 | 0,558 | 0/0 | no |
-| combinado | — | 0,491 [0,474–0,507] | 0,487 [0,476–0,497] | — | 0,995 | 0,305 | 0/0 | no |
-| pista exterior | — | 0,500 [0,442–0,542] | 0,475 [0,468–0,481] | — | 0,993 | 0,231 | 0/0 | no (no entra en H1) |
+| pista interior | — | 0,504 [0,473–0,527] | 0,365 [0,363–0,367] | — | 0,963 | 0,792 | 0/0 | no |
+| bola | — | 0,506 [0,459–0,534] | 0,413 [0,394–0,432] | — | 0,466 | 0,558 | 0/0 | no |
+| combinado | — | 0,491 [0,474–0,507] | 0,461 [0,431–0,490] | — | 0,995 | 0,305 | 0/0 | no |
+| pista exterior | — | 0,500 [0,442–0,542] | 0,461 [0,449–0,474] | — | 0,993 | 0,231 | 0/0 | no (no entra en H1) |
 
 ### Solo ventanas de 15–25 Hz
 
 | fallo | banco wg | C-ruido wg | C-simulador wg | por máquina wg (techo) | curtosis w | envolvente w | supera controles | se transfiere |
 |---|---|---|---|---|---|---|---|---|
-| pista interior | — | 0,507 [0,469–0,544] | 0,371 [0,358–0,385] | — | 0,966 | 0,805 | 0/0 | no |
-| bola | — | 0,504 [0,444–0,541] | 0,415 [0,406–0,424] | — | 0,488 | 0,567 | 0/0 | no |
-| combinado | — | 0,494 [0,478–0,508] | 0,491 [0,475–0,507] | — | 0,998 | 0,292 | 0/0 | no |
-| pista exterior | — | 0,501 [0,430–0,541] | 0,468 [0,454–0,482] | — | 0,996 | 0,210 | 0/0 | no (no entra en H1) |
+| pista interior | — | 0,507 [0,469–0,544] | 0,354 [0,353–0,355] | — | 0,966 | 0,805 | 0/0 | no |
+| bola | — | 0,504 [0,444–0,541] | 0,394 [0,380–0,409] | — | 0,488 | 0,567 | 0/0 | no |
+| combinado | — | 0,494 [0,478–0,508] | 0,462 [0,436–0,488] | — | 0,998 | 0,292 | 0/0 | no |
+| pista exterior | — | 0,501 [0,430–0,541] | 0,452 [0,438–0,465] | — | 0,996 | 0,210 | 0/0 | no (no entra en H1) |
 
 **Veredicto H1v2:** no evaluable con este autoencoder (0 de 5 modelos del banco aprenden).

@@ -8,10 +8,10 @@ Sin entrenamiento: un valor por registro de 1 s (dominio temporal, banda complet
 
 | indicador | n | bearing 1 (fallo) | bearing 2 | bearing 3 | bearing 4 |
 |---|---|---|---|---|---|
-| OEM publicado (autoencoder, referencia) | 49 | 0,0% (0/300) | 0,0% (0/300) | 0,0% (0/300) | 0,0% (0/300) |
-| OEM publicado (autoencoder, referencia) | 99 | 0,0% (0/300) | 0,0% (0/300) | 0,0% (0/300) | 1,0% (3/300) |
-| OEM publicado (autoencoder, referencia) | 149 | 0,0% (0/300) | 0,0% (0/300) | 0,0% (0/300) | 1,0% (3/300) |
-| OEM publicado (autoencoder, referencia) | 200 | 0,0% (0/300) | 0,0% (0/300) | 0,0% (0/300) | 1,0% (3/300) |
+| OEM publicado (autoencoder, referencia) | 49 | 0,3% (1/300) | 0,0% (0/300) | 0,0% (0/300) | 1,7% (5/300) |
+| OEM publicado (autoencoder, referencia) | 99 | 0,3% (1/300) | 0,0% (0/300) | 0,0% (0/300) | 2,0% (6/300) |
+| OEM publicado (autoencoder, referencia) | 149 | 0,3% (1/300) | 0,0% (0/300) | 0,0% (0/300) | 1,3% (4/300) |
+| OEM publicado (autoencoder, referencia) | 200 | 0,3% (1/300) | 0,0% (0/300) | 0,0% (0/300) | 1,3% (4/300) |
 | RMS | 49 | 0,0% (0/300) | 0,0% (0/300) | 0,0% (0/300) | 1,7% (5/300) |
 | RMS | 99 | 0,0% (0/300) | 0,0% (0/300) | 0,0% (0/300) | 1,7% (5/300) |
 | RMS | 149 | 0,0% (0/300) | 0,0% (0/300) | 0,0% (0/300) | 1,7% (5/300) |
@@ -33,10 +33,10 @@ Sin entrenamiento: un valor por registro de 1 s (dominio temporal, banda complet
 
 | indicador | n | bearing 1 | bearing 2 | bearing 3 | bearing 4 |
 |---|---|---|---|---|---|
-| OEM publicado (autoencoder, referencia) | 49 | 539 (73,83 h) | 794 (31,33 h) | 896 (14,33 h) | 705 (46,17 h) |
-| OEM publicado (autoencoder, referencia) | 99 | 539 (73,83 h) | 794 (31,33 h) | 896 (14,33 h) | 667 (52,50 h) |
-| OEM publicado (autoencoder, referencia) | 149 | 539 (73,83 h) | 791 (31,83 h) | 892 (15,00 h) | 667 (52,50 h) |
-| OEM publicado (autoencoder, referencia) | 200 | 539 (73,83 h) | 720 (43,67 h) | 892 (15,00 h) | 667 (52,50 h) |
+| OEM publicado (autoencoder, referencia) | 49 | 539 (73,83 h) | 711 (45,17 h) | 899 (13,83 h) | 664 (53,00 h) |
+| OEM publicado (autoencoder, referencia) | 99 | 539 (73,83 h) | 734 (41,33 h) | 898 (14,00 h) | 664 (53,00 h) |
+| OEM publicado (autoencoder, referencia) | 149 | 539 (73,83 h) | 734 (41,33 h) | 898 (14,00 h) | 664 (53,00 h) |
+| OEM publicado (autoencoder, referencia) | 200 | 539 (73,83 h) | 712 (45,00 h) | 894 (14,67 h) | 666 (52,67 h) |
 | RMS | 49 | 539 (73,83 h) | 782 (33,33 h) | 894 (14,67 h) | 619 (60,50 h) |
 | RMS | 99 | 539 (73,83 h) | 782 (33,33 h) | 894 (14,67 h) | 619 (60,50 h) |
 | RMS | 149 | 539 (73,83 h) | 710 (45,33 h) | 894 (14,67 h) | 619 (60,50 h) |

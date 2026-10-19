@@ -26,7 +26,7 @@
     "draws": 1000,
     "lost": 107,
     "lead_median_h": 7.333333333333333,
-    "inflation_median": 3.369971594094334
+    "inflation_median": 3.3070143901593885
    },
    {
     "radius": "r_(k), n=49",
@@ -37,7 +37,7 @@
     "draws": 1000,
     "lost": 177,
     "lead_median_h": 3.833333333333333,
-    "inflation_median": 4.77755592162254
+    "inflation_median": 4.776471372324582
    },
    {
     "radius": "r_(k), n=49",
@@ -47,8 +47,8 @@
     "m": 3,
     "draws": 1000,
     "lost": 240,
-    "lead_median_h": 2.5,
-    "inflation_median": 6.15137139129935
+    "lead_median_h": 2.6666666666666665,
+    "inflation_median": 6.1408509652835
    },
    {
     "radius": "r_(k), n=49",
@@ -59,7 +59,7 @@
     "draws": 1000,
     "lost": 372,
     "lead_median_h": 1.6666666666666665,
-    "inflation_median": 10.214117871709169
+    "inflation_median": 10.205947828801163
    },
    {
     "radius": "r_(k), n=99",
@@ -81,7 +81,7 @@
     "draws": 1000,
     "lost": 0,
     "lead_median_h": 73.83333333333333,
-    "inflation_median": 1.004137239557318
+    "inflation_median": 1.0044874463295126
    },
    {
     "radius": "r_(k), n=99",
@@ -92,7 +92,7 @@
     "draws": 1000,
     "lost": 11,
     "lead_median_h": 45.33333333333333,
-    "inflation_median": 2.99467817276365
+    "inflation_median": 2.9696863537144407
    },
    {
     "radius": "r_(k), n=99",
@@ -103,7 +103,7 @@
     "draws": 1000,
     "lost": 22,
     "lead_median_h": 4.166666666666666,
-    "inflation_median": 3.506887999219522
+    "inflation_median": 3.4307975077036605
    },
    {
     "radius": "r_(k), n=99",
@@ -114,7 +114,7 @@
     "draws": 1000,
     "lost": 61,
     "lead_median_h": 3.6666666666666665,
-    "inflation_median": 4.293497789671921
+    "inflation_median": 4.2050577839394085
    },
    {
     "radius": "r_(k), n=149",
@@ -136,7 +136,7 @@
     "draws": 1000,
     "lost": 0,
     "lead_median_h": 73.83333333333333,
-    "inflation_median": 1.0002206442938095
+    "inflation_median": 1.0011481695329105
    },
    {
     "radius": "r_(k), n=149",
@@ -147,7 +147,7 @@
     "draws": 1000,
     "lost": 0,
     "lead_median_h": 73.83333333333333,
-    "inflation_median": 1.004358796709428
+    "inflation_median": 1.0056407682115793
    },
    {
     "radius": "r_(k), n=149",
@@ -158,7 +158,7 @@
     "draws": 1000,
     "lost": 0,
     "lead_median_h": 45.5,
-    "inflation_median": 2.729785872317876
+    "inflation_median": 2.714635439345441
    },
    {
     "radius": "r_(k), n=149",
@@ -169,7 +169,7 @@
     "draws": 1000,
     "lost": 6,
     "lead_median_h": 7.333333333333333,
-    "inflation_median": 3.384660615189539
+    "inflation_median": 3.3070143901593885
    },
    {
     "radius": "tolerancia, n=149",
@@ -191,7 +191,7 @@
     "draws": 1000,
     "lost": 90,
     "lead_median_h": 7.333333333333333,
-    "inflation_median": 3.357242019693775
+    "inflation_median": 3.2837090084469946
    },
    {
     "radius": "tolerancia, n=149",
@@ -202,7 +202,7 @@
     "draws": 1000,
     "lost": 165,
     "lead_median_h": 3.833333333333333,
-    "inflation_median": 4.3527787622916225
+    "inflation_median": 4.293164064095148
    },
    {
     "radius": "tolerancia, n=149",
@@ -213,7 +213,7 @@
     "draws": 1000,
     "lost": 232,
     "lead_median_h": 2.6666666666666665,
-    "inflation_median": 5.7288008944285025
+    "inflation_median": 5.701969858014813
    },
    {
     "radius": "tolerancia, n=149",
@@ -224,7 +224,7 @@
     "draws": 1000,
     "lost": 404,
     "lead_median_h": 1.6666666666666665,
-    "inflation_median": 11.890152025742825
+    "inflation_median": 11.864256244516719
    }
   ],
   "RMS": [
@@ -470,7 +470,7 @@
     "draws": 1000,
     "lost": 64,
     "lead_median_h": 45.5,
-    "inflation_median": 9.775011043850373
+    "inflation_median": 9.775011043850375
    },
    {
     "radius": "r_(k), n=49",
@@ -481,7 +481,7 @@
     "draws": 1000,
     "lost": 147,
     "lead_median_h": 45.5,
-    "inflation_median": 10.83879468728363
+    "inflation_median": 10.838794687283636
    },
    {
     "radius": "r_(k), n=49",
@@ -492,7 +492,7 @@
     "draws": 1000,
     "lost": 178,
     "lead_median_h": 45.5,
-    "inflation_median": 12.292500320070467
+    "inflation_median": 12.292500320070458
    },
    {
     "radius": "r_(k), n=49",
@@ -503,7 +503,7 @@
     "draws": 1000,
     "lost": 287,
     "lead_median_h": 45.5,
-    "inflation_median": 12.677370243780432
+    "inflation_median": 12.677370243780441
    },
    {
     "radius": "r_(k), n=99",
@@ -525,7 +525,7 @@
     "draws": 1000,
     "lost": 0,
     "lead_median_h": 73.83333333333333,
-    "inflation_median": 1.0266847961299745
+    "inflation_median": 1.0266847961299754
    },
    {
     "radius": "r_(k), n=99",
@@ -536,7 +536,7 @@
     "draws": 1000,
     "lost": 5,
     "lead_median_h": 45.5,
-    "inflation_median": 8.309223329293772
+    "inflation_median": 8.309223329293786
    },
    {
     "radius": "r_(k), n=99",
@@ -547,7 +547,7 @@
     "draws": 1000,
     "lost": 13,
     "lead_median_h": 45.5,
-    "inflation_median": 9.859457103460052
+    "inflation_median": 9.859457103460057
    },
    {
     "radius": "r_(k), n=99",
@@ -580,7 +580,7 @@
     "draws": 1000,
     "lost": 0,
     "lead_median_h": 73.83333333333333,
-    "inflation_median": 1.0136222171931468
+    "inflation_median": 1.0136222171931466
    },
    {
     "radius": "r_(k), n=149",
@@ -591,7 +591,7 @@
     "draws": 1000,
     "lost": 0,
     "lead_median_h": 73.83333333333333,
-    "inflation_median": 1.0406705194117587
+    "inflation_median": 1.0406705194117594
    },
    {
     "radius": "r_(k), n=149",
@@ -635,7 +635,7 @@
     "draws": 1000,
     "lost": 77,
     "lead_median_h": 45.5,
-    "inflation_median": 9.514682728845399
+    "inflation_median": 9.51468272884539
    },
    {
     "radius": "tolerancia, n=149",
@@ -646,7 +646,7 @@
     "draws": 1000,
     "lost": 129,
     "lead_median_h": 45.5,
-    "inflation_median": 10.678520512778702
+    "inflation_median": 10.67852051277869
    },
    {
     "radius": "tolerancia, n=149",
@@ -657,7 +657,7 @@
     "draws": 1000,
     "lost": 218,
     "lead_median_h": 45.5,
-    "inflation_median": 12.02868073881134
+    "inflation_median": 12.02868073881133
    },
    {
     "radius": "tolerancia, n=149",
@@ -668,7 +668,7 @@
     "draws": 1000,
     "lost": 360,
     "lead_median_h": 45.5,
-    "inflation_median": 12.421897991987109
+    "inflation_median": 12.421897991987091
    }
   ]
  }

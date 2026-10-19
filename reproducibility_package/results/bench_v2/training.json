@@ -38,19 +38,19 @@
    "model": "bench_w",
    "seed": 0,
    "learned": false,
-   "unexplained_val": 1.0000322926206995
+   "unexplained_val": 1.0000187865875139
   },
   {
    "model": "bench_w",
    "seed": 1,
    "learned": false,
-   "unexplained_val": 1.0000154489049689
+   "unexplained_val": 1.0000153430905514
   },
   {
    "model": "bench_w",
    "seed": 2,
    "learned": false,
-   "unexplained_val": 1.0000580924731317
+   "unexplained_val": 1.0000581933281198
   },
   {
    "model": "bench_w",
@@ -80,13 +80,13 @@
    "model": "bench_wg",
    "seed": 2,
    "learned": false,
-   "unexplained_val": 1.0
+   "unexplained_val": 0.9999995237454562
   },
   {
    "model": "bench_wg",
    "seed": 3,
    "learned": false,
-   "unexplained_val": 1.0
+   "unexplained_val": 1.0000001190781116
   },
   {
    "model": "noise_wg",
@@ -102,7 +102,7 @@
    "seed": 0,
    "learned": true,
    "unexplained_val": 1.0,
-   "epochs_run": 13,
+   "epochs_run": 14,
    "best_val_loss": 1.0009105205535889,
    "generalisation_gap": 1.0009105205535889
   },
@@ -122,7 +122,7 @@
    "unexplained_val": 1.0000001190995833,
    "epochs_run": 12,
    "best_val_loss": 1.0009212493896484,
-   "generalisation_gap": 1.0009213090492075
+   "generalisation_gap": 1.000921428368347
   },
   {
    "model": "noise_wg",
@@ -142,32 +142,32 @@
   {
    "model": "sim_wg",
    "seed": 0,
-   "learned": false,
-   "unexplained_val": 0.9821739319559982
+   "learned": true,
+   "unexplained_val": 0.977330531186854,
+   "epochs_run": 15,
+   "best_val_loss": 0.9802919030189514,
+   "generalisation_gap": 1.0658481621365583
   },
   {
    "model": "sim_wg",
    "seed": 1,
    "learned": false,
-   "unexplained_val": 1.0
+   "unexplained_val": 1.000000118739772
   },
   {
    "model": "sim_wg",
    "seed": 2,
-   "learned": true,
-   "unexplained_val": 0.973328780405608,
-   "epochs_run": 15,
-   "best_val_loss": 0.9750432372093201,
-   "generalisation_gap": 1.069605275804778
+   "learned": false,
+   "unexplained_val": 0.9829615069357773
   },
   {
    "model": "sim_wg",
    "seed": 3,
    "learned": true,
-   "unexplained_val": 0.9713168367817734,
-   "epochs_run": 15,
-   "best_val_loss": 0.972488284111023,
-   "generalisation_gap": 1.0684951978887398
+   "unexplained_val": 0.971403040342433,
+   "epochs_run": 14,
+   "best_val_loss": 0.9725745916366577,
+   "generalisation_gap": 1.0604796847526685
   },
   {
    "model": "local_wg",

@@ -1,0 +1,246 @@
+{
+ "cache": "field_residuals_ims.npz",
+ "persistence": [
+  8,
+  10
+ ],
+ "failed_bearing": 1,
+ "bearings": {
+  "1": {
+   "published": {
+    "n": 49,
+    "tau": 0.014149775088709944,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0,
+    "far": 0.0
+   },
+   "n_active": 982,
+   "r_(k), n=49": {
+    "n": 49,
+    "tau": 0.01420596515869393,
+    "rank": 49,
+    "far_k": 0,
+    "far_n": 151,
+    "far": 0.0,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0
+   },
+   "r_(k), n=99": {
+    "n": 99,
+    "tau": 0.014147433835793944,
+    "rank": 98,
+    "far_k": 0,
+    "far_n": 101,
+    "far": 0.0,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0
+   },
+   "r_(k), n=149": {
+    "n": 149,
+    "tau": 0.014144312973846407,
+    "rank": 147,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0
+   },
+   "tolerancia 0,98/0,95, n=149": {
+    "n": 149,
+    "tau": 0.01420596515869393,
+    "rank": 149,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 539,
+    "lead_hours": 73.83333333333333,
+    "exceedance_post": 100.0
+   },
+   "spearman_first149": {
+    "rho": -0.359430437148558,
+    "p": 6.7369387710326895e-06
+   }
+  },
+  "2": {
+   "published": {
+    "n": 54,
+    "tau": 0.018596440518603607,
+    "departure": 794,
+    "lead_hours": 31.333333333333332,
+    "exceedance_post": 93.08510638297872,
+    "far": 0.0
+   },
+   "n_active": 982,
+   "r_(k), n=49": {
+    "n": 49,
+    "tau": 0.01861505791106645,
+    "rank": 49,
+    "far_k": 0,
+    "far_n": 151,
+    "far": 0.0,
+    "departure": 794,
+    "lead_hours": 31.333333333333332,
+    "exceedance_post": 92.02127659574468
+   },
+   "r_(k), n=99": {
+    "n": 99,
+    "tau": 0.018604709821588853,
+    "rank": 98,
+    "far_k": 0,
+    "far_n": 101,
+    "far": 0.0,
+    "departure": 794,
+    "lead_hours": 31.333333333333332,
+    "exceedance_post": 92.02127659574468
+   },
+   "r_(k), n=149": {
+    "n": 149,
+    "tau": 0.018564164967221373,
+    "rank": 147,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 791,
+    "lead_hours": 31.833333333333332,
+    "exceedance_post": 93.19371727748691
+   },
+   "tolerancia 0,98/0,95, n=149": {
+    "n": 149,
+    "tau": 0.01861505791106645,
+    "rank": 149,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 794,
+    "lead_hours": 31.333333333333332,
+    "exceedance_post": 92.02127659574468
+   },
+   "spearman_first149": {
+    "rho": 0.08081262470524216,
+    "p": 0.32721464160142805
+   }
+  },
+  "3": {
+   "published": {
+    "n": 49,
+    "tau": 0.02179756132995381,
+    "departure": 896,
+    "lead_hours": 14.333333333333332,
+    "exceedance_post": 100.0,
+    "far": 0.0
+   },
+   "n_active": 982,
+   "r_(k), n=49": {
+    "n": 49,
+    "tau": 0.021930395680315354,
+    "rank": 49,
+    "far_k": 0,
+    "far_n": 151,
+    "far": 0.0,
+    "departure": 896,
+    "lead_hours": 14.333333333333332,
+    "exceedance_post": 100.0
+   },
+   "r_(k), n=99": {
+    "n": 99,
+    "tau": 0.021792026565355414,
+    "rank": 98,
+    "far_k": 0,
+    "far_n": 101,
+    "far": 0.0,
+    "departure": 896,
+    "lead_hours": 14.333333333333332,
+    "exceedance_post": 100.0
+   },
+   "r_(k), n=149": {
+    "n": 149,
+    "tau": 0.021500109530547085,
+    "rank": 147,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 892,
+    "lead_hours": 15.0,
+    "exceedance_post": 100.0
+   },
+   "tolerancia 0,98/0,95, n=149": {
+    "n": 149,
+    "tau": 0.021930395680315354,
+    "rank": 149,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 896,
+    "lead_hours": 14.333333333333332,
+    "exceedance_post": 100.0
+   },
+   "spearman_first149": {
+    "rho": -0.6022165789951024,
+    "p": 4.506603327712451e-16
+   }
+  },
+  "4": {
+   "published": {
+    "n": 49,
+    "tau": 0.00972898229956627,
+    "departure": 667,
+    "lead_hours": 52.5,
+    "exceedance_post": 94.92063492063491,
+    "far": 1.3245033112582782
+   },
+   "n_active": 982,
+   "r_(k), n=49": {
+    "n": 49,
+    "tau": 0.009815037031384075,
+    "rank": 49,
+    "far_k": 0,
+    "far_n": 151,
+    "far": 0.0,
+    "departure": 705,
+    "lead_hours": 46.166666666666664,
+    "exceedance_post": 99.27797833935018
+   },
+   "r_(k), n=99": {
+    "n": 99,
+    "tau": 0.009725396685740528,
+    "rank": 98,
+    "far_k": 2,
+    "far_n": 101,
+    "far": 1.9801980198019802,
+    "departure": 667,
+    "lead_hours": 52.5,
+    "exceedance_post": 94.92063492063491
+   },
+   "r_(k), n=149": {
+    "n": 149,
+    "tau": 0.009709152119124638,
+    "rank": 147,
+    "far_k": 2,
+    "far_n": 51,
+    "far": 3.9215686274509802,
+    "departure": 667,
+    "lead_hours": 52.5,
+    "exceedance_post": 95.23809523809523
+   },
+   "tolerancia 0,98/0,95, n=149": {
+    "n": 149,
+    "tau": 0.009815037031384075,
+    "rank": 149,
+    "far_k": 0,
+    "far_n": 51,
+    "far": 0.0,
+    "departure": 705,
+    "lead_hours": 46.166666666666664,
+    "exceedance_post": 99.27797833935018
+   },
+   "spearman_first149": {
+    "rho": -0.06641030292037003,
+    "p": 0.4209911752773666
+   }
+  }
+ }
+}

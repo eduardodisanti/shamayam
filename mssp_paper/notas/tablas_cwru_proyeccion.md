@@ -2,8 +2,8 @@
 
 | dominio | épocas | parada | mejor val_loss | τ_MC (p98) |
 |---|---|---|---|---|
-| time | 72/100 | early_stopping | 0.02372 | 0.0452 |
-| order | 31/100 | early_stopping | 0.06474 | 0.1096 |
+| time | 70/100 | early_stopping | 0.02374 | 0.0452 |
+| order | 35/100 | early_stopping | 0.06493 | 0.1090 |
 
 ### Ventanas por configuración
 
@@ -30,10 +30,10 @@ Referencia específica: un autoencoder por condición, entrenado y umbralizado (
 |---|---|---|---|---|---|---|---|
 | 1730 | específico del activo (todas las sanas) | 96 | 2.08 | 100.00 | 100.00 | 100.00 | 1.000 |
 | 1730 | OEM + radio local (todas las sanas) | 96 | 2.08 | 100.00 | 100.00 | 100.00 | 1.000 |
-| 1730 | OEM + radio certificado (49 primeras sanas) | 49 | 8.51 (en 47) | 100.00 | 100.00 | 100.00 | — |
+| 1730 | OEM + radio certificado (49 primeras sanas) | 49 | 0.00 (en 47) | 100.00 | 100.00 | 100.00 | — |
 | 1750 | específico del activo (todas las sanas) | 98 | 2.04 | 100.00 | 100.00 | 100.00 | 1.000 |
 | 1750 | OEM + radio local (todas las sanas) | 98 | 2.04 | 100.00 | 100.00 | 100.00 | 1.000 |
-| 1750 | OEM + radio certificado (49 primeras sanas) | 49 | 6.12 (en 49) | 100.00 | 100.00 | 100.00 | — |
+| 1750 | OEM + radio certificado (49 primeras sanas) | 49 | 4.08 (en 49) | 100.00 | 100.00 | 100.00 | — |
 | 1772 | específico del activo (todas las sanas) | 99 | 2.02 | 100.00 | 100.00 | 100.00 | 1.000 |
 | 1772 | OEM + radio local (todas las sanas) | 99 | 2.02 | 100.00 | 100.00 | 100.00 | 1.000 |
 | 1772 | OEM + radio certificado (49 primeras sanas) | 49 | 0.00 (en 50) | 100.00 | 100.00 | 100.00 | — |
@@ -41,7 +41,7 @@ Referencia específica: un autoencoder por condición, entrenado y umbralizado (
 | 1797 | OEM + radio local (todas las sanas) | 50 | 2.00 | 100.00 | 100.00 | 100.00 | 1.000 |
 | 1797 | OEM + radio certificado (49 primeras sanas) | 49 | 0.00 (en 1) | 100.00 | 100.00 | 100.00 | — |
 
-Generalización de la referencia (val_loss / train_loss): 1730: 2.34, 1750: 1.94, 1772: 2.08, 1797: 1.40.
+Generalización de la referencia (val_loss / train_loss): 1730: 2.40, 1750: 1.86, 1772: 2.09, 1797: 1.39.
 
 
 ### Igualdad de datos: 49 ventanas sanas para ambos — configuración B
@@ -50,16 +50,16 @@ Los dos modelos disponen solo de las 49 primeras ventanas sanas de cada condici�
 
 | rpm | modelo | semillas que aprenden | FAR en sanas no vistas | DR mín. bola / int. / ext. (%) |
 |---|---|---|---|---|
-| 1730 | OEM + radio local | — | 4/47 = 8.5% [2.4; 20.4] | 100.0 / 100.0 / 100.0 |
-| 1730 | específico (mismas ventanas) | 5 de 5 | 23.4–57.4% (mediana 31.9%; sobre 47 sanas) | 100.0 / 100.0 / 100.0 |
-| 1750 | OEM + radio local | — | 3/49 = 6.1% [1.3; 16.9] | 100.0 / 100.0 / 100.0 |
-| 1750 | específico (mismas ventanas) | 5 de 5 | 2.0–26.5% (mediana 6.1%; sobre 49 sanas) | 100.0 / 100.0 / 100.0 |
+| 1730 | OEM + radio local | — | 0/47 = 0.0% [0.0; 7.5] | 100.0 / 100.0 / 100.0 |
+| 1730 | específico (mismas ventanas) | 5 de 5 | 17.0–61.7% (mediana 34.0%; sobre 47 sanas) | 100.0 / 100.0 / 100.0 |
+| 1750 | OEM + radio local | — | 2/49 = 4.1% [0.5; 14.0] | 100.0 / 100.0 / 100.0 |
+| 1750 | específico (mismas ventanas) | 5 de 5 | 2.0–22.4% (mediana 6.1%; sobre 49 sanas) | 100.0 / 100.0 / 100.0 |
 | 1772 | OEM + radio local | — | 0/50 = 0.0% [0.0; 7.1] | 100.0 / 100.0 / 100.0 |
-| 1772 | específico (mismas ventanas) | 4 de 5 (1 no aprendió) | 4.0–18.0% (mediana 10.0%; sobre 50 sanas) | 100.0 / 100.0 / 100.0 |
+| 1772 | específico (mismas ventanas) | 4 de 5 (1 no aprendió) | 2.0–26.0% (mediana 10.0%; sobre 50 sanas) | 100.0 / 100.0 / 100.0 |
 | 1797 | OEM + radio local | — | n/d | 100.0 / 100.0 / 100.0 |
 | 1797 | específico (mismas ventanas) | 5 de 5 | n/d | 100.0 / 100.0 / 100.0 |
 
-Generalización del específico (val_loss / train_loss): 1.28–4.85.
+Generalización del específico (val_loss / train_loss): 1.28–4.16.
 
 
 ### Crudo frente a cociente, mismo tiempo de puesta en marcha
@@ -70,18 +70,18 @@ Puesta en marcha: las 49 primeras ventanas en órdenes (147 vueltas) o los mismo
 |---|---|---|---|---|
 | 1730 | crudo, local, todo el historial (referencia Tabla 7) | — | 2.2% (en la muestra de entrenamiento) | 100.0 / 100.0 / 100.0 |
 | 1730 | crudo, local, solo puesta en marcha | 204 | 100.0% (de 200) | 100.0 / 100.0 / 100.0 |
-| 1730 | cociente, local (aumentado sobre G) | 49 | 0.0–4.3% (de 47) | 100.0 / 100.0 / 100.0 |
-| 1730 | cociente, OEM (simulación) | 49 | 8.5% (de 47) | 100.0 / 100.0 / 100.0 |
+| 1730 | cociente, local (aumentado sobre G) | 49 | 0.0–6.4% (de 47) | 100.0 / 100.0 / 100.0 |
+| 1730 | cociente, OEM (simulación) | 49 | 0.0% (de 47) | 100.0 / 100.0 / 100.0 |
 | 1750 | crudo, local, todo el historial (referencia Tabla 7) | — | 2.2% (en la muestra de entrenamiento) | 100.0 / 100.0 / 100.0 |
 | 1750 | crudo, local, solo puesta en marcha | 201 | 100.0% (de 202) | 100.0 / 100.0 / 100.0 |
 | 1750 | cociente, local (aumentado sobre G) | 49 | 0.0% (de 49) | 100.0 / 100.0 / 100.0 |
-| 1750 | cociente, OEM (simulación) | 49 | 6.1% (de 49) | 100.0 / 100.0 / 100.0 |
+| 1750 | cociente, OEM (simulación) | 49 | 4.1% (de 49) | 100.0 / 100.0 / 100.0 |
 | 1772 | crudo, local, todo el historial (referencia Tabla 7) | — | 2.2% (en la muestra de entrenamiento) | 100.0 / 100.0 / 100.0 |
-| 1772 | crudo, local, solo puesta en marcha | 199 | 8.8–13.7% (de 204) | 100.0 / 100.0 / 100.0 |
-| 1772 | cociente, local (aumentado sobre G) | 49 | 0.0–6.0% (de 50) | 100.0 / 100.0 / 100.0 |
+| 1772 | crudo, local, solo puesta en marcha | 199 | 8.3–12.7% (de 204) | 100.0 / 100.0 / 100.0 |
+| 1772 | cociente, local (aumentado sobre G) | 49 | 2.0–8.0% (de 50) | 100.0 / 100.0 / 100.0 |
 | 1772 | cociente, OEM (simulación) | 49 | 0.0% (de 50) | 100.0 / 100.0 / 100.0 |
 | 1797 | crudo, local, todo el historial (referencia Tabla 7) | — | 2.5% (en la muestra de entrenamiento) | 100.0 / 100.0 / 100.0 |
-| 1797 | crudo, local, solo puesta en marcha | 196 | 33.3% (de 6) | 100.0 / 100.0 / 100.0 |
+| 1797 | crudo, local, solo puesta en marcha | 196 | 33.3–50.0% (de 6) | 100.0 / 100.0 / 100.0 |
 | 1797 | cociente, local (aumentado sobre G) | 49 | 0.0% (de 1) | 100.0 / 100.0 / 100.0 |
 | 1797 | cociente, OEM (simulación) | 49 | n/d | 100.0 / 100.0 / 100.0 |
 
@@ -94,11 +94,11 @@ Mismos ~5 s de puesta en marcha; solo cambia la descripción del grupo. Radio r_
 
 | nivel | grupo | FAR 1730 rpm | FAR 1750 rpm | FAR 1772 rpm | semillas | DR mín. bola / int. / ext. (%) |
 |---|---|---|---|---|---|---|
-| G0 | solo proyección | 23.4–57.4% (de 47) | 2.0–26.5% (de 49) | 4.0–18.0% (de 50); 1 no aprende | 5 | 100.0 / 100.0 / 100.0 |
-| G1 | + fase | 0.0–4.3% (de 47) | 0.0% (de 49) | 0.0–2.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
-| G2 | + ganancia | 4.3% (de 47) | 0.0% (de 49) | 4.0–12.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
-| G3 | + offset | 2.1–12.8% (de 47) | 0.0% (de 49) | 2.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
-| G4 | + ruido (grupo completo) | 0.0–4.3% (de 47) | 0.0% (de 49) | 0.0–6.0% (de 50) | 3 | 100.0 / 100.0 / 100.0 |
+| G0 | solo proyección | 17.0–61.7% (de 47) | 2.0–22.4% (de 49) | 2.0–26.0% (de 50); 1 no aprende | 5 | 100.0 / 100.0 / 100.0 |
+| G1 | + fase | 2.1% (de 47) | 0.0% (de 49) | 0.0–2.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
+| G2 | + ganancia | 4.3% (de 47) | 0.0% (de 49) | 4.0–10.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
+| G3 | + offset | 2.1–8.5% (de 47) | 0.0% (de 49) | 0.0–2.0% (de 50) | 2 | 100.0 / 100.0 / 100.0 |
+| G4 | + ruido (grupo completo) | 0.0–6.4% (de 47) | 0.0% (de 49) | 2.0–8.0% (de 50) | 3 | 100.0 / 100.0 / 100.0 |
 
 ### OEM en el cociente: variabilidad entre semillas (configuración B)
 
@@ -106,10 +106,10 @@ Mismo protocolo que la tabla de calibraciones; el operador se reentrena con cada
 
 | rpm | AUROC mín. por semilla | FAR certificada n=49 | DR mín. (%) | τ oráculo |
 |---|---|---|---|---|
-| 1730 | 1.000–1.000 | 2.1–8.5% (de 47) | 100.0–100.0 | 0.0558–0.0649 |
-| 1750 | 1.000–1.000 | 0.0–8.2% (de 49) | 100.0–100.0 | 0.0580–0.0671 |
-| 1772 | 1.000–1.000 | 0.0–0.0% (de 50) | 100.0–100.0 | 0.0680–0.0810 |
-| 1797 | 1.000–1.000 | n/d | 100.0–100.0 | 0.0871–0.0944 |
+| 1730 | 1.000–1.000 | 0.0–10.6% (de 47) | 100.0–100.0 | 0.0547–0.0625 |
+| 1750 | 1.000–1.000 | 0.0–6.1% (de 49) | 100.0–100.0 | 0.0560–0.0641 |
+| 1772 | 1.000–1.000 | 0.0–0.0% (de 50) | 100.0–100.0 | 0.0672–0.0757 |
+| 1797 | 1.000–1.000 | n/d | 100.0–100.0 | 0.0845–0.0925 |
 
 ### AUROC sano vs fallo (sin umbral)
 
@@ -150,64 +150,64 @@ Valores por velocidad; 1,00 = separación perfecta. Los descriptores triviales s
 
 | rpm | calibración | τ | FAR sanas (%) | n calib. | n sanas evaluadas | DR bola (%) | DR pista int. (%) | DR pista ext. (%) |
 |---|---|---|---|---|---|---|---|---|
-| 1730 | transferencia directa | 0.0452 | 3.47 | — | — | 100.00 | 100.00 | 100.00 |
-| 1730 | oráculo (todo el registro) | 0.0461 | 2.23 | — | — | 100.00 | 100.00 | 100.00 |
-| 1730 | online (regla de parada) | 0.0459 | 3.18 | 58 | 346 | 100.00 | 100.00 | 100.00 |
-| 1730 | certificado r_(k), n=49 | 0.0461 | 2.25 | 49 | 355 | 100.00 | 100.00 | 100.00 |
-| 1750 | transferencia directa | 0.0452 | 0.25 | — | — | 100.00 | 100.00 | 100.00 |
-| 1750 | oráculo (todo el registro) | 0.0436 | 2.23 | — | — | 100.00 | 100.00 | 100.00 |
-| 1750 | online (regla de parada) | 0.0429 | 3.79 | 61 | 343 | 100.00 | 100.00 | 100.00 |
-| 1750 | certificado r_(k), n=49 | 0.0435 | 2.54 | 49 | 355 | 100.00 | 100.00 | 100.00 |
-| 1772 | transferencia directa | 0.0452 | 2.73 | — | — | 100.00 | 100.00 | 100.00 |
-| 1772 | oráculo (todo el registro) | 0.0457 | 2.23 | — | — | 100.00 | 100.00 | 100.00 |
-| 1772 | online (regla de parada) | 0.0432 | 9.60 | 49 | 354 | 100.00 | 100.00 | 100.00 |
-| 1772 | certificado r_(k), n=49 | 0.0437 | 8.47 | 49 | 354 | 100.00 | 100.00 | 100.00 |
-| 1797 | transferencia directa | 0.0452 | 76.85 | — | — | 100.00 | 100.00 | 100.00 |
-| 1797 | oráculo (todo el registro) | 0.0578 | 2.46 | — | — | 98.28 | 100.00 | 100.00 |
-| 1797 | online (regla de parada) | 0.0567 | 4.55 | 49 | 154 | 98.77 | 100.00 | 100.00 |
-| 1797 | certificado r_(k), n=49 | 0.0570 | 3.25 | 49 | 154 | 98.52 | 100.00 | 100.00 |
+| 1730 | transferencia directa | 0.0452 | 5.69 | — | — | 100.00 | 100.00 | 100.00 |
+| 1730 | oráculo (todo el registro) | 0.0463 | 2.23 | — | — | 100.00 | 100.00 | 100.00 |
+| 1730 | online (regla de parada) | 0.0465 | 1.45 | 58 | 346 | 100.00 | 100.00 | 100.00 |
+| 1730 | certificado r_(k), n=49 | 0.0467 | 1.13 | 49 | 355 | 100.00 | 100.00 | 100.00 |
+| 1750 | transferencia directa | 0.0452 | 0.99 | — | — | 100.00 | 100.00 | 100.00 |
+| 1750 | oráculo (todo el registro) | 0.0435 | 2.23 | — | — | 100.00 | 100.00 | 100.00 |
+| 1750 | online (regla de parada) | 0.0431 | 2.62 | 61 | 343 | 100.00 | 100.00 | 100.00 |
+| 1750 | certificado r_(k), n=49 | 0.0437 | 1.69 | 49 | 355 | 100.00 | 100.00 | 100.00 |
+| 1772 | transferencia directa | 0.0452 | 3.23 | — | — | 100.00 | 100.00 | 100.00 |
+| 1772 | oráculo (todo el registro) | 0.0456 | 2.23 | — | — | 100.00 | 100.00 | 100.00 |
+| 1772 | online (regla de parada) | 0.0451 | 3.67 | 49 | 354 | 100.00 | 100.00 | 100.00 |
+| 1772 | certificado r_(k), n=49 | 0.0463 | 1.13 | 49 | 354 | 100.00 | 100.00 | 100.00 |
+| 1797 | transferencia directa | 0.0452 | 78.82 | — | — | 100.00 | 100.00 | 100.00 |
+| 1797 | oráculo (todo el registro) | 0.0589 | 2.46 | — | — | 98.52 | 100.00 | 100.00 |
+| 1797 | online (regla de parada) | 0.0595 | 0.65 | 49 | 154 | 98.28 | 100.00 | 100.00 |
+| 1797 | certificado r_(k), n=49 | 0.0596 | 0.65 | 49 | 154 | 98.28 | 100.00 | 100.00 |
 
 **B · corregida (Normal + DE48, proyección angular)**
 
 | rpm | calibración | τ | FAR sanas (%) | n calib. | n sanas evaluadas | DR bola (%) | DR pista int. (%) | DR pista ext. (%) |
 |---|---|---|---|---|---|---|---|---|
-| 1730 | transferencia directa | 0.1096 | 0.00 | — | — | 100.00 | 100.00 | 100.00 |
-| 1730 | oráculo (todo el registro) | 0.0579 | 2.08 | — | — | 100.00 | 100.00 | 100.00 |
-| 1730 | online (regla de parada) | 0.0567 | 14.29 | 75 | 21 | 100.00 | 100.00 | 100.00 |
-| 1730 | certificado r_(k), n=49 | 0.0571 | 8.51 | 49 | 47 | 100.00 | 100.00 | 100.00 |
-| 1750 | transferencia directa | 0.1096 | 0.00 | — | — | 99.66 | 100.00 | 100.00 |
-| 1750 | oráculo (todo el registro) | 0.0583 | 2.04 | — | — | 100.00 | 100.00 | 100.00 |
-| 1750 | online (regla de parada) | 0.0571 | 6.12 | 49 | 49 | 100.00 | 100.00 | 100.00 |
-| 1750 | certificado r_(k), n=49 | 0.0578 | 6.12 | 49 | 49 | 100.00 | 100.00 | 100.00 |
-| 1772 | transferencia directa | 0.1096 | 0.00 | — | — | 100.00 | 100.00 | 100.00 |
-| 1772 | oráculo (todo el registro) | 0.0680 | 2.02 | — | — | 100.00 | 100.00 | 100.00 |
-| 1772 | online (regla de parada) | 0.0710 | 0.00 | 56 | 43 | 100.00 | 100.00 | 100.00 |
-| 1772 | certificado r_(k), n=49 | 0.0722 | 0.00 | 49 | 50 | 100.00 | 100.00 | 100.00 |
-| 1797 | transferencia directa | 0.1096 | 0.00 | — | — | 99.34 | 100.00 | 100.00 |
-| 1797 | oráculo (todo el registro) | 0.0871 | 2.00 | — | — | 100.00 | 100.00 | 100.00 |
-| 1797 | online (regla de parada) | — | no converge | — | — | — | — |
-| 1797 | certificado r_(k), n=49 | 0.0876 | 0.00 | 49 | 1 | 100.00 | 100.00 | 100.00 |
+| 1730 | transferencia directa | 0.1090 | 0.00 | — | — | 100.00 | 100.00 | 100.00 |
+| 1730 | oráculo (todo el registro) | 0.0625 | 2.08 | — | — | 100.00 | 100.00 | 100.00 |
+| 1730 | online (regla de parada) | 0.0625 | 2.13 | 49 | 47 | 100.00 | 100.00 | 100.00 |
+| 1730 | certificado r_(k), n=49 | 0.0631 | 0.00 | 49 | 47 | 100.00 | 100.00 | 100.00 |
+| 1750 | transferencia directa | 0.1090 | 0.00 | — | — | 100.00 | 100.00 | 100.00 |
+| 1750 | oráculo (todo el registro) | 0.0632 | 2.04 | — | — | 100.00 | 100.00 | 100.00 |
+| 1750 | online (regla de parada) | 0.0616 | 12.24 | 49 | 49 | 100.00 | 100.00 | 100.00 |
+| 1750 | certificado r_(k), n=49 | 0.0631 | 4.08 | 49 | 49 | 100.00 | 100.00 | 100.00 |
+| 1772 | transferencia directa | 0.1090 | 0.00 | — | — | 100.00 | 100.00 | 100.00 |
+| 1772 | oráculo (todo el registro) | 0.0737 | 2.02 | — | — | 100.00 | 100.00 | 100.00 |
+| 1772 | online (regla de parada) | 0.0762 | 0.00 | 56 | 43 | 100.00 | 100.00 | 100.00 |
+| 1772 | certificado r_(k), n=49 | 0.0769 | 0.00 | 49 | 50 | 100.00 | 100.00 | 100.00 |
+| 1797 | transferencia directa | 0.1090 | 0.00 | — | — | 99.34 | 100.00 | 100.00 |
+| 1797 | oráculo (todo el registro) | 0.0907 | 2.00 | — | — | 100.00 | 100.00 | 100.00 |
+| 1797 | online (regla de parada) | 0.0907 | — | 50 | 0 | 100.00 | 100.00 | 100.00 |
+| 1797 | certificado r_(k), n=49 | 0.0922 | 0.00 | 49 | 1 | 100.00 | 100.00 | 100.00 |
 
 **C · control de cadena (Normal + DE12, proyección angular)**
 
 | rpm | calibración | τ | FAR sanas (%) | n calib. | n sanas evaluadas | DR bola (%) | DR pista int. (%) | DR pista ext. (%) |
 |---|---|---|---|---|---|---|---|---|
-| 1730 | transferencia directa | 0.1096 | 0.00 | — | — | 98.18 | 100.00 | 100.00 |
-| 1730 | oráculo (todo el registro) | 0.0579 | 2.08 | — | — | 100.00 | 100.00 | 100.00 |
-| 1730 | online (regla de parada) | 0.0567 | 14.29 | 75 | 21 | 100.00 | 100.00 | 100.00 |
-| 1730 | certificado r_(k), n=49 | 0.0571 | 8.51 | 49 | 47 | 100.00 | 100.00 | 100.00 |
-| 1750 | transferencia directa | 0.1096 | 0.00 | — | — | 99.74 | 100.00 | 100.00 |
-| 1750 | oráculo (todo el registro) | 0.0583 | 2.04 | — | — | 100.00 | 100.00 | 100.00 |
-| 1750 | online (regla de parada) | 0.0571 | 6.12 | 49 | 49 | 100.00 | 100.00 | 100.00 |
-| 1750 | certificado r_(k), n=49 | 0.0578 | 6.12 | 49 | 49 | 100.00 | 100.00 | 100.00 |
-| 1772 | transferencia directa | 0.1096 | 0.00 | — | — | 99.75 | 100.00 | 100.00 |
-| 1772 | oráculo (todo el registro) | 0.0680 | 2.02 | — | — | 100.00 | 100.00 | 100.00 |
-| 1772 | online (regla de parada) | 0.0710 | 0.00 | 56 | 43 | 100.00 | 100.00 | 100.00 |
-| 1772 | certificado r_(k), n=49 | 0.0722 | 0.00 | 49 | 50 | 100.00 | 100.00 | 100.00 |
-| 1797 | transferencia directa | 0.1096 | 0.00 | — | — | 97.52 | 100.00 | 100.00 |
-| 1797 | oráculo (todo el registro) | 0.0871 | 2.00 | — | — | 99.50 | 100.00 | 100.00 |
-| 1797 | online (regla de parada) | — | no converge | — | — | — | — |
-| 1797 | certificado r_(k), n=49 | 0.0876 | 0.00 | 49 | 1 | 99.50 | 100.00 | 100.00 |
+| 1730 | transferencia directa | 0.1090 | 0.00 | — | — | 98.18 | 100.00 | 100.00 |
+| 1730 | oráculo (todo el registro) | 0.0625 | 2.08 | — | — | 100.00 | 100.00 | 100.00 |
+| 1730 | online (regla de parada) | 0.0625 | 2.13 | 49 | 47 | 100.00 | 100.00 | 100.00 |
+| 1730 | certificado r_(k), n=49 | 0.0631 | 0.00 | 49 | 47 | 100.00 | 100.00 | 100.00 |
+| 1750 | transferencia directa | 0.1090 | 0.00 | — | — | 99.74 | 100.00 | 100.00 |
+| 1750 | oráculo (todo el registro) | 0.0632 | 2.04 | — | — | 100.00 | 100.00 | 100.00 |
+| 1750 | online (regla de parada) | 0.0616 | 12.24 | 49 | 49 | 100.00 | 100.00 | 100.00 |
+| 1750 | certificado r_(k), n=49 | 0.0631 | 4.08 | 49 | 49 | 100.00 | 100.00 | 100.00 |
+| 1772 | transferencia directa | 0.1090 | 0.00 | — | — | 100.00 | 100.00 | 100.00 |
+| 1772 | oráculo (todo el registro) | 0.0737 | 2.02 | — | — | 100.00 | 100.00 | 100.00 |
+| 1772 | online (regla de parada) | 0.0762 | 0.00 | 56 | 43 | 100.00 | 100.00 | 100.00 |
+| 1772 | certificado r_(k), n=49 | 0.0769 | 0.00 | 49 | 50 | 100.00 | 100.00 | 100.00 |
+| 1797 | transferencia directa | 0.1090 | 0.00 | — | — | 98.26 | 100.00 | 100.00 |
+| 1797 | oráculo (todo el registro) | 0.0907 | 2.00 | — | — | 100.00 | 100.00 | 100.00 |
+| 1797 | online (regla de parada) | 0.0907 | — | 50 | 0 | 100.00 | 100.00 | 100.00 |
+| 1797 | certificado r_(k), n=49 | 0.0922 | 0.00 | 49 | 1 | 99.75 | 100.00 | 100.00 |
 
 FAR: en el oráculo y la transferencia directa, sobre todas las sanas (incluidas las de calibración); en online, solo las posteriores a la convergencia; en el certificado, solo las posteriores a las 49 de calibración.
 
@@ -216,35 +216,35 @@ FAR: en el oráculo y la transferencia directa, sobre todas las sanas (incluidas
 
 | config | rpm | certificado n=49 | online (regla publicada) |
 |---|---|---|---|
-| A | 1730 | 8/355 = 2.3% [1.0; 4.4] | 11/346 = 3.2% [1.6; 5.6] (n calib. = 58) |
-| A | 1750 | 9/355 = 2.5% [1.2; 4.8] | 13/343 = 3.8% [2.0; 6.4] (n calib. = 61) |
-| A | 1772 | 30/354 = 8.5% [5.8; 11.9] | 34/354 = 9.6% [6.7; 13.2] (n calib. = 49) |
-| A | 1797 | 5/154 = 3.2% [1.1; 7.4] | 7/154 = 4.5% [1.8; 9.1] (n calib. = 49) |
-| B | 1730 | 4/47 = 8.5% [2.4; 20.4] | 3/21 = 14.3% [3.0; 36.3] (n calib. = 75) |
-| B | 1750 | 3/49 = 6.1% [1.3; 16.9] | 3/49 = 6.1% [1.3; 16.9] (n calib. = 49) |
+| A | 1730 | 4/355 = 1.1% [0.3; 2.9] | 5/346 = 1.4% [0.5; 3.3] (n calib. = 58) |
+| A | 1750 | 6/355 = 1.7% [0.6; 3.6] | 9/343 = 2.6% [1.2; 4.9] (n calib. = 61) |
+| A | 1772 | 4/354 = 1.1% [0.3; 2.9] | 13/354 = 3.7% [2.0; 6.2] (n calib. = 49) |
+| A | 1797 | 1/154 = 0.6% [0.0; 3.6] | 1/154 = 0.6% [0.0; 3.6] (n calib. = 49) |
+| B | 1730 | 0/47 = 0.0% [0.0; 7.5] | 1/47 = 2.1% [0.1; 11.3] (n calib. = 49) |
+| B | 1750 | 2/49 = 4.1% [0.5; 14.0] | 6/49 = 12.2% [4.6; 24.8] (n calib. = 49) |
 | B | 1772 | 0/50 = 0.0% [0.0; 7.1] | 0/43 = 0.0% [0.0; 8.2] (n calib. = 56) |
-| B | 1797 | 0/1 = 0.0% [0.0; 97.5] | no converge |
-| C | 1730 | 4/47 = 8.5% [2.4; 20.4] | 3/21 = 14.3% [3.0; 36.3] (n calib. = 75) |
-| C | 1750 | 3/49 = 6.1% [1.3; 16.9] | 3/49 = 6.1% [1.3; 16.9] (n calib. = 49) |
+| B | 1797 | 0/1 = 0.0% [0.0; 97.5] | — |
+| C | 1730 | 0/47 = 0.0% [0.0; 7.5] | 1/47 = 2.1% [0.1; 11.3] (n calib. = 49) |
+| C | 1750 | 2/49 = 4.1% [0.5; 14.0] | 6/49 = 12.2% [4.6; 24.8] (n calib. = 49) |
 | C | 1772 | 0/50 = 0.0% [0.0; 7.1] | 0/43 = 0.0% [0.0; 8.2] (n calib. = 56) |
-| C | 1797 | 0/1 = 0.0% [0.0; 97.5] | no converge |
+| C | 1797 | 0/1 = 0.0% [0.0; 97.5] | — |
 
 ### Deriva cronológica de las sanas (Spearman índice–residuo, operador compartido)
 
 | config | rpm | n sanas | ρ | p |
 |---|---|---|---|---|
-| A | 1730 | 404 | 0.207 | 2.7e-05 |
-| A | 1750 | 404 | 0.009 | 0.85 |
-| A | 1772 | 403 | 0.207 | 2.8e-05 |
-| A | 1797 | 203 | 0.025 | 0.72 |
-| B | 1730 | 96 | 0.112 | 0.28 |
-| B | 1750 | 98 | 0.256 | 0.011 |
-| B | 1772 | 99 | 0.100 | 0.33 |
-| B | 1797 | 50 | 0.285 | 0.045 |
-| C | 1730 | 96 | 0.112 | 0.28 |
-| C | 1750 | 98 | 0.256 | 0.011 |
-| C | 1772 | 99 | 0.100 | 0.33 |
-| C | 1797 | 50 | 0.285 | 0.045 |
+| A | 1730 | 404 | 0.100 | 0.044 |
+| A | 1750 | 404 | 0.039 | 0.44 |
+| A | 1772 | 403 | -0.044 | 0.38 |
+| A | 1797 | 203 | 0.033 | 0.64 |
+| B | 1730 | 96 | 0.110 | 0.29 |
+| B | 1750 | 98 | 0.215 | 0.034 |
+| B | 1772 | 99 | 0.060 | 0.55 |
+| B | 1797 | 50 | 0.272 | 0.056 |
+| C | 1730 | 96 | 0.110 | 0.29 |
+| C | 1750 | 98 | 0.215 | 0.034 |
+| C | 1772 | 99 | 0.060 | 0.55 |
+| C | 1797 | 50 | 0.272 | 0.056 |
 
 ### Descriptores triviales con calibración certificada (n=49)
 
@@ -363,9 +363,9 @@ Radio oráculo (p98 interpolado) calibrado con las sanas de la fila y aplicado a
 
 | calibrada en \ evaluada en | 1730 | 1750 | 1772 | 1797 |
 |---|---|---|---|---|
-| 1730 | 2.2 | 0.2 | 1.2 | 71.4 |
-| 1750 | 6.2 | 2.2 | 7.7 | 84.2 |
-| 1772 | 3.2 | 0.2 | 2.2 | 73.9 |
+| 1730 | 2.2 | 0.5 | 1.0 | 74.4 |
+| 1750 | 14.1 | 2.2 | 8.9 | 88.7 |
+| 1772 | 5.0 | 1.0 | 2.2 | 76.4 |
 | 1797 | 0.0 | 0.0 | 0.0 | 2.5 |
 
 **A · original (Normal 48k leída a 12k + DE12) — rms**
@@ -381,8 +381,8 @@ Radio oráculo (p98 interpolado) calibrado con las sanas de la fila y aplicado a
 
 | calibrada en \ evaluada en | 1730 | 1750 | 1772 | 1797 |
 |---|---|---|---|---|
-| 1730 | 2.1 | 3.1 | 92.9 | 100.0 |
-| 1750 | 1.0 | 2.0 | 92.9 | 100.0 |
+| 1730 | 2.1 | 5.1 | 93.9 | 100.0 |
+| 1750 | 0.0 | 2.0 | 91.9 | 100.0 |
 | 1772 | 0.0 | 0.0 | 2.0 | 100.0 |
 | 1797 | 0.0 | 0.0 | 0.0 | 2.0 |
 
@@ -399,8 +399,8 @@ Radio oráculo (p98 interpolado) calibrado con las sanas de la fila y aplicado a
 
 | calibrada en \ evaluada en | 1730 | 1750 | 1772 | 1797 |
 |---|---|---|---|---|
-| 1730 | 2.1 | 3.1 | 92.9 | 100.0 |
-| 1750 | 1.0 | 2.0 | 92.9 | 100.0 |
+| 1730 | 2.1 | 5.1 | 93.9 | 100.0 |
+| 1750 | 0.0 | 2.0 | 91.9 | 100.0 |
 | 1772 | 0.0 | 0.0 | 2.0 | 100.0 |
 | 1797 | 0.0 | 0.0 | 0.0 | 2.0 |
 
@@ -522,7 +522,7 @@ Radio oráculo (p98 interpolado) calibrado con las sanas de la fila y aplicado a
 | 1772 | 1772_OR@6_14_DE12.npz | 100 | 29.526 |  | 100.0 |
 | 1772 | 1772_OR@6_21_DE12.npz | 100 | 29.514 |  | 100.0 |
 | 1772 | 1772_OR@6_7_DE12.npz | 100 | 29.548 |  | 100.0 |
-| 1797 | 1797_B_14_DE12.npz | 101 | 29.930 |  | 98.0 |
+| 1797 | 1797_B_14_DE12.npz | 101 | 29.930 |  | 100.0 |
 | 1797 | 1797_B_21_DE12.npz | 101 | 29.938 |  | 100.0 |
 | 1797 | 1797_B_28_DE12.npz | 100 | 29.946 |  | 100.0 |
 | 1797 | 1797_B_7_DE12.npz | 101 | 29.930 |  | 100.0 |
