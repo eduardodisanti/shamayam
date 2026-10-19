@@ -307,6 +307,57 @@ class SharedFieldOperator:
             at += n
         return out
 
+    def save(self, directory):
+        """Write the weights, the scaler fitted on the synthetic windows and
+        the Monte Carlo threshold, so the frozen operator can be applied to
+        field data without retraining. See ConvAEResidualOperator.save."""
+        import json
+        from pathlib import Path
+        from ..conv_autoencoder import _file_sha256, _runtime
+        if self.ae_ is None:
+            raise RuntimeError("operator not fitted")
+        d = Path(directory)
+        d.mkdir(parents=True, exist_ok=True)
+        w = d / "operator.weights.h5"
+        self.ae_.save_weights(str(w))
+        np.savez(d / "scaler.npz", mean=self.scaler_.mean_,
+                 scale=self.scaler_.scale_, var=self.scaler_.var_)
+        meta = {"class": "SharedFieldOperator", "archive": self.archive,
+                "seed": self.seed, "sig_len": self.sig_len,
+                "latent_dim": self.latent_dim, "tau_mc": self.tau_mc_,
+                "history": self.history_, "runtime": _runtime(),
+                "weights_sha256": _file_sha256(w),
+                "scaler_sha256": _file_sha256(d / "scaler.npz")}
+        (d / "operator.json").write_text(json.dumps(meta, indent=1))
+        return d
+
+    @classmethod
+    def load(cls, directory):
+        """Rebuild the frozen operator from `save` output; no training."""
+        import json
+        from pathlib import Path
+        from sklearn.preprocessing import StandardScaler
+        from ..conv_autoencoder import _file_sha256, build_autoencoder
+        d = Path(directory)
+        meta = json.loads((d / "operator.json").read_text())
+        for f, key in (("operator.weights.h5", "weights_sha256"),
+                       ("scaler.npz", "scaler_sha256")):
+            if _file_sha256(d / f) != meta[key]:
+                raise ValueError(f"{d / f}: digest does not match operator.json")
+        op = cls(archive=meta["archive"], seed=meta["seed"],
+                 sig_len=meta["sig_len"], latent_dim=meta["latent_dim"])
+        seed_everything(op.seed)
+        op.ae_, op.encoder_ = build_autoencoder(op.sig_len, op.latent_dim)
+        op.ae_.load_weights(str(d / "operator.weights.h5"))
+        with np.load(d / "scaler.npz") as z:
+            op.scaler_ = StandardScaler()
+            op.scaler_.mean_, op.scaler_.scale_ = z["mean"], z["scale"]
+            op.scaler_.var_ = z["var"]
+            op.scaler_.n_features_in_ = op.scaler_.mean_.shape[0]
+        op.tau_mc_ = meta["tau_mc"]
+        op.history_ = meta["history"]
+        return op
+
     def describe_training(self):
         if self.history_ is None:
             return "not fitted"

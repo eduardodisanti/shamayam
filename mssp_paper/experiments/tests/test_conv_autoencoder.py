@@ -96,6 +96,20 @@ def test_training_is_reproducible_under_the_seed(monkeypatch):
     assert np.array_equal(a.residual(X[:32]), b.residual(X[:32]))
 
 
+@pytest.mark.slow
+def test_saved_operator_reloads_to_identical_residuals(monkeypatch, tmp_path):
+    """`save` then `load` gives back the same operator: same residuals bit
+    for bit on the same machine, with no training involved in the load."""
+    import mssp_repro.conv_autoencoder as cae
+    monkeypatch.setattr(cae, "assert_operator_learned", lambda *a, **k: None)
+    X = _windows(200, 0)
+    a = ConvAEResidualOperator(seed=42, epochs=2).fit(X)
+    a.save(tmp_path / "op")
+    b = ConvAEResidualOperator.load(tmp_path / "op")
+    assert b.history_ == a.history_
+    assert np.array_equal(a.residual(X[:32]), b.residual(X[:32]))
+
+
 # ---------------------------------------------------------------------
 # Behaviour
 # ---------------------------------------------------------------------

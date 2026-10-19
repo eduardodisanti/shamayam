@@ -857,6 +857,9 @@ def main():
                          "longer help (default 1e-7)")
     ap.add_argument("--a2-train-windows", type=int, default=4000,
                     help="nominal windows used to fit the A2 operator")
+    ap.add_argument("--save-operator", default=None, metavar="DIR",
+                    help="also write the trained A2 operator (weights and "
+                         "metadata) to DIR; results are unaffected")
     args = ap.parse_args()
 
     if args.quick:
@@ -944,6 +947,9 @@ def main():
                 lr_patience=args.lr_patience, min_lr=args.min_lr,
             ).fit(_sim_windows(_sim, "healthy", args.a2_train_windows,
                                seed=SEED + 41), verbose=0)
+            if args.save_operator:
+                shared.save(args.save_operator)
+                out.write(f"A2 operator saved to {args.save_operator}\n")
             DATA["training"] = dict(shared.history_)
             DATA["training"]["summary"] = shared.describe_training()
             DATA["training"]["parameters"] = int(shared.n_parameters)

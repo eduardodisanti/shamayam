@@ -430,3 +430,71 @@ class ConvAEResidualOperator:
     @property
     def n_parameters(self):
         return int(self._ae.count_params()) if self._ae is not None else None
+
+    # -- persistence ---------------------------------------------------
+    #
+    # Training is bit-identical only within one TensorFlow build on CPU; on
+    # another build or device the same seed gives a different operator, much
+    # as another seed would. Saving the trained weights is what lets a reader
+    # apply THIS operator elsewhere. Inference is not chaotic the way training
+    # is, so residuals computed from loaded weights on another platform agree
+    # with the reference to rounding.
+
+    def save(self, directory):
+        """Write `operator.weights.h5` and `operator.json` (architecture,
+        seed, training history, runtime, weights digest) into `directory`."""
+        import json
+        from pathlib import Path
+        if self._ae is None:
+            raise RuntimeError("operator not fitted")
+        d = Path(directory)
+        d.mkdir(parents=True, exist_ok=True)
+        w = d / "operator.weights.h5"
+        self._ae.save_weights(str(w))
+        meta = {"class": "ConvAEResidualOperator", "sig_len": self._sig_len,
+                "latent_dim": self.latent_dim, "seed": self.seed,
+                "parameters": self.n_parameters, "history": self.history_,
+                "runtime": _runtime(), "weights_sha256": _file_sha256(w)}
+        (d / "operator.json").write_text(json.dumps(meta, indent=1))
+        return d
+
+    @classmethod
+    def load(cls, directory):
+        """Rebuild the architecture and load saved weights; no training."""
+        import json
+        from pathlib import Path
+        d = Path(directory)
+        meta = json.loads((d / "operator.json").read_text())
+        w = d / "operator.weights.h5"
+        if _file_sha256(w) != meta["weights_sha256"]:
+            raise ValueError(f"{w}: digest does not match operator.json")
+        op = cls(latent_dim=meta["latent_dim"], seed=meta["seed"])
+        configure(op.seed)
+        op._sig_len = int(meta["sig_len"])
+        op._ae, op._enc = build_autoencoder(op._sig_len, op.latent_dim)
+        op._ae.load_weights(str(w))
+        op.history_ = meta["history"]
+        return op
+
+
+def _file_sha256(path):
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _runtime():
+    import platform
+    import sys
+    try:
+        import tensorflow as tf
+        tf_version = tf.__version__
+        gpus = tf.config.list_physical_devices("GPU")
+    except Exception:                                  # pragma: no cover
+        tf_version, gpus = "absent", []
+    return {"python": sys.version.split()[0], "platform": platform.platform(),
+            "numpy": np.__version__, "tensorflow": tf_version,
+            "device": "GPU" if gpus else "CPU"}

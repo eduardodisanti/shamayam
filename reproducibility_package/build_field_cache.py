@@ -72,6 +72,9 @@ def main():
                     help="use only the first N recordings (smoke test; the "
                          "result is NOT a valid cache)")
     ap.add_argument("--epochs", type=int, default=100)
+    ap.add_argument("--save-operator", default=None, metavar="DIR",
+                    help="also write the trained shared operator (weights, "
+                         "scaler, threshold) to DIR; the cache is unaffected")
     args = ap.parse_args()
 
     root = locate(args.ims_root)
@@ -90,6 +93,9 @@ def main():
             "the operator did not learn, so no residual computed from it "
             "would mean anything.\nRun verify_operator.py to diagnose.")
     print(f"    {op.describe_training()}")
+    if args.save_operator:
+        op.save(args.save_operator)
+        print(f"    operator saved to {args.save_operator}")
 
     print(f"\n  scoring recordings...")
     res = compute_ims_residuals(op, root, max_recordings=args.recordings,

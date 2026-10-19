@@ -46,6 +46,7 @@ PUBLISHED = {"1": (0.014161, 73.83), "2": (0.018245, 45.50),
              "3": (0.022167, 14.00), "4": (0.010083, 53.00)}
 
 
+@pytest.mark.reference_exact
 @pytest.mark.parametrize("bearing", sorted(PUBLISHED))
 def test_published_arm_reproduces_table_10(ims_results, bearing):
     tau, lead = PUBLISHED[bearing]
