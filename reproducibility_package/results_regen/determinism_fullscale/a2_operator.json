@@ -1,0 +1,28 @@
+{
+ "class": "ConvAEResidualOperator",
+ "sig_len": 1200,
+ "latent_dim": 16,
+ "seed": 42,
+ "parameters": 847601,
+ "history": {
+  "epochs_run": 585,
+  "epochs_budget": 5000,
+  "stop_reason": "early_stopping",
+  "monitor": "val_loss",
+  "best_loss": 0.0023844498209655285,
+  "final_loss": 0.0023844989482313395,
+  "best_epoch": 545,
+  "initial_lr": 0.001,
+  "final_lr": 2.4414063659605745e-07,
+  "lr_reductions": 12,
+  "reached_lr_floor": false
+ },
+ "runtime": {
+  "python": "3.12.15",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "numpy": "2.5.4",
+  "tensorflow": "2.21.0",
+  "device": "CPU"
+ },
+ "weights_sha256": "aeff86a7aa79c4bc186c3eb6fd2577e5e7cfe3e77d5d8a6f92a8e49ffe45bb6f"
+}

@@ -1,0 +1,7 @@
+commit 2a2398a0806e42ca68e98798549f3c26d58bd867
+data.json (sin _meta): IDENTICO
+layer_a_results.txt (sin fecha): IDENTICO
+caché de IMS (SHA-256 de los residuos): IDENTICA  4ccfd394a56e649a / 4ccfd394a56e649a
+tau_MC del operador de IMS: IDENTICO
+
+RESULTADO: todo idéntico: el entrenamiento en CPU es determinista a escala completa

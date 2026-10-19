@@ -2127,7 +2127,12 @@ so early stopping selects for reconstructing nominal behaviour and cannot
 consult a fault.
 
 One operator, trained once, is used for every experiment in this subsection.
-Deterministic kernels are enabled throughout.
+Deterministic kernels are enabled throughout and all training runs on CPU,
+where it is reproducible bit for bit: retraining the operators of this paper
+in the recorded environment reproduces every residual, radius and table
+exactly. On another platform the same seed yields a different operator, as a
+different seed would, and Section~\ref{subsec:results_nasa} measures how much
+that moves the results.
 
 \paragraph{End-to-end membership.}
 With the radius certified from \(120\) nominal windows, the held-out
