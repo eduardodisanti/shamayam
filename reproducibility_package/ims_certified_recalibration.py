@@ -3,11 +3,13 @@
 NASA IMS: re-commissioning from the committed residual cache with certified
 radii.
 
-The published Table 10 commissioned each bearing with the interpolated
+Table 10 of the draft commissioned each bearing with the interpolated
 quantile and an adaptive stopping rule (the A1 configuration), which does not
 carry the guarantee of the coverage proposition. This script keeps the frozen
-shared operator, the residuals and the 8-of-10 persistence rule exactly as
-published, and replaces only the radius:
+shared operator, the residuals and the 8-of-10 persistence rule of the
+reference run, and replaces only the radius. (The key "published" in the
+results is kept for compatibility; since D15 it is the draft procedure applied
+to the CPU reference cache, not the run published before D15.)
 
   published     interpolated quantile, adaptive stopping (reproduces Table 10)
   r_(k), n=49   coverage >= 0.98 in expectation, the commissioning floor
@@ -129,7 +131,7 @@ def to_markdown(res):
          "`tests/test_generated_notes.py` comprueba que coincide byte a byte.*",
          "",
          f"Operador compartido, residuos y regla de persistencia "
-         f"({Q} de {P}) idénticos a los publicados; solo cambia el radio. "
+         f"({Q} de {P}) idénticos a los de la referencia; solo cambia el radio. "
          "La FAR se mide en los registros sanos entre el final de la "
          f"calibración y el registro {FIELD_WARMUP_RECORDINGS}. "
          "Solo el bearing 1 falla (pista exterior); en 2–4 la salida es de "
@@ -140,7 +142,7 @@ def to_markdown(res):
     for b, r in res["bearings"].items():
         tag = f"{b} (fallo)" if int(b) == res["failed_bearing"] else b
         p = r["published"]
-        L.append(f"| {tag} | publicado (cuantil interpolado, parada adaptativa) "
+        L.append(f"| {tag} | procedimiento del borrador (cuantil interpolado, parada adaptativa) "
                  f"| {p['n']} | — | {fmt(p['tau'], 6)} | {fmt(p['far'])} | "
                  f"{p['departure']} | {fmt(p['lead_hours'])} | "
                  f"{fmt(p['exceedance_post'])} |")

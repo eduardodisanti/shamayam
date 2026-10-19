@@ -1,5 +1,7 @@
 # IMS: la prueba exigente de viabilidad, recalibrada con radios certificados
 
+> **Aviso (19-oct, D15):** las cifras de esta nota son de la ejecución publicada (GPU Metal). Las de la referencia en CPU están en [`tablas_ims_certificado.md`](tablas_ims_certificado.md), que se genera desde `results/`. La lectura no cambia salvo donde se marca *Corregido*; por ejemplo, el bearing 4 con radio máximo sale en 707 (45,83 h) en lugar de 705 (46,17 h).
+
 *Rama `mssp`, 11-oct-2026. Sin tablas en esta nota: todas están en
 [`tablas_ims_certificado.md`](tablas_ims_certificado.md), generadas por
 `reproducibility_package/ims_certified_recalibration.py` desde la caché de
@@ -24,6 +26,7 @@ del radio. Si alguna cifra del texto difiere de la tabla, manda la tabla.*
 2. **El bearing 1, el único fallo real, es robusto al radio.**
    - Con los cinco radios, sale de lo normal en el **registro 539**, 73,83 h antes del final del registro activo, y no vuelve a entrar (100% de excedencias después).
    - En los registros sanos entre la calibración y el 200 no hay ninguna falsa alarma (0/151, 0/101, 0/51).
+   - **Corregido 19-oct (D15, D16):** esto era de la ejecución publicada en GPU Metal y no se sostiene. Con la referencia en CPU las falsas alarmas son 4/151, 1/101 y 2/51 (r₍ₖ₎ con n = 49 / 99 / 149) y 1/51 con tolerancia; esperadas según la garantía: 3,0 / 2,0 / 1,0 / 0,3, con P(≥ observado) = 0,32 / 0,76 / 0,27 / 0,26. Se reportan como recuentos con el esperado, sin adjetivos. Lo robusto es la salida en 539, igual con todos los radios y en las dos plataformas.
    - El resultado de viabilidad en IMS **no dependía del estimador A1**: se mantiene igual con la garantía certificada.
 3. **Bearings 2 y 3:** salidas prácticamente iguales a las publicadas, con diferencias de 3–4 registros con r₍ₖ₎, n = 149.
 4. **El bearing 4 es el que muestra que el radio importa.**
