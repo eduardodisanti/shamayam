@@ -71,6 +71,21 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,calc}
 
+% ---- Review markup (Claude, 2026-10-23) -----------------------------------
+% Every change proposed by Claude is marked in blue:
+%   \added[id=CL]{...}, \deleted[id=CL]{...}, \replaced[id=CL]{new}{old}
+%   for inline edits; \chcomment[id=CL]{...} for notes and questions
+%   (the class already defines \comment, hence the `ch' prefix; comments
+%   are typeset as footnotes because the margins of cas-sc are too narrow);
+%   the environment `reviewadded' for new multi-paragraph blocks (theorems,
+%   proofs, tables), which \added cannot wrap.
+% \listofchanges (after \maketitle) lists every marked change.
+% To accept all changes: replace [draft] by [final] below, and redefine
+% `reviewadded' as \newenvironment{reviewadded}{}{}.
+\usepackage[draft, commandnameprefix=ifneeded, commentmarkup=footnote]{changes}
+\definechangesauthor[name={Claude}, color=blue]{CL}
+\newenvironment{reviewadded}{\par\color{blue}}{\par}
+
 \newtheorem{definition}{Definition}
 \newtheorem{proposition}{Proposition}
 \newtheorem{corollary}{Corollary}
@@ -130,9 +145,9 @@ University of Colorado Boulder, Boulder, CO, USA}
 \begin{highlights}
 \item Diagnosis is posed as inverse recovery over a nuisance-induced quotient space
 \item The per-asset radius is a distribution-free tolerance limit on the residual
-\item Coverage is exact, and 49 nominal observations certify a boundary at 98\%
+\item \replaced[id=CL]{Commissioning with 49, 99 or 149 observations yields three explicit guarantees}{Coverage is exact, and 49 nominal observations certify a boundary at 98\%}
 \item Equal coverage does not certify a representation: two operators differ \adqRatioBetween-fold
-\item Four run-to-failure bearings warn \nasaLeadLo--\nasaLeadHi{} h from radii fixed after ~50 records
+\item \replaced[id=CL]{The only documented IMS fault is flagged about 74 h before failure by all radii}{Four run-to-failure bearings warn \nasaLeadLo--\nasaLeadHi{} h from radii fixed after ~50 records}\chcomment[id=CL]{Highlight 3: the abstract now presents the commissioning menu of Section 7 (D4). Highlight 5: only bearing 1 of IMS has a documented fault; the departures of bearings 2--4 are not lead times. The figure 74 h is robust across radii and platforms (notes 03, D16); consider a macro generated from results/ before submission. Both highlights are under 85 characters.}
 \end{highlights}
 
 \begin{abstract}
@@ -152,10 +167,19 @@ variability makes the nominal region relatively compact, implying a finite local
 extent that can be estimated from nominal commissioning observations.
 
 We formulate this estimation as a distribution-free tolerance-limit problem,
-providing an explicit finite-sample commissioning requirement. For a target
+providing an explicit finite-sample commissioning requirement. \replaced[id=CL]{For a
+target nominal coverage of 98\%, three commissioning lengths carry distinct
+guarantees: 49 exchangeable nominal observations are the minimum for coverage
+in expectation, 99 observations attain the same guarantee with a radius that is
+no longer the sample maximum, and 149 observations certify that the frozen
+radius itself covers at least 98\% of nominal behaviour with confidence 0.95.
+The same order statistic also determines how many contaminated commissioning
+observations the radius tolerates. The choice among these lengths is left to
+the operator as a trade-off between commissioning time and false-alarm
+risk.}{For a target
 nominal coverage of 98\%, 49 exchangeable nominal observations suffice to
 certify the local boundary, although larger commissioning sets provide
-progressively finer order-statistic resolution.
+progressively finer order-statistic resolution.}
 
 Experiments on the CWRU and NASA IMS bearing datasets demonstrate the resulting
 generic-to-local deployment procedure using a single shared operator across
@@ -163,7 +187,15 @@ previously unseen assets, without fault labels or per-asset representation
 learning. The results separate two roles that are often conflated in anomaly
 detection: the shared model captures transferable nominal geometry, whereas
 local self-calibration determines how that geometry is metrically realized on
-each physical asset.
+each physical asset. \added[id=CL]{Classical condition indicators calibrated by
+the same rule reach comparable detection, which indicates that deployability
+derives from the calibration scheme rather than from the particular
+representation.}\chcomment[id=CL]{Abstract, last paragraph: the dataset list
+(CWRU, NASA IMS) should be extended to Ottawa and XJTU-SY once Section 9
+integrates them; it is left unchanged until then, as agreed in note 02 (abstract
+last). The added sentence states early what notes 01 and 05 establish (RMS and
+envelope with the same calibration detect as the autoencoder does on CWRU and
+IMS), so that no reviewer finds it on their own.}
 
 \end{abstract}
 
@@ -173,6 +205,9 @@ Quotient spaces \sep Nuisance invariance \sep Predictive maintenance
 \end{keywords}
  
 \maketitle
+
+% Review markup: remove together with the [draft] option of `changes'.
+\listofchanges
 
 
 % ============================================================================
@@ -1172,7 +1207,7 @@ This structural limitation strictly delineates the scope of fault classification
 
 Sections~\ref{sec:observation_model}--\ref{sec:emergent_classification} mathematically characterize the diagnostic object: a compact, connected nominal region \(\Mnominal\) residing within a quotient topological space, where an anomaly is formally defined as the failure of set membership. However, this theoretical characterization does not inherently constitute an executable algorithm. Specifically, two computational quantities must be defined before the theoretical membership test \eqref{eq:membership} can be evaluated on empirical data: a computable surrogate for the abstract distance to \(\Mnominal\), and a strictly calibrated decision boundary defined upon that surrogate.
 
-This section operationalizes both requirements. Section~\ref{subsec:representation_operator} defines the representation operator and formalizes the reconstruction residual as the computable distance surrogate. Section~\ref{subsec:scale_transfer} demonstrates that, as a direct consequence of Proposition~\ref{prop:quotient_diagnosis}, the functional representation exhibits structural transferability across physical assets, whereas the numerical scale of the residual strictly does not; this fundamental asymmetry dictates that a singular global decision boundary is analytically invalid. Finally, Sections~\ref{subsec:mc_calibration} and \ref{subsec:distribution_free} derive the local calibration procedure and its exact finite-sample guarantees. Specifically, the central novel result (Proposition~\ref{prop:coverage}) establishes that an operational radius formulated as a specific order statistic of nominal commissioning residuals achieves exact prescribed coverage entirely independent of the underlying residual distribution, while Corollary~\ref{cor:min_commissioning} explicitly translates this statistical bound into a deterministic minimum commissioning duration.
+This section operationalizes both requirements. Section~\ref{subsec:representation_operator} defines the representation operator and formalizes the reconstruction residual as the computable distance surrogate. Section~\ref{subsec:scale_transfer} demonstrates that, as a direct consequence of Proposition~\ref{prop:quotient_diagnosis}, the functional representation exhibits structural transferability across physical assets, whereas the numerical scale of the residual strictly does not; this fundamental asymmetry dictates that a singular global decision boundary is analytically invalid. Finally, Sections~\ref{subsec:mc_calibration} and \ref{subsec:distribution_free} derive the local calibration procedure and its exact finite-sample guarantees. \replaced[id=CL]{The coverage statement itself (Proposition~\ref{prop:coverage}) is the classical distribution-free tolerance limit of \citet{wilks1941}; the contribution of this section is to identify the local operational radius with that limit and to derive from it the quantities that commissioning requires: the minimum commissioning length (Corollary~\ref{cor:min_commissioning}), the range in which the radius is the sample maximum (Corollary~\ref{cor:degenerate_range}), the length at which the frozen radius is certified with confidence (Corollary~\ref{cor:tolerance}), and the number of contaminated commissioning observations the radius tolerates (Corollary~\ref{cor:contamination}). Together they define a menu of commissioning lengths from which the operator selects (Section~\ref{subsec:commissioning_menu}).}{Specifically, the central novel result (Proposition~\ref{prop:coverage}) establishes that an operational radius formulated as a specific order statistic of nominal commissioning residuals achieves exact prescribed coverage entirely independent of the underlying residual distribution, while Corollary~\ref{cor:min_commissioning} explicitly translates this statistical bound into a deterministic minimum commissioning duration.}
 
 Throughout this section we index physical assets, or more generally
 independently commissioned monitoring environments, by \(k\).
@@ -1636,7 +1671,7 @@ the required level. Since \(n\) is an integer the condition is
 \(n\ge 49\), and \(k_\alpha=\lceil 0.98\cdot 50\rceil = 49\).
 \end{proof}
 
-Corollary~\ref{cor:min_commissioning} establishes a strict, non-negotiable information-theoretic floor rather than a heuristic hyperparameter choice: utilizing fewer than 49 nominal observations, it is mathematically impossible to certify a \(98\%\) nominal-coverage radius derived exclusively from an asset's local data stream via any distribution-free procedure, invariant to the chosen statistical estimator.
+\replaced[id=CL]{Corollary~\ref{cor:min_commissioning} establishes a floor rather than a tuning parameter: with fewer than 49 nominal observations, no order statistic of the asset's local sample attains \(98\%\) coverage without distributional assumptions, and the procedure returns no finite radius.}{Corollary~\ref{cor:min_commissioning} establishes a strict, non-negotiable information-theoretic floor rather than a heuristic hyperparameter choice: utilizing fewer than 49 nominal observations, it is mathematically impossible to certify a \(98\%\) nominal-coverage radius derived exclusively from an asset's local data stream via any distribution-free procedure, invariant to the chosen statistical estimator.}\chcomment[id=CL]{The original claim (impossible ``via any distribution-free procedure, invariant to the chosen estimator'') is stronger than what the proof shows, which concerns order statistics of the sample. The general statement is true for symmetric deterministic procedures, but it requires its own argument or a citation; the revised sentence claims only what is proved.}
 
 Furthermore, this theoretical floor induces a structural consequence that governs the variance of the resulting estimator, substantially impacting operational stability.
 
@@ -1661,7 +1696,117 @@ obtained only from \(n\ge 99\).
 \(\alpha(n+1)<2\), that is \(n<2/\alpha-1\).
 \end{proof}
 
-Corollary~\ref{cor:degenerate_range} establishes that for all commissioning lengths situated within a discrete interval spanning approximately twice the width of the theoretical floor, the statistically certified radius is exclusively the sample maximum. As the extremal order statistic, the sample maximum intrinsically exhibits the maximal variance among all valid quantiles. The operational implication significantly constrains deployment: while satisfying \eqref{eq:min_n} is mathematically necessary, it is analytically insufficient for deriving a stable threshold. Selecting a commissioning length marginally above the theoretical floor successfully purchases statistical coverage, but incurs the structural penalty of maximal estimator variance. Rigorous Monte Carlo evaluation across six diverse empirical residual distributions (Section~\ref{sec:results}) demonstrates that the standard deviation of \(\tau_k^\star\) remains asymptotically flat across the degenerate interval \(n\in[49,98]\). Variance reduction is only initiated at the first valid interior order statistic (\(n=99\)), yielding a variance decrease by a factor of approximately \(1.6\), and further decreasing by a factor of \(2.5\) at \(n=200\). Consequently, for a strict target coverage of \(98\%\), the rigorous operational recommendation necessitates \(n\ge 99\) rather than the minimal bound \(n\ge 49\).
+Corollary~\ref{cor:degenerate_range} establishes that for all commissioning lengths situated within a discrete interval spanning approximately twice the width of the theoretical floor, the statistically certified radius is exclusively the sample maximum. As the extremal order statistic, the sample maximum intrinsically exhibits the maximal variance among all valid quantiles. The operational implication significantly constrains deployment: while satisfying \eqref{eq:min_n} is mathematically necessary, it is analytically insufficient for deriving a stable threshold. Selecting a commissioning length marginally above the theoretical floor successfully purchases statistical coverage, but incurs the structural penalty of maximal estimator variance. \replaced[id=CL]{Monte Carlo}{Rigorous Monte Carlo} evaluation across six diverse empirical residual distributions (Section~\ref{sec:results}) demonstrates that the standard deviation of \(\tau_k^\star\) remains asymptotically flat across the degenerate interval \(n\in[49,98]\). Variance reduction is only initiated at the first valid interior order statistic (\(n=99\)), yielding a \replaced[id=CL]{decrease of the standard deviation}{variance decrease} by a factor of approximately \(1.6\)\chcomment[id=CL]{Table~\ref{tab:variance} reports standard deviations: 0.4987 to 0.3061 is a factor of 1.63 in standard deviation (2.65 in variance), and 0.4987 to 0.2012 is 2.48. These two factors are written by hand; per D14 they should become macros from make\_macros.py.}, and further decreasing by a factor of \(2.5\) at \(n=200\). \replaced[id=CL]{Consequently, at a target coverage of \(98\%\), a commissioning length of \(n\ge 99\) is preferable to the minimal bound \(n\ge 49\) whenever the stability of the frozen radius matters more than the commissioning time; Section~\ref{subsec:commissioning_menu} states this choice explicitly.}{Consequently, for a strict target coverage of \(98\%\), the rigorous operational recommendation necessitates \(n\ge 99\) rather than the minimal bound \(n\ge 49\).}
+
+\chcomment[id=CL]{New block (Corollaries~\ref{cor:tolerance} and~\ref{cor:contamination}): note 02, \S7 and D4; note 03, ``Tres longitudes, dos tipos de garantía''; note 05, \S2. Both proofs are elementary; please check them.}
+\begin{reviewadded}
+Proposition~\ref{prop:coverage} is a statement in expectation over
+commissioning samples: the probability \(k_\alpha/(n+1)\) averages over the
+randomness of the radius itself. Once \(\tau_k^\star\) is frozen, the quantity
+that governs operation is its realized coverage \(\kappa_k=F_k(\tau_k^\star)\), where
+\(F_k\) denotes the nominal residual distribution function of asset \(k\).
+This is a random variable whose dispersion Proposition~\ref{prop:coverage}
+does not control. The following corollary gives its law under the stronger
+assumption of independence.
+
+\begin{corollary}[Coverage of the frozen radius]
+\label{cor:tolerance}
+Let the commissioning residuals \(\residual_1,\ldots,\residual_n\) be
+independent and identically distributed with continuous distribution function
+\(F_k\), and let \(\tau_k^\star=\residual_{(j)}\) for some
+\(j\in\{1,\ldots,n\}\). Then the realized coverage
+\(\kappa_k=F_k(\tau_k^\star)\) follows the Beta distribution with parameters
+\((j,\,n-j+1)\), and for every \(\beta\in(0,1)\)
+\begin{equation}
+\Prob\bigl(\kappa_k\ge\beta\bigr)=\Prob\bigl(B\le j-1\bigr),
+\qquad B\sim\mathrm{Binomial}(n,\beta).
+\label{eq:tolerance_confidence}
+\end{equation}
+In particular, the sample maximum (\(j=n\)) covers at least a fraction
+\(\beta\) of nominal behaviour with probability at least \(\gamma\) if and
+only if
+\begin{equation}
+n\;\ge\;\frac{\ln(1-\gamma)}{\ln\beta},
+\label{eq:wilks_n}
+\end{equation}
+which at \(\beta=0.98\) and \(\gamma=0.95\) requires \(n\ge 149\).
+\end{corollary}
+
+\begin{proof}
+Since \(F_k\) is continuous, the variables \(U_i=F_k(\residual_i)\) are
+independent and uniformly distributed on \((0,1)\), and since \(F_k\) is
+non-decreasing, \(F_k(\residual_{(j)})=U_{(j)}\) almost surely. The \(j\)-th
+order statistic of \(n\) independent uniform variables follows the Beta
+distribution with parameters \((j,n-j+1)\). The event \(\{U_{(j)}\ge\beta\}\)
+occurs if and only if at most \(j-1\) of the \(U_i\) fall below \(\beta\), and
+the number of those that do is Binomial\((n,\beta)\); this gives
+\eqref{eq:tolerance_confidence}. For \(j=n\) the right-hand side equals
+\(1-\beta^n\), and \(1-\beta^n\ge\gamma\) rearranges to \eqref{eq:wilks_n}. At
+\(\beta=0.98\) and \(\gamma=0.95\) the bound equals \(148.28\), hence
+\(n\ge149\).
+\end{proof}
+
+Corollary~\ref{cor:tolerance} is the one-sided tolerance limit of
+\citet{wilks1941} in its original form. Independence is used only through the
+probability integral transform; for an exchangeable sequence that can be
+extended indefinitely, de Finetti's representation makes the residuals
+conditionally independent given their directing distribution, and the
+corollary then holds conditionally on that distribution.
+
+Two consequences bear directly on commissioning. First, at the minimum length
+\(n=49\) the realized coverage of the frozen radius follows the Beta
+distribution with parameters \((49,1)\): it is at least \(0.98\) with
+probability \(0.63\), and it is below \(0.95\), that is, the long-run
+false-alarm rate exceeds \(5\%\), with probability \(0.08\). Second, the order
+statistic selected by Proposition~\ref{prop:coverage} and the one required for
+confidence differ at the same commissioning length: at \(n=149\),
+\eqref{eq:radius_order_statistic} selects \(j=147\), which covers at least
+\(0.98\) with probability \(0.57\) only, whereas confidence \(0.95\) requires
+the sample maximum. A guarantee in expectation and a guarantee on the frozen
+radius are therefore distinct radii, not two readings of the same one.
+
+The same order statistics also determine how far an imperfect commissioning
+sample can displace the radius. In practice the commissioning period may
+include observations that are not nominal, for instance when a defect is
+already present at installation.
+
+\begin{corollary}[Contaminated commissioning]
+\label{cor:contamination}
+Let the commissioning sample consist of \(n-m\) nominal residuals and \(m\)
+residuals of arbitrary origin, and let \(\tau=\residual_{(j)}\) be the
+\(j\)-th order statistic of the whole sample.
+\begin{enumerate}[label=(\roman*),leftmargin=1.8em]
+\item If \(m\le n-j\), then \(\tau\) does not exceed the \(j\)-th order
+      statistic of the \(n-m\) nominal residuals, and in particular does not
+      exceed their maximum. If, in addition, every contaminated residual
+      exceeds every nominal one, \(\tau\) equals that nominal order statistic.
+\item If \(m>n-j\) and every contaminated residual exceeds every nominal one,
+      then \(\tau\) is a contaminated residual.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(i) Adding observations to a sample that already contains at least \(j\)
+elements cannot increase its \(j\)-th smallest value, and the nominal
+subsample contains \(n-m\ge j\) elements. If every contaminated residual
+exceeds every nominal one, the \(j\) smallest values of the whole sample are
+the \(j\) smallest nominal values. (ii) The nominal residuals then occupy the
+\(n-m<j\) lowest positions, so the \(j\)-th position is held by a
+contaminated residual.
+\end{proof}
+
+The quantity \(n-j\) is therefore the number of contaminated commissioning
+observations that the radius tolerates: with
+\(j=k_\alpha\) of \eqref{eq:radius_order_statistic} it equals \(0\), \(1\) and
+\(2\) at \(n=49\), \(99\) and \(149\), and it equals \(0\) for the sample
+maximum required by Corollary~\ref{cor:tolerance}. The corollary bounds the
+displacement of the radius only; under contamination
+Assumption~\ref{ass:exchangeability} fails, and the coverage guarantee of
+Proposition~\ref{prop:coverage} does not apply. Section~\ref{sec:results}
+measures the consequence of exceeding the tolerance on the documented
+fault of the NASA IMS data.
+\end{reviewadded}
+\chcomment[id=CL]{Pending integration: the contamination experiment of note 05 (tablas\_contaminacion.md) must enter Section 9 for the last sentence above to hold. The probabilities 0.63, 0.08 and 0.57 are analytic (Beta and Binomial distributions); per D14 they should be generated as macros and checked in tests/test\_coverage\_exact.py.}
 
 \begin{remark}[Anti-conservative bias in interpolated empirical quantiles]
 \label{rem:interpolation_bias}
@@ -1677,15 +1822,70 @@ The primary mechanism is a pure statistical selection effect: stopping criteria 
 Comprehensive Monte Carlo evaluation (Section~\ref{sec:results}) empirically verifies that the sample-size inflation strictly dominates the selection bias. Isolating the selection effect by comparing the adaptive rule against a deterministic fixed-\(n\) calibration at the \emph{identical} realized sample size yields a negligible coverage differential bounded by \(0.2\) percentage points, exhibiting inconsistent directional signs across diverse residual distributions. Consequently, the pure selection bias is analytically immaterial under this parameterization. However, evaluating the adaptive algorithm against the theoretical floor (\(n=50\)) reveals a systematic coverage \emph{gain} approaching \(0.6\) percentage points, driven exclusively by the inflated realized \(n\). Therefore, under the specific configuration deployed herein, adaptive data-dependent stopping operates as a mildly conservative mechanism rather than an anti-conservative risk. Crucially, this empirical conservatism does not constitute a generalized theoretical guarantee, remaining strictly contingent upon selected heuristic parameters and bounded execution within the degenerate interval defined by Corollary~\ref{cor:degenerate_range}. If strict mathematical exactness is operationally mandated, two rigorous remedies exist: pre-allocating a deterministic \(n\) satisfying \eqref{eq:min_n}, or restricting the adaptive stopping logic exclusively to triggering readiness, subsequently computing the definitive \(\tau_k^\star\) utilizing a strictly disjoint, subsequent block of exchangeable nominal observations.
 \end{remark}
 
-\begin{remark}[Permutation ablation as a rigorous exchangeability test]
+\begin{remark}[{\replaced[id=CL]{A refutation test for exchangeability}{Permutation ablation as a rigorous exchangeability test}}]
 \label{rem:exchangeability_test}
-The structural requirement of Assumption~\ref{ass:exchangeability} is empirically falsifiable. If the sequential nominal commissioning residuals are genuinely exchangeable, arbitrary permutations of their chronological arrival order must be distributionally invariant. Consequently, the final calibrated radius, the adaptive termination epoch, and the operational post-calibration false-alarm rate must vary exclusively within the bounds of standard finite-sample statistical variance. The repeated-commissioning ablation conducted in Section~\ref{sec:results}—wherein the neural representation and hyperparameter configurations are rigidly frozen while the chronological ordering of commissioning observations is systematically permuted—serves not merely as a heuristic robustness check, but as the fundamental empirical falsification mechanism for the core assumption governing Proposition~\ref{prop:coverage}. Any statistically significant dependency upon sequence chronology rigorously falsifies the exchangeability prior, definitively indicating the presence of unmodeled non-stationary drift within the calibration interval.
+\replaced[id=CL]{Assumption~\ref{ass:exchangeability} can be refuted, although not confirmed, from the commissioning sequence itself. Under exchangeability every ordering of the residuals is equally likely, so any statistic of the ordering has a known permutation distribution. The statistic used here is the absolute Spearman rank correlation between each residual and its chronological index, whose permutation distribution gives an exact test against monotone drift (Section~\ref{subsec:design_verification}). A significant correlation refutes the assumption and indicates drift, a run-in transient or a degradation already present during commissioning; the sign of the correlation indicates whether the resulting radius is conservative (residuals decreasing with time) or anti-conservative (residuals increasing). A non-significant correlation does not establish exchangeability: the test has no power against non-monotone departures, and with short commissioning sequences its power against weak drift is limited, as Table~\ref{tab:exchangeability} quantifies.}{The structural requirement of Assumption~\ref{ass:exchangeability} is empirically falsifiable. If the sequential nominal commissioning residuals are genuinely exchangeable, arbitrary permutations of their chronological arrival order must be distributionally invariant. Consequently, the final calibrated radius, the adaptive termination epoch, and the operational post-calibration false-alarm rate must vary exclusively within the bounds of standard finite-sample statistical variance. The repeated-commissioning ablation conducted in Section~\ref{sec:results}—wherein the neural representation and hyperparameter configurations are rigidly frozen while the chronological ordering of commissioning observations is systematically permuted—serves not merely as a heuristic robustness check, but as the fundamental empirical falsification mechanism for the core assumption governing Proposition~\ref{prop:coverage}. Any statistically significant dependency upon sequence chronology rigorously falsifies the exchangeability prior, definitively indicating the presence of unmodeled non-stationary drift within the calibration interval.}\chcomment[id=CL]{Note 02, \S6: ``falsification mechanism'' becomes a refutation test, and the permuted-commissioning ablation is replaced by the chronological Spearman test that \S8 already describes. The sign reading follows notes 01 and 03 (CWRU drift; IMS run-in, conservative). Please check that subsec:design\_verification is the right reference.}
 \end{remark}
 
 \begin{remark}[Generalizability of the statistical coverage framework]
 \label{rem:saturation_link}
 The analytical proofs structuring Proposition~\ref{prop:coverage} and Corollaries~\ref{cor:min_commissioning} and~\ref{cor:degenerate_range} require absolutely no geometric or topological properties of the specific function \(\residual\), relying exclusively upon the strict exchangeability and atomlessness of the resulting scalar random variables. Consequently, these theorems constitute generalized statements regarding arbitrary exchangeable real-valued sequences, and remain mathematically valid for any nominal parameter subject to upper-quantile estimation. This structural generality mathematically licenses Corollary~\ref{cor:saturation_certification} (Section~\ref{subsec:saturation_certification}), wherein the identical analytical framework is deployed upon radial distances within the latent manifold rather than scalar regression residuals. This parallel application identically recovers the minimum theoretical floor and the associated variance-degenerate interval. Ultimately, the macro-scale saturation radius defining a generalized functional regime and the micro-scale operational radius defining a local mechanical asset constitute the identical mathematical estimation problem parameterized within distinct topological spaces.
 \end{remark}
+
+\chcomment[id=CL]{New subsection: the commissioning menu (D4, decided 11-oct). Table values are analytic; the IMS column assumes one record every 10 min (note 03). Open point from note 03: whether to describe the variant that starts operating at \(n=49\) and refines the radius at 99 and 149, with the caveat that later records must remain nominal.}
+\begin{reviewadded}
+%---------------------------------------------------------------------
+\subsection{The commissioning menu}
+\label{subsec:commissioning_menu}
+%---------------------------------------------------------------------
+
+Corollaries~\ref{cor:min_commissioning}--\ref{cor:contamination} do not
+single out one commissioning length. They define a small set of lengths, each
+with an explicit guarantee, among which the choice is an operational
+trade-off between the time an asset spends in commissioning and the risk of
+false alarms that the operator is prepared to accept.
+Table~\ref{tab:commissioning_menu} summarizes the options at a target coverage
+of \(98\%\); the framework does not prescribe one of them.
+
+\begin{table}[htbp]
+\color{blue}
+\centering
+\caption{Commissioning lengths at a target nominal coverage of \(98\%\).
+\(j\) is the order statistic used as radius; \(\kappa_k\) is the realized coverage of
+the frozen radius (Corollary~\ref{cor:tolerance}); ``tolerated'' is the
+number of contaminated commissioning observations that leave the radius
+within the nominal range (Corollary~\ref{cor:contamination}). The last column
+gives the commissioning time for one record every 10~min, as in the NASA IMS
+data.}
+\label{tab:commissioning_menu}
+\setlength{\tabcolsep}{4pt}\small
+\begin{tabular}{rrlrrrrr}
+\toprule
+\(n\) & \(j\) & guarantee & \(\Expect[\kappa_k]\) & \(\Prob(\kappa_k\ge0.98)\) &
+\(\Prob(\kappa_k<0.95)\) & tolerated & IMS time \\
+\midrule
+49  & 49  & coverage in expectation, minimum        & 0.980 & 0.63 & 0.081   & 0 & 8~h    \\
+99  & 98  & coverage in expectation, interior radius & 0.980 & 0.59 & 0.039   & 1 & 16.5~h \\
+149 & 147 & coverage in expectation                 & 0.980 & 0.57 & 0.019   & 2 & 25~h   \\
+149 & 149 & coverage \(\ge0.98\) with confidence 0.95 & 0.993 & 0.95 & \(<\)0.001 & 0 & 25~h   \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three readings follow from the table. The minimum length \(n=49\) is the
+shortest commissioning compatible with any distribution-free guarantee, at
+the price of a radius equal to the sample maximum and a probability of
+\(0.08\) that the realized false-alarm rate exceeds \(5\%\). The length
+\(n=99\) keeps the same guarantee in expectation with an interior order
+statistic, which reduces the dispersion of the radius
+(Corollary~\ref{cor:degenerate_range}) and tolerates one contaminated
+observation. The length \(n=149\) is the first at which the frozen radius
+itself is certified with confidence; the confidence is obtained from the
+sample maximum, which tolerates no contaminated observation, whereas the
+order statistic of Proposition~\ref{prop:coverage} at the same length
+tolerates two. Confidence on the frozen radius and robustness to
+contamination are thus competing properties at fixed \(n\).
+\end{reviewadded}
 
 %---------------------------------------------------------------------
 \subsection{Convergence-based stopping and freezing}
@@ -1725,17 +1925,26 @@ Section~\ref{subsec:distribution_free}. First, \(N_{\min}\) must satisfy
 \eqref{eq:min_n}, since otherwise a converged radius can be declared at a
 sample size at which the target coverage is not certifiable; by
 Corollary~\ref{cor:min_commissioning} this requires
-\(N_{\min}\ge 49\) at \(\alpha=0.02\), and strictly greater than 49 if the
+\(N_{\min}\ge 49\) at \(\alpha=0.02\), and \replaced[id=CL]{\(N_{\min}\ge 99\) (Corollary~\ref{cor:degenerate_range})}{strictly greater than 49} if the
 degenerate sample-maximum case is to be avoided. Second, by
-Remark~\ref{rem:optional_stopping} the rule introduces a downward bias in
-\(\tau_k^\star\), so the parameters
+Remark~\ref{rem:optional_stopping} the rule \replaced[id=CL]{can bias
+\(\tau_k^\star\) in either direction: the selection effect is anti-conservative
+and the inflation of the realized sample size is conservative, and under the
+configuration evaluated here the second dominates}{introduces a downward bias in
+\(\tau_k^\star\)}, so the parameters
 \((N_{\min},N_{\max},L,\varepsilon_C,m)\) define a trade-off between
 commissioning duration and the size of that bias rather than a
-consistency property.
+consistency property.\chcomment[id=CL]{Note 02, \S6 and \S7.5: ``downward bias'' contradicted Remark~\ref{rem:optional_stopping}, which concludes that the net effect is conservative. ``Strictly greater than 49'' was not sufficient: Corollary~\ref{cor:degenerate_range} requires \(n\ge 99\).} \added[id=CL]{The rule also needs a minimum number of observations
+before it can terminate, which depends on \(N_{\min}\), \(L\) and \(m\). When
+the nominal record of an asset is shorter than that, the asset receives
+calibration-failure status by construction, irrespective of the behaviour of
+its residuals; this is the case of the 1797~rpm condition of the CWRU data,
+whose nominal record provides 50 order-domain windows
+(Section~\ref{sec:results}).}\chcomment[id=CL]{Note 01, \S6 and D3: 1797 rpm is reported as a condition with insufficient data. Please check the exact minimum termination length for the parameters finally used in Section 9.}
 
 \begin{remark}[Analytical semantics of the adaptive stopping criteria]
 \label{rem:stopping_semantics}
-The mathematical convergence of the metric defined in \eqref{eq:convergence} does not constitute statistical evidence that the true underlying population \((1-\alpha)\)-quantile has been accurately recovered. Rather, it provides a strictly operational guarantee that the empirical estimate has remained bounded within the configured scalar tolerance \(\varepsilon_C\) over the defined temporal look-back interval \(L\). Consequently, persistent non-convergence terminating at the budget \(N_{\max}\) is functionally diagnostic rather than merely computationally inconvenient. Such non-convergence definitively indicates structural violations of the underlying priors: insufficient volumetric data generation, non-stationary operational drift, or transient startup dynamics inconsistent with the formalized nominal state—collectively constituting a strict failure of the exchangeability condition (Assumption~\ref{ass:exchangeability}). The algorithmic isolation and classification of these distinct failure modes remain beyond the scope of the current framework.
+The mathematical convergence of the metric defined in \eqref{eq:convergence} does not constitute statistical evidence that the true underlying population \((1-\alpha)\)-quantile has been accurately recovered. Rather, it provides a strictly operational guarantee that the empirical estimate has remained bounded within the configured scalar tolerance \(\varepsilon_C\) over the defined temporal look-back interval \(L\). Consequently, persistent non-convergence terminating at the budget \(N_{\max}\) is functionally diagnostic rather than merely computationally inconvenient. \replaced[id=CL]{Such non-convergence indicates one of three conditions: an insufficient number of nominal observations, non-stationary operational drift, or a start-up transient inconsistent with the nominal state. The last two violate the exchangeability condition (Assumption~\ref{ass:exchangeability}); the first does not, and is resolved by a longer commissioning period.}{Such non-convergence definitively indicates structural violations of the underlying priors: insufficient volumetric data generation, non-stationary operational drift, or transient startup dynamics inconsistent with the formalized nominal state—collectively constituting a strict failure of the exchangeability condition (Assumption~\ref{ass:exchangeability}).} The algorithmic isolation and classification of these distinct failure modes remain beyond the scope of the current framework.
 \end{remark}
 
 %---------------------------------------------------------------------
@@ -1762,6 +1971,9 @@ family and an online stage performed once per asset.
 \begin{enumerate}[leftmargin=1.8em]
 \item Acquire nominal residuals \(\residual_1,\residual_2,\ldots\) using
       the frozen \((E,D)\).
+\item \added[id=CL]{Select a commissioning length and the corresponding
+      order statistic from Table~\ref{tab:commissioning_menu}, according to
+      the guarantee required.}
 \item Update \(\tau_k(t)\) by \eqref{eq:tau_online} and monitor
       \(C_k(t)\) of \eqref{eq:convergence}, with
       \(N_{\min}\) satisfying \eqref{eq:min_n}.
@@ -1773,7 +1985,9 @@ family and an online stage performed once per asset.
 No fault labels, no field representation learning, and no manual threshold
 selection occur at any point. The only asset-specific quantity is the
 scalar \(\tau_k^\star\), and by Proposition~\ref{prop:coverage} it carries
-a distribution-free coverage guarantee.
+a distribution-free coverage guarantee\added[id=CL]{ in expectation, which
+Corollary~\ref{cor:tolerance} strengthens to a guarantee with confidence on
+the frozen radius at \(n\ge149\)}.
 
 % ============================================================================
 \section{Experimental Design}
